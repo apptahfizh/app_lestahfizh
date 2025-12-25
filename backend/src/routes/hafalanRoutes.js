@@ -4,9 +4,9 @@ const router = express.Router();
 const auth = require("../middlewares/auth");
 const { db } = require("../config/db");
 
-// =======================
-// Query: last hafalan per peserta (harus menyertakan peserta_id)
-// =======================
+/* =========================================================
+   QUERY: HAFALAN TERAKHIR PER PESERTA
+========================================================= */
 const getLastHafalanQuery = `
   SELECT 
     h.id,
@@ -19,9 +19,9 @@ const getLastHafalanQuery = `
     h.keterangan
   FROM hafalan h
   JOIN (
-      SELECT peserta_id, MAX(id) AS last_id
-      FROM hafalan
-      GROUP BY peserta_id
+    SELECT peserta_id, MAX(id) AS last_id
+    FROM hafalan
+    GROUP BY peserta_id
   ) x ON h.id = x.last_id
   JOIN peserta_didik p ON h.peserta_id = p.id
   JOIN surah s ON h.surah = s.id
@@ -29,11 +29,10 @@ const getLastHafalanQuery = `
 `;
 
 /* =========================================================
-   GET - DATA TABLE (SERVER-SIDE)
+   GET - DATA TABLE (SERVER SIDE)
    /api/hafalan/all
-   - ORTU hanya bisa lihat hafalan anaknya sendiri
 ========================================================= */
-router.get("/all", auth(["admin", "ustadz", "ortu"]), (req, res) => {
+router.get("/all", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
   try {
     const draw = Number(req.query.draw) || 1;
     const start = Math.max(0, Number(req.query.start) || 0);
@@ -43,153 +42,105 @@ router.get("/all", auth(["admin", "ustadz", "ortu"]), (req, res) => {
     const tanggal_mulai = req.query.tanggal_mulai || "";
     const tanggal_selesai = req.query.tanggal_selesai || "";
     const peserta = req.query.peserta || "";
+    const surah = req.query.surah || "";
 
     let where = "WHERE 1=1";
-    const params = {};
+    const values = [];
+    let idx = 1;
 
-    // Jika ORTU, filter peserta_id (menggunakan named parameter)
-    if (req.user && req.user.role === "ortu") {
-      where += " AND h.peserta_id = @peserta_id";
-      params.peserta_id = req.user.peserta_id;
+    // ORTU: hanya anak sendiri
+    if (req.user?.role === "ortu") {
+      where += ` AND h.peserta_id = $${idx++}`;
+      values.push(req.user.peserta_id);
     }
 
     if (search) {
-      where +=
-        " AND (pd.nama LIKE @search OR CAST(h.surah AS TEXT) LIKE @search OR h.keterangan LIKE @search)";
-      params.search = `%${search}%`;
+      where += ` AND (pd.nama ILIKE $${idx} OR CAST(h.surah AS TEXT) ILIKE $${idx} OR h.keterangan ILIKE $${idx})`;
+      values.push(`%${search}%`);
+      idx++;
     }
 
     if (tanggal_mulai) {
-      where += " AND date(h.tanggal) >= date(@tgl_mulai)";
-      params.tgl_mulai = tanggal_mulai;
+      where += ` AND h.tanggal >= $${idx++}`;
+      values.push(tanggal_mulai);
     }
 
     if (tanggal_selesai) {
-      where += " AND date(h.tanggal) <= date(@tgl_selesai)";
-      params.tgl_selesai = tanggal_selesai;
+      where += ` AND h.tanggal <= $${idx++}`;
+      values.push(tanggal_selesai);
     }
 
-    if (peserta && (!req.user || req.user.role !== "ortu")) {
-      where += " AND pd.nama LIKE @peserta";
-      params.peserta = `%${peserta}%`;
+    if (peserta && req.user?.role !== "ortu") {
+      where += ` AND pd.nama ILIKE $${idx++}`;
+      values.push(`%${peserta}%`);
     }
-
-    const total = db
-      .prepare(
-        `SELECT COUNT(*) AS cnt FROM hafalan h LEFT JOIN peserta_didik pd ON h.peserta_id = pd.id`
-      )
-      .get().cnt;
-
-    const surah = req.query.surah || "";
 
     if (surah) {
-      where += " AND h.surah = @surah";
-      params.surah = surah;
+      where += ` AND h.surah = $${idx++}`;
+      values.push(surah);
     }
 
-    let filtered = 0;
-    try {
-      filtered = db
-        .prepare(
-          `SELECT COUNT(*) AS cnt
-           FROM hafalan h
-           LEFT JOIN peserta_didik pd ON h.peserta_id = pd.id
-           ${where}`
-        )
-        .get(params).cnt;
-    } catch (err) {
-      console.log("Filtered error:", err);
-      filtered = 0;
-    }
+    // total semua data
+    const totalResult = await db.query(
+      `SELECT COUNT(*)::int AS cnt FROM hafalan`
+    );
+    const recordsTotal = totalResult.rows[0].cnt;
 
-    const rows = db
-      .prepare(
-        `SELECT 
-      h.id,
-      h.tanggal,
-      pd.nama AS peserta,
-      s.nama_surah AS surah_nama,
-      s.jumlah_ayat AS total_ayat,   -- ✅ TAMBAHKAN INI
-      h.ayat_hafal,
-      h.ayat_setor,
-      h.keterangan,
-      h.peserta_id
-     FROM hafalan h
-     LEFT JOIN peserta_didik pd ON h.peserta_id = pd.id
-     LEFT JOIN surah s ON h.surah = s.id
-     ${where}
-     ORDER BY h.id DESC
-     LIMIT @limit OFFSET @offset`
-      )
-      .all({
-        ...params,
-        limit: length,
-        offset: start,
-      });
+    // total setelah filter
+    const filteredResult = await db.query(
+      `
+      SELECT COUNT(*)::int AS cnt
+      FROM hafalan h
+      LEFT JOIN peserta_didik pd ON h.peserta_id = pd.id
+      ${where}
+    `,
+      values
+    );
+    const recordsFiltered = filteredResult.rows[0].cnt;
+
+    // data utama
+    const dataResult = await db.query(
+      `
+      SELECT 
+        h.id,
+        h.tanggal,
+        pd.nama AS peserta,
+        s.nama_surah AS surah_nama,
+        s.jumlah_ayat AS total_ayat,
+        h.ayat_hafal,
+        h.ayat_setor,
+        h.keterangan,
+        h.peserta_id
+      FROM hafalan h
+      LEFT JOIN peserta_didik pd ON h.peserta_id = pd.id
+      LEFT JOIN surah s ON h.surah = s.id
+      ${where}
+      ORDER BY h.id DESC
+      LIMIT $${idx++} OFFSET $${idx++}
+    `,
+      [...values, length, start]
+    );
 
     res.json({
       draw,
-      recordsTotal: total,
-      recordsFiltered: filtered,
-      data: rows,
+      recordsTotal,
+      recordsFiltered,
+      data: dataResult.rows,
     });
   } catch (err) {
-    console.log("Error /hafalan/all:", err);
+    console.error("Error /hafalan/all:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 });
 
 /* =========================================================
-   GET - TABEL HAFALAN (RINGKAS)
-   /api/hafalan/table -> redirect ke /last
-   ORTU filter otomatis
+   GET - TABEL HAFALAN RINGKAS
 ========================================================= */
-router.get("/table", auth(["admin", "ustadz", "ortu"]), (req, res) => {
-  const user = req.user;
-
-  let rows;
-  if (user.role === "ortu") {
-    rows = db
-      .prepare(
+router.get("/table", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
+  try {
+    if (req.user.role === "ortu") {
+      const result = await db.query(
         `
-      SELECT 
-        h.id,
-        h.peserta_id,
-        p.nama AS peserta,
-        h.tanggal,
-        s.nama_surah AS surah_nama,
-        h.ayat_hafal,
-        h.ayat_setor,
-        h.keterangan
-      FROM hafalan h
-      JOIN peserta_didik p ON h.peserta_id = p.id
-      JOIN surah s ON h.surah = s.id
-      WHERE h.peserta_id = ?
-      ORDER BY h.id DESC
-      LIMIT 1
-    `
-      )
-      .get(user.peserta_id);
-  } else {
-    rows = db.prepare(getLastHafalanQuery).all();
-  }
-
-  res.json(rows);
-});
-
-/* =========================================================
-   GET - Hafalan terakhir
-   ORTU hanya lihat hafalan anaknya sendiri
-========================================================= */
-router.get("/last", auth(["admin", "ustadz", "ortu"]), (req, res) => {
-  try {
-    const user = req.user || {};
-    let row;
-
-    if (user.role === "ortu") {
-      row = db
-        .prepare(
-          `
         SELECT 
           h.id,
           h.peserta_id,
@@ -197,21 +148,38 @@ router.get("/last", auth(["admin", "ustadz", "ortu"]), (req, res) => {
           h.tanggal,
           s.nama_surah AS surah_nama,
           h.ayat_hafal,
-          s.jumlah_ayat AS total_ayat,
+          h.ayat_setor,
           h.keterangan
         FROM hafalan h
         JOIN peserta_didik p ON h.peserta_id = p.id
         JOIN surah s ON h.surah = s.id
-        WHERE h.peserta_id = ?
+        WHERE h.peserta_id = $1
         ORDER BY h.id DESC
         LIMIT 1
-      `
-        )
-        .get([user.peserta_id]);
-    } else {
-      row = db
-        .prepare(
-          `
+      `,
+        [req.user.peserta_id]
+      );
+      return res.json(result.rows);
+    }
+
+    const result = await db.query(getLastHafalanQuery);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error /hafalan/table:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================================================
+   GET - HAFALAN TERAKHIR
+========================================================= */
+router.get("/last", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
+  try {
+    let result;
+
+    if (req.user.role === "ortu") {
+      result = await db.query(
+        `
         SELECT 
           h.id,
           h.peserta_id,
@@ -224,119 +192,44 @@ router.get("/last", auth(["admin", "ustadz", "ortu"]), (req, res) => {
         FROM hafalan h
         JOIN peserta_didik p ON h.peserta_id = p.id
         JOIN surah s ON h.surah = s.id
+        WHERE h.peserta_id = $1
+        ORDER BY h.id DESC
+        LIMIT 1
+      `,
+        [req.user.peserta_id]
+      );
+    } else {
+      result = await db.query(
+        `
+        SELECT 
+          h.id,
+          h.peserta_id,
+          p.nama AS peserta,
+          h.tanggal,
+          s.nama_surah AS surah_nama,
+          s.jumlah_ayat AS total_ayat,
+          h.ayat_hafal,
+          h.keterangan
+        FROM hafalan h
+        JOIN peserta_didik p ON h.peserta_id = p.id
+        JOIN surah s ON h.surah = s.id
         ORDER BY h.id DESC
         LIMIT 1
       `
-        )
-        .get();
+      );
     }
 
-    res.json([row]);
+    res.json(result.rows);
   } catch (err) {
-    console.log("Error /hafalan/last:", err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error("Error /hafalan/last:", err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
 /* =========================================================
-   GET - Progres hafalan per peserta (Line Chart)
+   POST - TAMBAH HAFALAN
 ========================================================= */
-router.get("/progres", auth(["admin", "ustadz", "ortu"]), (req, res) => {
-  try {
-    const user = req.user || {};
-    let rows;
-
-    if (user.role === "ortu") {
-      rows = db
-        .prepare(
-          `SELECT 
-             h.id,
-             h.peserta_id,
-             p.nama AS peserta,
-             h.tanggal,
-             s.nama_surah AS surah_nama,
-             h.ayat_hafal,
-             s.jumlah_ayat AS total_ayat
-           FROM hafalan h
-           JOIN peserta_didik p ON h.peserta_id = p.id
-           JOIN surah s ON h.surah = s.id
-           WHERE h.peserta_id = ?
-           ORDER BY h.tanggal ASC`
-        )
-        .all([user.peserta_id]);
-    } else {
-      rows = db
-        .prepare(
-          `SELECT 
-             h.id,
-             h.peserta_id,
-             p.nama AS peserta,
-             h.tanggal,
-             s.nama_surah AS surah_nama,
-             h.ayat_hafal,
-             s.jumlah_ayat AS total_ayat
-           FROM hafalan h
-           JOIN peserta_didik p ON h.peserta_id = p.id
-           JOIN surah s ON h.surah = s.id
-           ORDER BY h.tanggal ASC`
-        )
-        .all();
-    }
-
-    res.json(rows);
-  } catch (err) {
-    console.log("Error /hafalan/progres:", err);
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-});
-
-/* =========================================================
-   GET - By ID
-   ORTU hanya bisa lihat hafalan anaknya sendiri
-========================================================= */
-router.get("/:id", auth(["admin", "ustadz", "ortu"]), (req, res) => {
-  const id = req.params.id;
-
-  let sql = `
-    SELECT
-      h.id,
-      h.peserta_id,
-      p.nama AS peserta_nama,
-      h.tanggal,
-      h.surah,
-      h.ayat_hafal,
-      h.ayat_setor,
-      h.mulai_setor_ayat,
-      h.selesai_setor_ayat,
-      h.keterangan
-    FROM hafalan h
-    JOIN peserta_didik p ON h.peserta_id = p.id
-    WHERE h.id = ?
-  `;
-
-  const row = db.prepare(sql).get(id);
-
-  if (!row) return res.status(404).json({ message: "Hafalan tidak ditemukan" });
-
-  // Cek ORTU, harus peserta_id sama
-  if (
-    req.user &&
-    req.user.role === "ortu" &&
-    row.peserta_id !== req.user.peserta_id
-  ) {
-    return res
-      .status(403)
-      .json({ message: "Tidak berhak mengakses hafalan ini" });
-  }
-
-  res.json(row);
-});
-
-/* =========================================================
-   POST - Tambah Hafalan
-   Hanya admin & ustadz
-========================================================= */
-router.post("/", auth(["admin", "ustadz"]), (req, res) => {
+router.post("/", auth(["admin", "ustadz"]), async (req, res) => {
   const {
     peserta_id,
     surah,
@@ -348,123 +241,90 @@ router.post("/", auth(["admin", "ustadz"]), (req, res) => {
     tanggal,
   } = req.body || {};
 
-  if (!peserta_id || !surah)
-    return res.status(400).json({ message: "peserta_id & surah wajib diisi" });
-
-  if (isNaN(peserta_id))
-    return res.status(400).json({ message: "peserta_id harus angka" });
-  if (isNaN(surah))
-    return res.status(400).json({ message: "surah harus angka" });
-  if (tanggal && isNaN(Date.parse(tanggal)))
-    return res
-      .status(400)
-      .json({ message: "Format tanggal tidak valid (YYYY-MM-DD)" });
-
   try {
-    const info = db
-      .prepare(
-        `INSERT INTO hafalan 
-         (peserta_id, tanggal, surah, ayat_hafal, ayat_setor, mulai_setor_ayat, selesai_setor_ayat, keterangan)
-         VALUES (?, COALESCE(?, DATE('now')), ?, ?, ?, ?, ?, ?)`
-      )
-      .run(
+    const result = await db.query(
+      `
+      INSERT INTO hafalan
+      (peserta_id, tanggal, surah, ayat_hafal, ayat_setor, mulai_setor_ayat, selesai_setor_ayat, keterangan)
+      VALUES ($1, COALESCE($2, CURRENT_DATE), $3, $4, $5, $6, $7, $8)
+      RETURNING id
+    `,
+      [
         peserta_id,
-        tanggal || null,
+        tanggal,
         surah,
-        ayat_hafal || null,
-        ayat_setor || null,
-        mulai_setor_ayat || null,
-        selesai_setor_ayat || null,
-        keterangan || null
-      );
+        ayat_hafal,
+        ayat_setor,
+        mulai_setor_ayat,
+        selesai_setor_ayat,
+        keterangan,
+      ]
+    );
 
-    res.json({ message: "Hafalan ditambahkan", id: info.lastInsertRowid });
+    res.json({ message: "Hafalan ditambahkan", id: result.rows[0].id });
   } catch (err) {
-    console.log("Error POST /hafalan:", err);
-    res
-      .status(400)
-      .json({ message: "Gagal tambah hafalan", error: err.message });
+    console.error("Error POST /hafalan:", err);
+    res.status(400).json({ message: "Gagal tambah hafalan" });
   }
 });
 
 /* =========================================================
-   PUT - Update Hafalan
-   Hanya admin & ustadz
+   PUT - UPDATE HAFALAN
 ========================================================= */
-router.put("/:id", auth(["admin", "ustadz"]), (req, res) => {
-  const id = req.params.id;
-  const {
-    peserta_id,
-    surah,
-    ayat_hafal,
-    ayat_setor,
-    mulai_setor_ayat,
-    selesai_setor_ayat,
-    keterangan,
-    tanggal,
-  } = req.body || {};
-
-  if (!peserta_id || !surah)
-    return res.status(400).json({ message: "peserta_id & surah wajib diisi" });
-
-  if (isNaN(peserta_id))
-    return res.status(400).json({ message: "peserta_id harus angka" });
-  if (isNaN(surah))
-    return res.status(400).json({ message: "surah harus angka" });
-  if (tanggal && isNaN(Date.parse(tanggal)))
-    return res
-      .status(400)
-      .json({ message: "Format tanggal tidak valid (YYYY-MM-DD)" });
-
+router.put("/:id", auth(["admin", "ustadz"]), async (req, res) => {
   try {
-    const info = db
-      .prepare(
-        `UPDATE hafalan
-         SET peserta_id = ?, tanggal = COALESCE(?, tanggal), surah = ?, ayat_hafal = ?, 
-             ayat_setor = ?, mulai_setor_ayat = ?, selesai_setor_ayat = ?, keterangan = ?
-         WHERE id = ?`
-      )
-      .run(
-        peserta_id,
-        tanggal || null,
-        surah,
-        ayat_hafal || null,
-        ayat_setor || null,
-        mulai_setor_ayat || null,
-        selesai_setor_ayat || null,
-        keterangan || null,
-        id
-      );
+    const result = await db.query(
+      `
+      UPDATE hafalan
+      SET peserta_id = $1,
+          tanggal = COALESCE($2, tanggal),
+          surah = $3,
+          ayat_hafal = $4,
+          ayat_setor = $5,
+          mulai_setor_ayat = $6,
+          selesai_setor_ayat = $7,
+          keterangan = $8
+      WHERE id = $9
+    `,
+      [
+        req.body.peserta_id,
+        req.body.tanggal,
+        req.body.surah,
+        req.body.ayat_hafal,
+        req.body.ayat_setor,
+        req.body.mulai_setor_ayat,
+        req.body.selesai_setor_ayat,
+        req.body.keterangan,
+        req.params.id,
+      ]
+    );
 
-    if (info.changes === 0)
+    if (result.rowCount === 0)
       return res.status(404).json({ message: "Hafalan tidak ditemukan" });
 
     res.json({ message: "Hafalan diperbarui" });
   } catch (err) {
-    console.log("Error PUT /hafalan/:id", err);
-    res
-      .status(400)
-      .json({ message: "Gagal update hafalan", error: err.message });
+    console.error("Error PUT /hafalan:", err);
+    res.status(400).json({ message: "Gagal update hafalan" });
   }
 });
 
 /* =========================================================
-   DELETE Hafalan
-   Hanya admin & ustadz
+   DELETE - HAPUS HAFALAN
 ========================================================= */
-router.delete("/:id", auth(["admin", "ustadz"]), (req, res) => {
-  const id = req.params.id;
+router.delete("/:id", auth(["admin", "ustadz"]), async (req, res) => {
   try {
-    const info = db.prepare("DELETE FROM hafalan WHERE id = ?").run(id);
-    if (info.changes === 0)
+    const result = await db.query("DELETE FROM hafalan WHERE id = $1", [
+      req.params.id,
+    ]);
+
+    if (result.rowCount === 0)
       return res.status(404).json({ message: "Hafalan tidak ditemukan" });
 
     res.json({ message: "Hafalan dihapus" });
   } catch (err) {
-    console.log("Error DELETE /hafalan/:id", err);
-    res
-      .status(500)
-      .json({ message: "Error menghapus hafalan", error: err.message });
+    console.error("Error DELETE /hafalan:", err);
+    res.status(500).json({ message: "Error menghapus hafalan" });
   }
 });
 
