@@ -2,7 +2,6 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const authMiddleware = require("./middlewares/auth");
 
 const app = express();
@@ -15,20 +14,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // =======================
-// DATABASE (⚠️ sementara SQLite)
+// DATABASE (PostgreSQL)
 // =======================
-const sqlite3 = require("sqlite3").verbose();
-const dbPath = path.join(__dirname, "..", "lestahfizh_final.db");
-
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error("Gagal connect ke database:", err.message);
-  } else {
-    console.log("Connected to SQLite database.");
-  }
-});
-
-app.locals.db = db;
+// IMPORTANT:
+// Semua routes sekarang langsung import db dari ../config/db
+// Tidak perlu app.locals.db lagi
+require("./config/db"); // memastikan koneksi pg aktif saat app start
 
 // =======================
 // ROUTES
@@ -55,7 +46,7 @@ app.use("/api/ortu/absensi", authMiddleware("ortu"), ortuAbsensiRoutes);
 // TEST ROUTE
 // =======================
 app.get("/", (req, res) => {
-  res.send("API app_lestahfizh berjalan ✔ (Vercel)");
+  res.send("API app_lestahfizh berjalan ✔ (PostgreSQL)");
 });
 
 // =======================
