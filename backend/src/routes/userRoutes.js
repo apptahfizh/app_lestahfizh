@@ -8,12 +8,9 @@ const { db } = require("../config/db"); // pg Pool
 const DEFAULT_PASSWORD = "12345678";
 
 /*
-=========================================================
 CATATAN MIGRASI
-- SQLite callback (db.all, db.get, db.run) ➜ pg async/await
-- req.app.locals.db ➜ langsung pakai db (Pool)
-- datetime('now') ➜ NOW()
-=========================================================
+- Migrasi penuh ke PostgreSQL (pg)
+- Menggunakan async/await & Pool
 */
 
 /* =========================================================
