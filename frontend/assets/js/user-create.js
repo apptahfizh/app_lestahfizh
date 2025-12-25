@@ -1,0 +1,221 @@
+// ===================================================
+// USER-CREATE.JS — FINAL FIXED VERSION
+// ===================================================
+
+checkAuth(["admin", "ustadz"]);
+
+let userTable = null;
+let userDataCache = [];
+
+// ===================================================
+// VIEW MODE CONTROLLER
+// ===================================================
+function setViewMode() {
+  const isMobile = window.innerWidth <= 768;
+  document.body.classList.toggle("mobile-view", isMobile);
+}
+
+window.addEventListener("resize", setViewMode);
+document.addEventListener("DOMContentLoaded", setViewMode);
+
+// ===================================================
+// LOAD USERS
+// ===================================================
+async function loadUsers() {
+  try {
+    const res = await api.get("/users");
+    userDataCache = res.data || [];
+    renderTable(userDataCache);
+    renderUserCards(userDataCache);
+  } catch (err) {
+    Swal.fire("Error", "Gagal memuat data user", "error");
+  }
+}
+
+// ===================================================
+// RENDER TABLE (DESKTOP)
+// ===================================================
+function renderTable(data) {
+  if (userTable) {
+    userTable.clear().rows.add(data).draw();
+    return;
+  }
+
+  userTable = $("#tableUsers").DataTable({
+    data,
+    autoWidth: false,
+    responsive: false,
+    columns: [
+      { data: "id" },
+      { data: "username" },
+      { data: "role" },
+      { data: "peserta_nama", render: (d) => d || "-" },
+      { data: "created_at" },
+      {
+        data: null,
+        orderable: false,
+        render: (row) => `
+          <button class="btn btn-sm btn-warning btn-reset" data-id="${row.id}">
+            Reset
+          </button>
+          <button class="btn btn-sm btn-info btn-edit"
+            data-id="${row.id}"
+            data-username="${row.username}"
+            data-role="${row.role}"
+            data-peserta_id="${row.peserta_id || ""}">
+            Edit
+          </button>
+          <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}">
+            Hapus
+          </button>
+        `,
+      },
+    ],
+  });
+}
+
+// ===================================================
+// RENDER CARD (MOBILE)
+// ===================================================
+function renderUserCards(data) {
+  const wrapper = document.getElementById("userCardWrapper");
+  if (!wrapper) return;
+
+  wrapper.innerHTML = "";
+
+  data.forEach((u) => {
+    wrapper.innerHTML += `
+      <div class="user-card">
+        <div class="row">
+          <span class="label">Username</span>
+          <span class="value">${u.username}</span>
+        </div>
+        <div class="row">
+          <span class="label">Role</span>
+          <span class="value">${u.role}</span>
+        </div>
+        <div class="row">
+          <span class="label">Peserta</span>
+          <span class="value">${u.peserta_nama || "-"}</span>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-sm btn-warning btn-reset" data-id="${u.id}">
+            Reset
+          </button>
+          <button class="btn btn-sm btn-info btn-edit"
+            data-id="${u.id}"
+            data-username="${u.username}"
+            data-role="${u.role}"
+            data-peserta_id="${u.peserta_id || ""}">
+            Edit
+          </button>
+          <button class="btn btn-sm btn-danger btn-delete" data-id="${u.id}">
+            Hapus
+          </button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+// ===================================================
+// RESET PASSWORD
+// ===================================================
+$(document).on("click", ".btn-reset", async function () {
+  const id = $(this).data("id");
+
+  const ok = await Swal.fire({
+    title: "Reset Password?",
+    text: "Password akan direset ke 12345678",
+    icon: "warning",
+    showCancelButton: true,
+  });
+
+  if (!ok.isConfirmed) return;
+
+  await api.put(`/users/reset/${id}`);
+  Swal.fire("Berhasil", "Password direset", "success");
+});
+
+// ===================================================
+// OPEN EDIT MODAL
+// ===================================================
+$(document).on("click", ".btn-edit", function () {
+  $("#editUserId").val(this.dataset.id);
+  $("#editUsername").val(this.dataset.username);
+  $("#editRole").val(this.dataset.role);
+  $("#editPassword").val("");
+  $("#edit_peserta_id").val(this.dataset.peserta_id || "");
+
+  $("#modalEditUser").modal("show");
+});
+
+// ===================================================
+// TOGGLE PASSWORD (ADD + EDIT)
+// ===================================================
+$(document).on("click", "#togglePassword", function () {
+  const input = $("#password");
+  const icon = $(this).find("i");
+
+  input.attr("type", input.attr("type") === "password" ? "text" : "password");
+  icon.toggleClass("fa-eye fa-eye-slash");
+});
+
+$(document).on("click", "#toggleEditPassword", function () {
+  const input = $("#editPassword");
+  const icon = $(this).find("i");
+
+  input.attr("type", input.attr("type") === "password" ? "text" : "password");
+  icon.toggleClass("fa-eye fa-eye-slash");
+});
+
+// ===================================================
+// SAVE EDIT USER
+// ===================================================
+$("#btnSaveEditUser").on("click", async function () {
+  const id = $("#editUserId").val();
+  const username = $("#editUsername").val();
+  const role = $("#editRole").val();
+  const password = $("#editPassword").val();
+  const peserta_id = $("#edit_peserta_id").val() || null;
+
+  await api.put(`/users/${id}`, { username, role, peserta_id });
+
+  if (password) {
+    await api.put(`/users/update-password/${id}`, { password });
+  }
+
+  $("#modalEditUser").modal("hide");
+  loadUsers();
+});
+
+// ===================================================
+// DELETE USER
+// ===================================================
+$(document).on("click", ".btn-delete", async function () {
+  const id = $(this).data("id");
+
+  const ok = await Swal.fire({
+    title: "Hapus User?",
+    icon: "warning",
+    showCancelButton: true,
+  });
+
+  if (!ok.isConfirmed) return;
+
+  await api.delete(`/users/${id}`);
+  loadUsers();
+});
+
+// ===================================================
+// FIX ARIA WARNING
+// ===================================================
+$(".modal").on("hidden.bs.modal", function () {
+  document.activeElement?.blur();
+});
+
+// ===================================================
+// INIT
+// ===================================================
+document.addEventListener("DOMContentLoaded", loadUsers);

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rekap Absensi - Les Tahfizh</title>
+
+    <!-- CSS -->
+
+    <link
+      href="assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/css/sb-admin-2.min.css" rel="stylesheet" />
+    <link href="assets/css/custom.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/datatables/dataTables.bootstrap4.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body id="page-top">
+    <div id="wrapper">
+      <!-- ================= SIDEBAR ================= -->
+      <ul
+        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+        id="accordionSidebar"
+      >
+        <a
+          class="sidebar-brand d-flex align-items-center justify-content-center"
+          href="index.html"
+        >
+          <div class="sidebar-brand-icon"><i class="fas fa-mosque"></i></div>
+          <div class="sidebar-brand-text mx-3">Tahfizh App</div>
+        </a>
+        <hr class="sidebar-divider my-0" />
+        <li class="nav-item">
+          <a class="nav-link" href="index.html"
+            ><i class="fas fa-fw fa-home"></i><span>Dashboard</span></a
+          >
+        </li>
+        <hr class="sidebar-divider" />
+        <div class="sidebar-heading">Menu Utama</div>
+        <li class="nav-item">
+          <a class="nav-link" href="peserta.html"
+            ><i class="fas fa-fw fa-users"></i><span>Data Peserta</span></a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="hafalan.html"
+            ><i class="fas fa-fw fa-book"></i
+            ><span>Input & List Hafalan</span></a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="riwayat-hafalan.html"
+            ><i class="fas fa-fw fa-history"></i><span>Riwayat Hafalan</span></a
+          >
+        </li>
+        <!-- Absensi -->
+        <li class="nav-item active">
+          <a
+            class="nav-link collapsed"
+            href="#"
+            data-toggle="collapse"
+            data-target="#collapseAbsensi"
+            aria-expanded="false"
+            aria-controls="collapseAbsensi"
+          >
+            <i class="fas fa-calendar-check"></i>
+            <span>Absensi</span>
+          </a>
+
+          <div
+            id="collapseAbsensi"
+            class="collapse"
+            data-parent="#accordionSidebar"
+          >
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Absensi Peserta</h6>
+
+              <a class="collapse-item" href="absensi.html"> Input Absensi </a>
+
+              <a class="collapse-item" href="daftar-absensi.html">
+                Daftar Kehadiran
+              </a>
+
+              <a class="collapse-item" href="rekap-absensi.html">
+                Rekap Kehadiran
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <hr class="sidebar-divider d-none d-md-block" />
+        <li class="nav-item">
+          <a class="nav-link" href="user-create.html"
+            ><i class="fas fa-user-plus"></i><span>Create User</span></a
+          >
+        </li>
+        <hr class="sidebar-divider d-none d-md-block" />
+        <li class="nav-item">
+          <a class="nav-link text-danger" id="logoutBtn" href="#"
+            ><i class="fas fa-fw fa-sign-out-alt"></i><span>Logout</span></a
+          >
+        </li>
+      </ul>
+      <!-- ================= END SIDEBAR ================= -->
+
+      <!-- ================= CONTENT ================= -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- TOPBAR -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar shadow">
+          <div class="d-flex align-items-center">
+            <h1 id="pageTitle" class="topbar-title">
+              <i class="fas fa-calendar-check topbar-icon"></i
+              ><span class="topbar-name">Rekap Absensi</span>
+            </h1>
+          </div>
+        </nav>
+        <!-- END TOPBAR -->
+
+        <!-- MAIN CONTENT / YANG BISA DI SCROLL -->
+        <div class="main-scroll">
+          <div class="container-fluid mt-4">
+            <!-- ================= REKAP BULANAN ================= -->
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Rekap Bulanan</h6>
+              </div>
+
+              <div class="card-body">
+                <div class="form-row mb-3">
+                  <div class="col-md-3">
+                    <select id="bulan" class="form-control">
+                      <option value="1" selected>Januari</option>
+                      <option value="2">Februari</option>
+                      <option value="3">Maret</option>
+                      <option value="4">April</option>
+                      <option value="5">Mei</option>
+                      <option value="6">Juni</option>
+                      <option value="7">Juli</option>
+                      <option value="8">Agustus</option>
+                      <option value="9">September</option>
+                      <option value="10">Oktober</option>
+                      <option value="11">November</option>
+                      <option value="12">Desember</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-2">
+                    <input
+                      type="number"
+                      id="tahun"
+                      class="form-control"
+                      value="2025"
+                    />
+                  </div>
+
+                  <div class="col-md-4">
+                    <button class="btn btn-primary" id="btnLoad">
+                      Tampilkan
+                    </button>
+
+                    <button class="btn btn-danger" id="btnPdfRekap">
+                      <i class="fas fa-file-pdf"></i> Export PDF
+                    </button>
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Nama</th>
+                        <th>Hadir</th>
+                        <th>Izin</th>
+                        <th>Sakit</th>
+                        <th>Tidak Hadir</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabelRekap"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- ================= DETAIL PER PESERTA ================= -->
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                  Rekap Detail Per Peserta
+                </h6>
+              </div>
+
+              <div class="card-body">
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">Peserta</label>
+                  <div class="col-sm-4">
+                    <select id="filterPeserta" class="form-control">
+                      <option value="">-- Pilih Peserta --</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <button class="btn btn-danger" id="btnPdfPeserta" disabled>
+                      <i class="fas fa-file-pdf"></i> Export PDF
+                    </button>
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table
+                    class="table table-bordered"
+                    id="tabelDetailAbsensi"
+                    width="100%"
+                  >
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Tanggal</th>
+                        <th>Status</th>
+                        <th>Keterangan</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END MAIN CONTENT / YANG BISA DI SCROLL -->
+
+        <!-- FOOTER -->
+        <footer class="footer">
+          <span>© 2025 Les Tahfizh — Dzah Fitriani</span>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ================= JS ================= -->
+
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="assets/vendor/datatables/jquery.dataTables.min.js"></script>
+
+    <script src="assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script src="assets/js/sb-admin-2.min.js"></script>
+
+    <script src="assets/vendor/sweetalert2/sweetalert2.all.min.js"></script>
+
+    <script src="assets/vendor/axios/axios.min.js"></script>
+
+    <script src="assets/js/api.js"></script>
+
+    <script src="assets/js/auth.js"></script>
+
+    <!-- jsPDF (LOCAL) -->
+
+    <script src="assets/vendor/jspdf/jspdf.umd.min.js"></script>
+
+    <script src="assets/vendor/jspdf/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- Logic -->
+
+    <script src="assets/js/rekap-absensi.js"></script>
+  </body>
+</html>

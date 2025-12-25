@@ -1,0 +1,269 @@
+// ===============================
+// ELEMENT
+// ===============================
+const bulan = document.getElementById("bulan");
+const tahun = document.getElementById("tahun");
+const tabelRekap = document.getElementById("tabelRekap");
+
+const btnLoad = document.getElementById("btnLoad");
+const btnPdfRekap = document.getElementById("btnPdfRekap");
+const btnPdfPeserta = document.getElementById("btnPdfPeserta");
+
+const filterPeserta = document.getElementById("filterPeserta");
+
+let dataRekap = [];
+let tabelDetail = null;
+
+// ===============================
+// LOAD REKAP BULANAN
+// ===============================
+async function loadRekap() {
+  try {
+    const res = await api.get("/absensi/rekap-bulanan", {
+      params: {
+        bulan: bulan.value,
+        tahun: tahun.value,
+      },
+    });
+
+    dataRekap = Array.isArray(res.data)
+      ? res.data
+      : Array.isArray(res.data?.data)
+      ? res.data.data
+      : [];
+
+    renderRekapTable();
+  } catch (err) {
+    console.error("Gagal load rekap:", err);
+    alert("Gagal load rekap");
+  }
+}
+
+// ===============================
+// RENDER TABEL REKAP
+// ===============================
+function renderRekapTable() {
+  tabelRekap.innerHTML = "";
+
+  if (!dataRekap.length) return;
+
+  dataRekap.forEach((p) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${p.nama}</td>
+      <td>${p.hadir || 0}</td>
+      <td>${p.izin || 0}</td>
+      <td>${p.sakit || 0}</td>
+      <td>${p.tidak_hadir || 0}</td>
+    `;
+    tabelRekap.appendChild(tr);
+  });
+}
+
+// ===============================
+// LOAD PESERTA (DROPDOWN)
+// ===============================
+async function loadPeserta() {
+  try {
+    const res = await api.get("/peserta");
+
+    filterPeserta.innerHTML = `<option value="">-- Pilih Peserta --</option>`;
+
+    res.data.forEach((p) => {
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = p.nama;
+      filterPeserta.appendChild(opt);
+    });
+  } catch (err) {
+    console.error("Gagal load peserta:", err);
+    alert("Gagal memuat peserta");
+  }
+}
+
+// ===============================
+// LOAD DETAIL ABSENSI PER PESERTA
+// ===============================
+async function loadDetailAbsensi() {
+  const pesertaId = filterPeserta.value;
+  if (!pesertaId) return;
+
+  try {
+    const res = await api.get("/absensi/detail", {
+      params: {
+        peserta_id: pesertaId,
+        bulan: bulan.value,
+        tahun: tahun.value,
+      },
+    });
+
+    if (tabelDetail) {
+      tabelDetail.clear().destroy();
+    }
+
+    tabelDetail = $("#tabelDetailAbsensi").DataTable({
+      data: res.data,
+      order: [[0, "asc"]],
+      columns: [
+        { data: "tanggal" },
+        {
+          data: "status",
+          render: (s) => {
+            const map = {
+              hadir: "success",
+              izin: "warning",
+              sakit: "info",
+              tidakhadir: "danger",
+            };
+            return `<span class="badge badge-${
+              map[s]
+            }">${s.toUpperCase()}</span>`;
+          },
+        },
+        {
+          data: "keterangan",
+          defaultContent: "-",
+        },
+      ],
+    });
+  } catch (err) {
+    console.error("Gagal load detail absensi:", err);
+  }
+}
+
+// ===============================
+// EXPORT PDF REKAP BULANAN
+// ===============================
+btnPdfRekap.addEventListener("click", () => {
+  if (!dataRekap.length) {
+    alert("Data kosong");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
+
+  doc.setFontSize(14);
+  doc.text("Rekap Absensi Bulanan", 14, 15);
+
+  doc.setFontSize(10);
+  doc.text(
+    `Bulan: ${bulan.options[bulan.selectedIndex].text} ${tahun.value}`,
+    14,
+    22
+  );
+
+  const tableData = dataRekap.map((p) => [
+    p.nama,
+    p.hadir,
+    p.izin,
+    p.sakit,
+    p.tidakhadir,
+  ]);
+
+  doc.autoTable({
+    startY: 28,
+    head: [["Nama", "Hadir", "Izin", "Sakit", "tidak hadir"]],
+    body: tableData,
+    theme: "grid",
+    styles: { fontSize: 9 },
+    headStyles: { fillColor: [52, 58, 64] },
+  });
+
+  doc.save(`rekap-absensi-${bulan.value}-${tahun.value}.pdf`);
+});
+
+// ===============================
+// EXPORT PDF DETAIL PER PESERTA
+// ===============================
+btnPdfPeserta.disabled = true;
+
+filterPeserta.addEventListener("change", () => {
+  btnPdfPeserta.disabled = !filterPeserta.value;
+  loadDetailAbsensi();
+});
+
+btnPdfPeserta.addEventListener("click", exportPdfPeserta);
+
+async function exportPdfPeserta() {
+  const pesertaId = filterPeserta.value;
+  if (!pesertaId) {
+    Swal.fire("Pilih Peserta", "Silakan pilih peserta dulu", "warning");
+    return;
+  }
+
+  try {
+    const res = await api.get("/absensi/detail", {
+      params: {
+        peserta_id: pesertaId,
+        bulan: bulan.value,
+        tahun: tahun.value,
+      },
+    });
+
+    if (!res.data.length) {
+      Swal.fire("Data kosong", "Tidak ada absensi bulan ini", "info");
+      return;
+    }
+
+    const namaPeserta = filterPeserta.options[filterPeserta.selectedIndex].text;
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF("p", "mm", "a4");
+
+    // HEADER
+    doc.setFontSize(14);
+    doc.text("REKAP ABSENSI PESERTA", 105, 15, { align: "center" });
+
+    doc.setFontSize(10);
+    doc.text(`Nama Peserta : ${namaPeserta}`, 14, 25);
+    doc.text(
+      `Periode      : ${bulan.options[bulan.selectedIndex].text} ${
+        tahun.value
+      }`,
+      14,
+      31
+    );
+
+    // TABLE
+    const tableData = res.data.map((r) => [
+      r.tanggal,
+      r.status.toUpperCase(),
+      r.keterangan || "-",
+    ]);
+
+    doc.autoTable({
+      startY: 38,
+      head: [["Tanggal", "Status", "Keterangan"]],
+      body: tableData,
+      theme: "grid",
+      styles: { fontSize: 9, halign: "center" },
+      columnStyles: { 2: { halign: "left" } },
+      headStyles: { fillColor: [41, 128, 185] },
+    });
+
+    // FOOTER
+    const y = doc.lastAutoTable.finalY + 20;
+    doc.text("Ustadzah,", 140, y);
+    doc.text("FITRIANI, S.PdI.Gr", 140, y + 20);
+
+    const fileName = `absensi-${namaPeserta
+      .replace(/\s+/g, "-")
+      .toLowerCase()}-${String(bulan.value).padStart(2, "0")}-${
+      tahun.value
+    }.pdf`;
+
+    doc.save(fileName);
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "Gagal export PDF", "error");
+  }
+}
+
+// ===============================
+// INIT
+// ===============================
+btnLoad.addEventListener("click", loadRekap);
+
+loadRekap();
+loadPeserta();

@@ -1,0 +1,131 @@
+/* ===============================
+   LOCAL FONT : AMIRI
+=============================== */
+@font-face {
+  font-family: "Amiri";
+  src: url("../vendor/fonts-amiri/Amiri-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Amiri";
+  src: url("../vendor/fonts-amiri/Amiri-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+.arabic-title {
+  font-family: "Amiri", serif;
+  direction: rtl;
+  text-align: center;
+  font-size: 32px;
+  color: #fefefe;
+  text-shadow: 1px 1px 3px rgb(10, 10, 10);
+}
+
+/* ===============================
+   LOGIN PAGE BACKGROUND
+=============================== */
+.login-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 45%, #2563eb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Card login transparan */
+.card.o-hidden.shadow-lg {
+  background-color: rgba(255, 255, 255, 0.15); /* transparan */
+  border-radius: 5rem; /* sudut lebih lembut */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 20px rgba(97, 14, 14, 0.15);
+  width: 100%;
+  max-width: 400px; /* card tidak terlalu lebar */
+  padding: 0.5rem; /* jarak internal minimal */
+}
+
+/* Kurangi jarak input ke tepi */
+.card .p-5 {
+  padding: 0rem; /* form menempel tapi tetap ada jarak minimal */
+}
+
+/* Judul & Subtitle */
+.login-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: #e2e8f0;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Input Field */
+.login-input {
+  border-radius: 50px;
+  padding: 14px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 100%;
+  transition: all 0.2s ease;
+  max-width: 600px;
+}
+
+.login-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.login-input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+/* Tombol Login */
+.login-btn {
+  border-radius: 50px;
+  padding: 14px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #2563eb, #b1b405);
+  border: none;
+  width: 100%;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.login-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+}
+
+/* Icon Password */
+.toggle-password {
+  color: #94b7b8;
+}
+
+.toggle-password:hover {
+  color: #2563eb;
+}
+
+/* Footer Login */
+.login-footer {
+  margin-top: 30px;
+  font-size: 15px;
+  color: #cbd5e1;
+  text-align: center;
+  color: #fefefe;
+  text-shadow: 1px 1px 3px rgb(10, 10, 10);
+}
+
+/* Hapus margin form-group agar input rapat */
+.form-group {
+  margin-bottom: 1rem;
+}
