@@ -1,4 +1,4 @@
-// src/app.js
+// backend/src/app.js
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -15,10 +15,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // =======================
-// DATABASE
+// DATABASE (⚠️ sementara SQLite)
 // =======================
 const sqlite3 = require("sqlite3").verbose();
 const dbPath = path.join(__dirname, "..", "lestahfizh_final.db");
+
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error("Gagal connect ke database:", err.message);
@@ -27,7 +28,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// Buat db global supaya bisa diakses di routes
 app.locals.db = db;
 
 // =======================
@@ -49,39 +49,31 @@ app.use("/api/peserta", pesertaRoutes);
 app.use("/api/hafalan", hafalanRoutes);
 app.use("/api/surah", surahRoutes);
 app.use("/api/absensi", absensiRoutes);
-app.use(
-  "/api/ortu/absensi",
-  authMiddleware("ortu"), // 🔒 hanya role ortu
-  ortuAbsensiRoutes
-);
+app.use("/api/ortu/absensi", authMiddleware("ortu"), ortuAbsensiRoutes);
 
 // =======================
 // TEST ROUTE
 // =======================
 app.get("/", (req, res) => {
-  res.send("API app_lestahfizh berjalan ✔");
+  res.send("API app_lestahfizh berjalan ✔ (Vercel)");
 });
 
 // =======================
 // ERROR HANDLING
 // =======================
-// route tidak ditemukan
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).json({ message: "Route tidak ditemukan" });
 });
 
-// error server
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res
-    .status(500)
-    .json({ message: "Terjadi error di server", error: err.message });
+  res.status(500).json({
+    message: "Terjadi error di server",
+    error: err.message,
+  });
 });
 
 // =======================
-// START SERVER
+// ⛔ JANGAN app.listen()
 // =======================
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server berjalan di http://localhost:${PORT}`);
-});
+module.exports = app;
