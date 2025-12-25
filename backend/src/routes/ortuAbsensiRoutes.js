@@ -1,57 +1,90 @@
 // src/routes/ortuAbsensiRoutes.js
 const express = require("express");
 const router = express.Router();
-const { db } = require("../config/db");
+const { db } = require("../config/db"); // pg Pool
+const auth = require("../middlewares/auth");
 
-// ===============================
-// GET absensi ORTU per bulan
-// ===============================
-// GET /api/ortu/absensi/kehadiran?bulan=1&tahun=2025
-router.get("/kehadiran", (req, res) => {
+/*
+=========================================================
+GET absensi ORTU per bulan
+GET /api/ortu/absensi/kehadiran?bulan=1&tahun=2025
+=========================================================
+*/
+router.get("/kehadiran", auth(["ortu"]), async (req, res) => {
   try {
-    const userId = req.user.id; // dari auth.js (JWT)
+    /*
+    -----------------------------------------------------
+    Ambil user id dari JWT (auth middleware)
+    -----------------------------------------------------
+    */
+    const userId = req.user.id;
     const { bulan, tahun } = req.query;
 
     if (!bulan || !tahun) {
-      return res.status(400).json({ message: "Bulan dan tahun wajib diisi" });
+      return res.status(400).json({
+        message: "Bulan dan tahun wajib diisi",
+      });
     }
 
-    // 1️⃣ Ambil peserta_id milik ORTU
-    const user = db
-      .prepare("SELECT peserta_id FROM users WHERE id = ?")
-      .get(userId);
+    /*
+    -----------------------------------------------------
+    1️⃣ Ambil peserta_id milik ORTU
+    -----------------------------------------------------
+    */
+    const userResult = await db.query(
+      `
+      SELECT peserta_id
+      FROM users
+      WHERE id = $1
+      `,
+      [userId]
+    );
 
-    if (!user || !user.peserta_id) {
+    if (userResult.rows.length === 0 || !userResult.rows[0].peserta_id) {
+      // Jika ORTU belum terhubung dengan peserta
       return res.json({ data: [] });
     }
 
-    // 2️⃣ Ambil absensi + format Hari YYYY-MM-DD
-    const rows = db
-      .prepare(
-        `
-        SELECT
-          CASE strftime('%w', tanggal)
-            WHEN '0' THEN 'Minggu'
-            WHEN '1' THEN 'Senin'
-            WHEN '2' THEN 'Selasa'
-            WHEN '3' THEN 'Rabu'
-            WHEN '4' THEN 'Kamis'
-            WHEN '5' THEN 'Jumat'
-            WHEN '6' THEN 'Sabtu'
-          END || ' ' || tanggal AS tanggal_hari,
-          status,
-          keterangan
-        FROM absensi
-        WHERE peserta_id = ?
-          AND strftime('%m', tanggal) = ?
-          AND strftime('%Y', tanggal) = ?
-        ORDER BY tanggal ASC
-      `
-      )
-      .all(user.peserta_id, String(bulan).padStart(2, "0"), String(tahun));
+    const pesertaId = userResult.rows[0].peserta_id;
 
-    // 3️⃣ DataTables butuh { data: [] }
-    return res.json({ data: rows });
+    /*
+    -----------------------------------------------------
+    2️⃣ Ambil absensi per bulan & tahun
+    - strftime ➜ EXTRACT (PostgreSQL)
+    - Mapping hari angka ➜ nama hari (CASE)
+    -----------------------------------------------------
+    */
+    const absensiResult = await db.query(
+      `
+      SELECT
+        CASE EXTRACT(DOW FROM tanggal)
+          WHEN 0 THEN 'Minggu'
+          WHEN 1 THEN 'Senin'
+          WHEN 2 THEN 'Selasa'
+          WHEN 3 THEN 'Rabu'
+          WHEN 4 THEN 'Kamis'
+          WHEN 5 THEN 'Jumat'
+          WHEN 6 THEN 'Sabtu'
+        END || ' ' || TO_CHAR(tanggal, 'YYYY-MM-DD') AS tanggal_hari,
+        status,
+        keterangan
+      FROM absensi
+      WHERE peserta_id = $1
+        AND EXTRACT(MONTH FROM tanggal) = $2
+        AND EXTRACT(YEAR FROM tanggal) = $3
+      ORDER BY tanggal ASC
+      `,
+      [pesertaId, Number(bulan), Number(tahun)]
+    );
+
+    /*
+    -----------------------------------------------------
+    3️⃣ Format response sesuai DataTables
+    -----------------------------------------------------
+    */
+    return res.json({
+      data: absensiResult.rows,
+    });
   } catch (err) {
     console.error("Unexpected error /kehadiran:", err.message);
     return res.status(500).json({
