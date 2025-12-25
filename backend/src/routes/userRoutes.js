@@ -42,6 +42,42 @@ router.get("/", async (req, res) => {
 });
 
 /* =========================================================
+   GET - User by ID
+========================================================= */
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await db.query(
+      `
+      SELECT
+        u.id,
+        u.username,
+        u.role,
+        u.created_at,
+        u.peserta_id,
+        pd.nama AS peserta_nama
+      FROM users u
+      LEFT JOIN peserta_didik pd ON u.peserta_id = pd.id
+      WHERE u.id = $1
+      `,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "User tidak ditemukan" });
+    }
+
+    return res.json(result.rows[0]);
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error mengambil user",
+      error: err.message,
+    });
+  }
+});
+
+/* =========================================================
    POST - Tambah user baru
 ========================================================= */
 router.post("/", async (req, res) => {
