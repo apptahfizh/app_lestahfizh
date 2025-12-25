@@ -39,11 +39,11 @@ async function migratePeserta() {
   for (const r of rows) {
     await pg.query(
       `
-      INSERT INTO peserta_didik (id, nama, kelas, created_at)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO peserta_didik (id, nama, create_at)
+      VALUES ($1, $2, $3)
       ON CONFLICT (id) DO NOTHING
       `,
-      [r.id, r.nama, r.kelas, r.created_at]
+      [r.id, r.nama, r.create_at]
     );
   }
   console.log("✅ peserta_didik OK");
@@ -60,12 +60,20 @@ async function migrateUsers() {
     await pg.query(
       `
       INSERT INTO users
-        (id, username, password_hash, role, peserta_id, created_at)
+        (id, username, password_hash, role, display_name, created_at, peserta_id)
       VALUES
-        ($1, $2, $3, $4, $5, $6)
+        ($1, $2, $3, $4, $5, $6, $7)
       ON CONFLICT (id) DO NOTHING
       `,
-      [r.id, r.username, r.password_hash, r.role, r.peserta_id, r.created_at]
+      [
+        r.id,
+        r.username,
+        r.password_hash,
+        r.role,
+        r.display_name,
+        r.created_at,
+        r.peserta_id,
+      ]
     );
   }
   console.log("✅ users OK");
@@ -102,19 +110,21 @@ async function migrateHafalan() {
     await pg.query(
       `
       INSERT INTO hafalan
-        (id, peserta_id, surah_id, ayat_mulai, ayat_selesai, tanggal, status)
+        (id, peserta_id, tanggal, surah, ayat_hafal, ayat_setor, mulai_setor_ayat, selesai_setor_ayat, keterangan)
       VALUES
-        ($1, $2, $3, $4, $5, $6, $7)
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       ON CONFLICT (id) DO NOTHING
       `,
       [
         r.id,
         r.peserta_id,
-        r.surah_id,
-        r.ayat_mulai,
-        r.ayat_selesai,
         r.tanggal,
-        r.status,
+        r.surah,
+        r.ayat_hafal,
+        r.ayat_setor,
+        r.mulai_setor_ayat,
+        r.selesai_setor_ayat,
+        r.keterangan,
       ]
     );
   }
@@ -132,12 +142,12 @@ async function migrateAbsensi() {
     await pg.query(
       `
       INSERT INTO absensi
-        (id, peserta_id, tanggal, status, keterangan)
+        (id, peserta_id, tanggal, status, keterangan, created_at)
       VALUES
-        ($1, $2, $3, $4, $5)
+        ($1, $2, $3, $4, $5, $6)
       ON CONFLICT (id) DO NOTHING
       `,
-      [r.id, r.peserta_id, r.tanggal, r.status, r.keterangan]
+      [r.id, r.peserta_id, r.tanggal, r.status, r.keterangan, r.created_at]
     );
   }
   console.log("✅ absensi OK");
