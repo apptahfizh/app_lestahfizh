@@ -1,127 +1,223 @@
 // src/routes/pesertaRoutes.js
 const express = require("express");
 const router = express.Router();
-const { db } = require("../config/db");
+const { db } = require("../config/db"); // pg Pool
 const auth = require("../middlewares/auth");
 
 /* =========================================================
-   GET - Semua peserta (untuk tabel peserta.html & dashboard)
+   GET - Semua peserta
+   Digunakan untuk tabel peserta.html & dashboard
 ========================================================= */
-router.get("/", auth(["admin", "ustadz", "ortu"]), (req, res) => {
+router.get("/", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
   try {
-    const rows = db
-      .prepare("SELECT id, nama, create_at FROM peserta_didik ORDER BY id DESC")
-      .all();
+    /*
+    -----------------------------------------------------
+    Ambil seluruh peserta, urut terbaru
+    -----------------------------------------------------
+    */
+    const result = await db.query(
+      `
+      SELECT id, nama, create_at
+      FROM peserta_didik
+      ORDER BY id DESC
+      `
+    );
 
     // List kosong bukan error
-    return res.json(rows);
+    return res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ message: "Gagal load peserta", error: err.message });
+    return res.status(500).json({
+      message: "Gagal load peserta",
+      error: err.message,
+    });
   }
 });
 
 /* =========================================================
    GET - Simple list (dropdown)
 ========================================================= */
-router.get("/simple", auth(["admin", "ustadz", "ortu"]), (req, res) => {
+router.get("/simple", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
   try {
-    const rows = db
-      .prepare("SELECT id, nama FROM peserta_didik ORDER BY nama ASC")
-      .all();
+    /*
+    -----------------------------------------------------
+    Data ringan untuk dropdown
+    -----------------------------------------------------
+    */
+    const result = await db.query(
+      `
+      SELECT id, nama
+      FROM peserta_didik
+      ORDER BY nama ASC
+      `
+    );
 
-    return res.json(rows);
+    return res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ message: "Gagal load peserta", error: err.message });
+    return res.status(500).json({
+      message: "Gagal load peserta",
+      error: err.message,
+    });
   }
 });
 
 /* =========================================================
-   GET - By ID
+   GET - Peserta By ID
 ========================================================= */
-router.get("/:id", auth(["admin", "ustadz", "ortu"]), (req, res) => {
+router.get("/:id", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
   const id = req.params.id;
 
   try {
-    const row = db
-      .prepare("SELECT id, nama, create_at FROM peserta_didik WHERE id = ?")
-      .get(id);
+    /*
+    -----------------------------------------------------
+    Ambil peserta berdasarkan ID
+    -----------------------------------------------------
+    */
+    const result = await db.query(
+      `
+      SELECT id, nama, create_at
+      FROM peserta_didik
+      WHERE id = $1
+      `,
+      [id]
+    );
 
-    if (!row)
-      return res.status(404).json({ message: "Peserta tidak ditemukan" });
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Peserta tidak ditemukan",
+      });
+    }
 
-    res.json(row);
+    return res.json(result.rows[0]);
   } catch (err) {
-    res.status(500).json({ message: "Gagal load peserta", error: err.message });
+    return res.status(500).json({
+      message: "Gagal load peserta",
+      error: err.message,
+    });
   }
 });
 
 /* =========================================================
    POST - Tambah peserta
+   Hanya admin & ustadz
 ========================================================= */
-router.post("/", auth(["admin", "ustadz"]), (req, res) => {
+router.post("/", auth(["admin", "ustadz"]), async (req, res) => {
   const { nama } = req.body;
 
-  if (!nama)
-    return res.status(400).json({ message: "Nama peserta wajib diisi" });
+  if (!nama) {
+    return res.status(400).json({
+      message: "Nama peserta wajib diisi",
+    });
+  }
 
   try {
-    const info = db
-      .prepare(
-        "INSERT INTO peserta_didik (nama, create_at) VALUES (?, DATETIME('now'))"
-      )
-      .run(nama);
+    /*
+    -----------------------------------------------------
+    Insert peserta baru
+    - DATETIME('now') ➜ NOW() PostgreSQL
+    -----------------------------------------------------
+    */
+    const result = await db.query(
+      `
+      INSERT INTO peserta_didik (nama, create_at)
+      VALUES ($1, NOW())
+      RETURNING id
+      `,
+      [nama]
+    );
 
-    res.json({ message: "Peserta ditambahkan", id: info.lastInsertRowid });
+    return res.json({
+      message: "Peserta ditambahkan",
+      id: result.rows[0].id,
+    });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Gagal tambah peserta", error: err.message });
+    return res.status(500).json({
+      message: "Gagal tambah peserta",
+      error: err.message,
+    });
   }
 });
 
 /* =========================================================
    PUT - Update peserta
+   Hanya admin & ustadz
 ========================================================= */
-router.put("/:id", auth(["admin", "ustadz"]), (req, res) => {
+router.put("/:id", auth(["admin", "ustadz"]), async (req, res) => {
   const id = req.params.id;
   const { nama } = req.body;
 
-  if (!nama)
-    return res.status(400).json({ message: "Nama peserta wajib diisi" });
+  if (!nama) {
+    return res.status(400).json({
+      message: "Nama peserta wajib diisi",
+    });
+  }
 
   try {
-    const info = db
-      .prepare("UPDATE peserta_didik SET nama = ? WHERE id = ?")
-      .run(nama, id);
+    /*
+    -----------------------------------------------------
+    Update nama peserta
+    -----------------------------------------------------
+    */
+    const result = await db.query(
+      `
+      UPDATE peserta_didik
+      SET nama = $1
+      WHERE id = $2
+      `,
+      [nama, id]
+    );
 
-    if (info.changes === 0)
-      return res.status(404).json({ message: "Peserta tidak ditemukan" });
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        message: "Peserta tidak ditemukan",
+      });
+    }
 
-    res.json({ message: "Peserta diperbarui" });
+    return res.json({
+      message: "Peserta diperbarui",
+    });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Gagal update peserta", error: err.message });
+    return res.status(500).json({
+      message: "Gagal update peserta",
+      error: err.message,
+    });
   }
 });
 
 /* =========================================================
    DELETE - Hapus peserta
+   Hanya admin & ustadz
 ========================================================= */
-router.delete("/:id", auth(["admin", "ustadz"]), (req, res) => {
+router.delete("/:id", auth(["admin", "ustadz"]), async (req, res) => {
   const id = req.params.id;
 
   try {
-    const info = db.prepare("DELETE FROM peserta_didik WHERE id = ?").run(id);
+    /*
+    -----------------------------------------------------
+    Hapus peserta berdasarkan ID
+    -----------------------------------------------------
+    */
+    const result = await db.query(
+      `
+      DELETE FROM peserta_didik
+      WHERE id = $1
+      `,
+      [id]
+    );
 
-    if (info.changes === 0)
-      return res.status(404).json({ message: "Peserta tidak ditemukan" });
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        message: "Peserta tidak ditemukan",
+      });
+    }
 
-    res.json({ message: "Peserta dihapus" });
+    return res.json({
+      message: "Peserta dihapus",
+    });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Gagal hapus peserta", error: err.message });
+    return res.status(500).json({
+      message: "Gagal hapus peserta",
+      error: err.message,
+    });
   }
 });
 

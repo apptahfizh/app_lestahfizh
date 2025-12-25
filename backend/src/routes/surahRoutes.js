@@ -1,15 +1,37 @@
+// src/routes/surahRoutes.js
 const express = require("express");
 const router = express.Router();
-const { db } = require("../config/db"); // db ini better-sqlite3
+const { db } = require("../config/db"); // pg Pool
 
-// GET semua surah
-router.get("/", (req, res) => {
-  const sql = "SELECT id, nama_surah, jumlah_ayat FROM surah ORDER BY id ASC";
+/* =========================================================
+   GET - Semua surah
+   Digunakan untuk dropdown & referensi hafalan
+========================================================= */
+router.get("/", async (req, res) => {
   try {
-    const rows = db.prepare(sql).all(); // <-- better-sqlite3 style
-    res.json(rows);
+    /*
+    -----------------------------------------------------
+    Ambil seluruh data surah
+    - Urut berdasarkan ID ASC
+    -----------------------------------------------------
+    */
+    const result = await db.query(
+      `
+      SELECT
+        id,
+        nama_surah,
+        jumlah_ayat
+      FROM surah
+      ORDER BY id ASC
+      `
+    );
+
+    return res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({
+      message: "Gagal mengambil data surah",
+      error: err.message,
+    });
   }
 });
 
