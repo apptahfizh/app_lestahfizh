@@ -7,12 +7,12 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { db } = require("../config/db");
 
 // =======================
 // DATABASE (PostgreSQL)
 // =======================
 // menggunakan pool dari pg (Neon / PostgreSQL cloud)
-const pool = require("../config/db");
 
 // =======================
 // POST /api/auth/login
@@ -40,7 +40,7 @@ router.post("/login", async (req, res) => {
     // QUERY USER (POSTGRES)
     // =======================
     // $1 = parameter binding (AMAN dari SQL injection)
-    const result = await pool.query("SELECT * FROM users WHERE username = $1", [
+    const result = await db.query("SELECT * FROM users WHERE username = $1", [
       username,
     ]);
 
