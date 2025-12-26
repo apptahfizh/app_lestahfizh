@@ -29,6 +29,40 @@ function updateTriggerText() {
 }
 
 // ===================================================
+// HELPER Split Hari Tanggal
+// ===================================================
+function splitHariTanggal(value) {
+  if (!value) {
+    return { hari: "-", tanggal: "-" };
+  }
+
+  // Kasus: "Senin, 17/12/2025"
+  if (value.includes(",")) {
+    const [hari, tanggal] = value.split(",").map((v) => v.trim());
+    return {
+      hari: hari || "-",
+      tanggal: tanggal || "-",
+    };
+  }
+
+  // Kasus: ISO / YYYY-MM-DD
+  const d = new Date(value);
+  if (!isNaN(d)) {
+    return {
+      hari: d.toLocaleDateString("id-ID", { weekday: "long" }),
+      tanggal: d.toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }),
+    };
+  }
+
+  // fallback
+  return { hari: "-", tanggal: value };
+}
+
+// ===================================================
 // MAIN INIT
 // ===================================================
 document.addEventListener("DOMContentLoaded", () => {
@@ -425,12 +459,12 @@ document.getElementById("btnExportPDF")?.addEventListener("click", () => {
   doc.text(`Bulan: ${bulanNama} ${tahun}`, 105, 22, { align: "center" });
 
   doc.autoTable({
-    head: [["Hari/Tanggal", "Status", "Keterangan"]],
-    body: absensiRows.map((r) => [
-      r.tanggal_hari || "-",
-      r.status || "-",
-      r.keterangan || "-",
-    ]),
+    head: [["Hari", "Tanggal", "Status", "Keterangan"]],
+    body: absensiRows.map((r) => {
+      const { hari, tanggal } = splitHariTanggal(r.tanggal_hari);
+
+      return [hari, tanggal, r.status || "-", r.keterangan || "-"];
+    }),
     startY: 30,
   });
 
