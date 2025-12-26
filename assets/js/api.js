@@ -1,11 +1,22 @@
 // assets/js/api.js
+// =========================
+// CENTRAL API HELPER
+// =========================
+
+// Relative path → aman di localhost & Vercel
 const API_BASE = "/api";
 
+/**
+ * Ambil header Authorization jika token ada
+ */
 function getAuthHeaders() {
   const token = localStorage.getItem("token");
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
+/**
+ * Helper request JSON
+ */
 async function apiRequest(path, options = {}) {
   const res = await fetch(API_BASE + path, {
     ...options,
@@ -24,6 +35,3 @@ async function apiRequest(path, options = {}) {
 
   return data;
 }
-
-// 🔥 WAJIB agar bisa dipanggil dari Console & file lain
-window.apiRequest = apiRequest;
