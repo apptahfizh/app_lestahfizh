@@ -602,7 +602,7 @@ async function generatePdfRiwayatBulanan(monthYear) {
 
       return [
         i + 1,
-        r.tanggal || "-",
+        formatTanggalIndo(r.tanggal),
         `QS ${r.surah_nama}`,
         r.ayat_setor || "-",
         ayat,
