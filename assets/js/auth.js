@@ -23,7 +23,7 @@ document
     e.preventDefault();
 
     const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const password = document.getElementById("inputpassword").value;
 
     try {
       const res = await apiRequest("/auth/login", {
