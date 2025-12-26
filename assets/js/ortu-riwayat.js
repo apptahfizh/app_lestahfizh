@@ -362,7 +362,7 @@ async function loadRiwayatHafalan(filter = {}) {
         `
         <tr>
           <td>${i + 1}</td>
-          <td>${row.tanggal || "-"}</td>
+          <td>${formatTanggalIndo(row.tanggal)}</td>
           <td>${row.ayat_setor || "-"}</td>
           <td>QS ${row.surah_nama}</td>
           <td>${ayatHafal}</td>
