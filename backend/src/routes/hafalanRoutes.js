@@ -24,7 +24,7 @@ const getLastHafalanQuery = `
     GROUP BY peserta_id
   ) x ON h.id = x.last_id
   JOIN peserta_didik p ON h.peserta_id = p.id
-  JOIN surah s ON h.surah = s.id
+  JOIN surah s ON s.id = h.surah::int
   ORDER BY h.id DESC
 `;
 
@@ -113,7 +113,7 @@ router.get("/all", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
         h.peserta_id
       FROM hafalan h
       LEFT JOIN peserta_didik pd ON h.peserta_id = pd.id
-      LEFT JOIN surah s ON h.surah = s.id
+      LEFT JOIN surah s ON s.id = h.surah::int
       ${where}
       ORDER BY h.id DESC
       LIMIT $${idx++} OFFSET $${idx++}
@@ -152,7 +152,7 @@ router.get("/table", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
           h.keterangan
         FROM hafalan h
         JOIN peserta_didik p ON h.peserta_id = p.id
-        JOIN surah s ON h.surah = s.id
+        JOIN surah s ON s.id = h.surah::int
         WHERE h.peserta_id = $1
         ORDER BY h.id DESC
         LIMIT 1
@@ -191,7 +191,7 @@ router.get("/last", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
           h.keterangan
         FROM hafalan h
         JOIN peserta_didik p ON h.peserta_id = p.id
-        JOIN surah s ON h.surah = s.id
+        JOIN surah s ON s.id = h.surah::int
         WHERE h.peserta_id = $1
         ORDER BY h.id DESC
         LIMIT 1
@@ -212,7 +212,7 @@ router.get("/last", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
           h.keterangan
         FROM hafalan h
         JOIN peserta_didik p ON h.peserta_id = p.id
-        JOIN surah s ON h.surah = s.id
+        JOIN surah s ON s.id = h.surah::int
         ORDER BY h.id DESC
         LIMIT 1
       `
