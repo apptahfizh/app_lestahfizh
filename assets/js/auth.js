@@ -63,12 +63,22 @@ function checkAuth(roles = []) {
     return false;
   }
 
-  // cek role (untuk UI)
+  // cek role
   if (roles.length && !roles.includes(user.role)) {
     Swal.fire("Akses ditolak", "Role tidak diizinkan", "error").then(() => {
-      logout(false);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      // redirect sesuai role
+      if (user.role === "admin" || user.role === "ustadz") {
+        window.location.href = "index.html";
+      } else if (user.role === "ortu") {
+        window.location.href = "ortu.html";
+      } else {
+        window.location.href = "login.html";
+      }
     });
-    return false;
+    return;
   }
 
   return true;
