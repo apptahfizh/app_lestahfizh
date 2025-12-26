@@ -16,8 +16,8 @@ document.getElementById("displayName").textContent = user.username || "Ortu";
 async function loadOrtuDashboard() {
   try {
     // Ambil hafalan terakhir peserta
-    const res = await api.get("/hafalan/last");
-    const data = res.data?.[0];
+    const res = await apiRequest("/hafalan/last");
+    const data = Array.isArray(res) ? res[0] : res.data?.[0];
 
     if (!data) {
       document.getElementById("dashboardCards").innerHTML = `
