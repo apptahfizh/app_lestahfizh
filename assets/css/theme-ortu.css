@@ -356,10 +356,6 @@ SIDEBAR UKURAN PENUH DI MOBILE
   }
 
   /* ================= LOGOUT KE BAWAH ================= */
-  .sidebar .nav-item:last-child {
-    margin-top: auto;
-    margin-bottom: 3.25rem;
-  }
 
   /* ================= CLOSE BUTTON ================= */
   .sidebar-close {
