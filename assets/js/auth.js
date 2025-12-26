@@ -17,52 +17,32 @@ function isLoggedIn() {
 // =======================
 // Login Handler
 // =======================
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("loginForm");
-  if (!form) return;
-
-  form.addEventListener("submit", async (e) => {
+document
+  .getElementById("loginForm")
+  .addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const username = document.getElementById("username").value.trim();
-    const password = document
-      .getElementById("exampleInputPassword")
-      .value.trim();
-
-    if (!username || !password) {
-      Swal.fire("Oops!", "Username dan password wajib diisi!", "warning");
-      return;
-    }
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
     try {
-      // pastikan ini pakai apiRequest / api global kamu
-      const res = await apiRequest("/auth/login", "POST", {
-        username,
-        password,
+      const res = await apiRequest("/auth/login", {
+        method: "POST", // ⬅️ INI YANG PENTING
+        body: JSON.stringify({
+          username,
+          password,
+        }),
       });
 
-      const { token, user } = res;
+      // simpan token
+      localStorage.setItem("token", res.token);
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      // redirect berdasarkan role
-      if (["admin", "ustadz"].includes(user.role)) {
-        window.location.href = "index.html";
-      } else if (user.role === "ortu") {
-        window.location.href = "ortu.html";
-      } else {
-        Swal.fire("Error", "Role tidak dikenali!", "error");
-      }
+      // redirect
+      window.location.href = "index.html";
     } catch (err) {
-      Swal.fire(
-        "Login Gagal",
-        err?.message || "Username atau password salah",
-        "error"
-      );
+      alert("Login Gagal: " + err.message);
     }
   });
-});
 
 // =======================
 // Proteksi Halaman
