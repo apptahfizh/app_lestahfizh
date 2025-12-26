@@ -425,7 +425,7 @@ document.getElementById("btnExportPDF")?.addEventListener("click", () => {
   doc.text(`Bulan: ${bulanNama} ${tahun}`, 105, 22, { align: "center" });
 
   doc.autoTable({
-    head: [["Tanggal", "Status", "Keterangan"]],
+    head: [["Hari/Tanggal", "Status", "Keterangan"]],
     body: absensiRows.map((r) => [
       r.tanggal_hari || "-",
       r.status || "-",
@@ -436,10 +436,6 @@ document.getElementById("btnExportPDF")?.addEventListener("click", () => {
 
   doc.save(`Kehadiran_${bulanNama}_${tahun}.pdf`);
 });
-
-// ===================================================
-//
-// ===================================================
 
 document.addEventListener("DOMContentLoaded", () => {
   const main = document.getElementById("mainContent");
