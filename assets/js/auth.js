@@ -15,36 +15,41 @@ function isLoggedIn() {
 }
 
 // =======================
-// Login Handler
+// Login Handler (SAFE)
 // =======================
-document
-  .getElementById("loginForm")
-  .addEventListener("submit", async function (e) {
+const loginForm = document.getElementById("loginForm");
+
+if (loginForm) {
+  loginForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const username = document.getElementById("username").value;
-    const password = document
-      .getElementById("exampleInputPassword")
-      .value.trim();
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("exampleInputPassword");
+
+    if (!usernameInput || !passwordInput) {
+      alert("Input login tidak ditemukan");
+      return;
+    }
+
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
 
     try {
       const res = await apiRequest("/auth/login", {
-        method: "POST", // ⬅️ INI YANG PENTING
-        body: JSON.stringify({
-          username,
-          password,
-        }),
+        method: "POST",
+        body: JSON.stringify({ username, password }),
       });
 
-      // simpan token
+      // simpan token & user (WAJIB)
       localStorage.setItem("token", res.token);
+      localStorage.setItem("user", JSON.stringify(res.user));
 
-      // redirect
       window.location.href = "index.html";
     } catch (err) {
       alert("Login Gagal: " + err.message);
     }
   });
+}
 
 // =======================
 // Proteksi Halaman
