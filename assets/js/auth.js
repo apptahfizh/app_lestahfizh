@@ -22,8 +22,8 @@ document
   .addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const username = form.querySelector('[name="username"]').value.trim();
+    const password = form.querySelector('[name="password"]').value.trim();
 
     try {
       const res = await apiRequest("/auth/login", {
