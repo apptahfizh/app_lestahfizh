@@ -325,7 +325,7 @@ async function loadRiwayatHafalan(filter = {}) {
       params.append("tanggal_selesai", filter.tanggal_selesai);
     if (filter.surah_id) params.append("surah", filter.surah_id);
 
-    const res = await fetch(`http://localhost:5000/api/hafalan/all?${params}`, {
+    const res = await fetch(`/api/hafalan/all?${params}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -450,7 +450,7 @@ function setupAutocompleteSurah() {
 // ===============================
 async function loadSurah() {
   try {
-    const res = await fetch("http://localhost:5000/api/surah", {
+    const res = await fetch("/api/surah", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -567,7 +567,7 @@ async function generatePdfRiwayatBulanan(monthYear) {
       length: 1000,
     });
 
-    const res = await fetch(`http://localhost:5000/api/hafalan/all?${params}`, {
+    const res = await fetch(`/api/hafalan/all?${params}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
