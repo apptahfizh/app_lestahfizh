@@ -10,7 +10,7 @@ document.getElementById("displayName").textContent = user.username || "User";
 async function loadDashboard() {
   try {
     // ambil data progres terakhir peserta
-    const res = await api.get("/dashboard/peserta-progress");
+    const data = await apiRequest("/dashboard/peserta-progress");
     const list = res.data || [];
 
     const container = document.getElementById("dashboardCards");
