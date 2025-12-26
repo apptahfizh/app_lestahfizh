@@ -40,11 +40,21 @@ if (loginForm) {
         body: JSON.stringify({ username, password }),
       });
 
-      // simpan token & user (WAJIB)
+      // simpan token & user
       localStorage.setItem("token", res.token);
       localStorage.setItem("user", JSON.stringify(res.user));
 
-      window.location.href = "index.html";
+      const role = res.user.role;
+
+      // redirect berdasarkan role
+      if (role === "admin" || role === "ustadz") {
+        window.location.href = "index.html";
+      } else if (role === "ortu") {
+        window.location.href = "ortu.html";
+      } else {
+        alert("Role tidak dikenali");
+        logout();
+      }
     } catch (err) {
       alert("Login Gagal: " + err.message);
     }
@@ -66,19 +76,13 @@ function checkAuth(roles = []) {
   // cek role
   if (roles.length && !roles.includes(user.role)) {
     Swal.fire("Akses ditolak", "Role tidak diizinkan", "error").then(() => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-
-      // redirect sesuai role
-      if (user.role === "admin" || user.role === "ustadz") {
-        window.location.href = "index.html";
-      } else if (user.role === "ortu") {
+      if (user.role === "ortu") {
         window.location.href = "ortu.html";
       } else {
-        window.location.href = "login.html";
+        window.location.href = "index.html";
       }
     });
-    return;
+    return false;
   }
 
   return true;
