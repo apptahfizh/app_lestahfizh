@@ -44,6 +44,18 @@ if (loginForm) {
       localStorage.setItem("token", res.token);
       localStorage.setItem("user", JSON.stringify(res.user));
 
+      const role = res.user.role;
+
+      // redirect berdasarkan role
+      if (role === "admin" || role === "ustadz") {
+        window.location.href = "index.html";
+      } else if (role === "ortu") {
+        window.location.href = "ortu.html";
+      } else {
+        alert("Role tidak dikenali");
+        logout();
+      }
+
       window.location.href = "index.html";
     } catch (err) {
       alert("Login Gagal: " + err.message);
