@@ -17,32 +17,41 @@ function isLoggedIn() {
 // =======================
 // Login Handler
 // =======================
-document
-  .getElementById("loginForm")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
+document.getElementById("loginForm");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("inputpassword").value;
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("exampleInputPassword").value.trim();
 
-    try {
-      const res = await apiRequest("/auth/login", {
-        method: "POST", // ⬅️ INI YANG PENTING
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
+  if (!username || !password) {
+    Swal.fire("Oops!", "Username dan password wajib diisi!", "warning");
+    return;
+  }
 
-      // simpan token
-      localStorage.setItem("token", res.token);
+  try {
+    const res = await api.post("/auth/login", { username, password });
+    const { token, user } = res.data;
 
-      // redirect
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    // redirect berdasarkan role
+    if (user.role === "admin" || user.role === "ustadz") {
       window.location.href = "index.html";
-    } catch (err) {
-      alert("Login Gagal: " + err.message);
+    } else if (user.role === "ortu") {
+      window.location.href = "ortu.html";
+    } else {
+      Swal.fire("Error", "Role tidak dikenali!", "error");
     }
-  });
+  } catch (err) {
+    Swal.fire(
+      "Login Gagal",
+      err?.response?.data?.message || "Username atau password salah",
+      "error"
+    );
+  }
+});
 
 // =======================
 // Proteksi Halaman
