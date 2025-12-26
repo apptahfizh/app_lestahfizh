@@ -654,3 +654,17 @@ function renderRiwayatEmptyState() {
     </tr>
   `;
 }
+
+function formatTanggalIndo(dateString) {
+  if (!dateString) return "-";
+
+  const d = new Date(dateString);
+
+  if (isNaN(d)) return "-";
+
+  return d.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
