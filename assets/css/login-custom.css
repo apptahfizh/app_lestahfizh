@@ -136,7 +136,7 @@
 .login-loading {
   position: fixed;
   inset: 0;
-  background: rgba(154, 216, 141, 0.308);
+  background: rgba(255, 255, 255, 0.15); /* transparan */
   backdrop-filter: blur(2px);
   z-index: 9999;
 
