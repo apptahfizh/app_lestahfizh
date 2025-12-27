@@ -29,11 +29,7 @@
 =============================== */
 .login-bg {
   min-height: 100vh;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 215, 0, 0.18),
-    rgba(255, 215, 0, 0.04)
-  );
+  background: linear-gradient(135deg, #2563eb 0%, #247a13 45%, #d3b405 100%);
   display: flex;
   align-items: center;
   justify-content: center;
