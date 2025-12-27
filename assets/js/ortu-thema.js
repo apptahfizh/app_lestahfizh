@@ -10,6 +10,22 @@ document.addEventListener("DOMContentLoaded", () => {
     JSON.parse(sessionStorage.getItem("user"));
 
   if (!user || user.role !== "ortu") {
+    // ===============================
+    // LOGIN BERHASIL
+    // ===============================
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    // ✅ TANDAI NAVIGASI DARI LOGIN
+    sessionStorage.setItem("ortuFromLogin", "1");
+
+    // redirect sesuai role
+    if (data.user.role === "ortu") {
+      window.location.href = "ortu.html";
+    } else {
+      window.location.href = "index.html";
+    }
+
     window.location.href = "login.html";
     return;
   }
@@ -77,14 +93,18 @@ document.addEventListener("DOMContentLoaded", () => {
     window.innerWidth < 768
   ) {
     const fromSidebar = sessionStorage.getItem("ortuFromSidebar");
+    const fromLogin = sessionStorage.getItem("ortuFromLogin");
 
-    if (!fromSidebar) {
-      // buka sidebar
+    // buka sidebar jika:
+    // - dari login
+    // - atau first open / refresh
+    if (fromLogin || !fromSidebar) {
       body.classList.add("sidebar-open");
     }
 
-    // hapus flag setelah dipakai
+    // bersihkan flag (penting!)
     sessionStorage.removeItem("ortuFromSidebar");
+    sessionStorage.removeItem("ortuFromLogin");
   }
 });
 // ===============================
