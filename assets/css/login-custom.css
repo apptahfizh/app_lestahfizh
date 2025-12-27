@@ -222,3 +222,23 @@
       0 0 16px rgba(46, 89, 217, 0.4), 0 0 28px rgba(46, 89, 217, 0.25);
   }
 }
+
+/* ===============================
+   MOBILE LANDSCAPE FIX (SCROLL)
+=============================== */
+@media (max-width: 767px) and (orientation: landscape) {
+  .login-bg {
+    min-height: auto;
+    height: auto;
+    align-items: flex-start; /* jangan center */
+    padding: 1.5rem 0;
+    overflow-y: auto;
+  }
+
+  body {
+    overflow-y: auto;
+  }
+}
+.card.o-hidden.shadow-lg {
+  max-height: none;
+}
