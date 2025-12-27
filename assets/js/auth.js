@@ -45,6 +45,8 @@ if (loginForm) {
       localStorage.setItem("user", JSON.stringify(res.user));
 
       const role = res.user.role;
+      // ✅ TANDAI DARI LOGIN (INI YANG KITA BUTUHKAN)
+      sessionStorage.setItem("ortuFromLogin", "1");
 
       // redirect berdasarkan role
       if (role === "admin" || role === "ustadz") {
