@@ -63,6 +63,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===============================
   const main = document.getElementById("mainContent");
   if (main) main.classList.add("show");
+
+  // ===============================
+  // DEFAULT SIDEBAR OPEN (KHUSUS ortu.html)
+  // ===============================
+  if (
+    window.location.pathname.endsWith("ortu.html") &&
+    window.innerWidth < 768
+  ) {
+    body.classList.add("sidebar-open");
+  }
 });
 // ===============================
 // GLOBAL HELPERS (ORTU)
