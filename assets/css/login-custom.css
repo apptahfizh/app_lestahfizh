@@ -173,8 +173,6 @@
    LOGIN BACKGROUND ORNAMENT
 ================================ */
 .login-bg {
-  position: relative;
-
   background: radial-gradient(
     circle at 20% 30%,
     rgba(46, 89, 217, 0.12),
