@@ -129,3 +129,28 @@
 .form-group {
   margin-bottom: 1rem;
 }
+
+/* ===============================
+   LOGIN LOADING OVERLAY
+   =============================== */
+.login-loading {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-loading-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2e59d9;
+  background: white;
+  padding: 14px 26px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}

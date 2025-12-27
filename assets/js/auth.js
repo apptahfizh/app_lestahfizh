@@ -15,6 +15,22 @@ function isLoggedIn() {
 }
 
 // =======================
+// LOGIN UI STATE
+// =======================
+function setLoginLoading(isLoading) {
+  const btn = document.getElementById("loginBtn");
+  const overlay = document.getElementById("loginLoading");
+
+  if (isLoading) {
+    btn.disabled = true;
+    overlay?.classList.remove("d-none");
+  } else {
+    btn.disabled = false;
+    overlay?.classList.add("d-none");
+  }
+}
+
+// =======================
 // Login Handler (SAFE)
 // =======================
 const loginForm = document.getElementById("loginForm");
@@ -35,20 +51,20 @@ if (loginForm) {
     const password = passwordInput.value.trim();
 
     try {
+      setLoginLoading(true); // 🔥 UX ON
+
       const res = await apiRequest("/auth/login", {
         method: "POST",
         body: JSON.stringify({ username, password }),
       });
 
-      // simpan token & user
       localStorage.setItem("token", res.token);
       localStorage.setItem("user", JSON.stringify(res.user));
 
-      const role = res.user.role;
-      // ✅ TANDAI DARI LOGIN (INI YANG KITA BUTUHKAN)
       sessionStorage.setItem("ortuFromLogin", "1");
 
-      // redirect berdasarkan role
+      const role = res.user.role;
+
       if (role === "admin" || role === "ustadz") {
         window.location.href = "index.html";
       } else if (role === "ortu") {
@@ -58,7 +74,13 @@ if (loginForm) {
         logout();
       }
     } catch (err) {
-      alert("Login Gagal: " + err.message);
+      setLoginLoading(false); // ⛔ BALIK NORMAL
+
+      Swal.fire({
+        icon: "error",
+        title: "Login gagal",
+        text: err.message || "Username atau password salah",
+      });
     }
   });
 }
