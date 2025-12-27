@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===============================
   // AUTO LOGOUT — IDLE 30 MENIT (ORTU ONLY)
   // ===============================
-  const IDLE_LIMIT = 10 * 1000; // 30 menit
+  const IDLE_LIMIT = 30 * 60 * 1000; // 30 menit
   let idleTimer;
 
   function resetIdleTimer() {
