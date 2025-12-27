@@ -43,7 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   sidebar?.addEventListener("click", (e) => {
-    if (e.target.closest(".nav-link") && window.innerWidth < 768) {
+    const link = e.target.closest(".nav-link");
+    if (link && window.innerWidth < 768) {
+      // tandai bahwa navigasi berasal dari sidebar
+      sessionStorage.setItem("ortuFromSidebar", "1");
+
+      // tutup sidebar
       body.classList.remove("sidebar-open");
     }
   });
@@ -71,7 +76,15 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.pathname.endsWith("ortu.html") &&
     window.innerWidth < 768
   ) {
-    body.classList.add("sidebar-open");
+    const fromSidebar = sessionStorage.getItem("ortuFromSidebar");
+
+    if (!fromSidebar) {
+      // buka sidebar
+      body.classList.add("sidebar-open");
+    }
+
+    // hapus flag setelah dipakai
+    sessionStorage.removeItem("ortuFromSidebar");
   }
 });
 // ===============================
