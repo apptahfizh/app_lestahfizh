@@ -212,3 +212,15 @@ document.addEventListener("DOMContentLoaded", () => {
     nameEl.textContent = user.username;
   }
 });
+// ===============================
+// PAKSA SIDEBAR TERBUKA (DESKTOP & MOBILE)
+// KHUSUS HALAMAN ORTU
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.remove("sidebar-toggled");
+
+  const sidebar = document.querySelector(".sidebar");
+  if (sidebar) {
+    sidebar.classList.remove("toggled");
+  }
+});
