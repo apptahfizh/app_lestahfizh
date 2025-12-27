@@ -172,14 +172,6 @@
 /* ===============================
    LOGIN BACKGROUND ORNAMENT
 ================================ */
-.login-bg {
-  background: radial-gradient(
-    circle at 20% 30%,
-    rgba(46, 89, 217, 0.12),
-    transparent 40%
-  );
-}
-
 .login-bg::before {
   content: "";
   position: absolute;
