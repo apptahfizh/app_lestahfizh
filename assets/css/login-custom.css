@@ -151,8 +151,8 @@
   font-weight: 700;
   color: #2e59d9;
   /* glow text */
-  text-shadow: 0 0 4px rgba(46, 89, 217, 0.45), 0 0 10px rgba(46, 89, 217, 0.35),
-    0 0 20px rgba(46, 89, 217, 0.25);
+  text-shadow: 0 0 4px rgba(217, 206, 46, 0.45),
+    0 0 10px rgba(114, 217, 46, 0.35), 0 0 20px rgba(46, 89, 217, 0.25);
 
   animation: textGlowPulse 1.8s ease-in-out infinite alternate;
 }
@@ -164,7 +164,7 @@
       0 0 8px rgba(46, 89, 217, 0.25);
   }
   to {
-    text-shadow: 0 0 6px rgba(46, 89, 217, 0.6), 0 0 16px rgba(46, 89, 217, 0.4),
-      0 0 28px rgba(46, 89, 217, 0.25);
+    text-shadow: 0 0 6px rgba(217, 191, 46, 0.6),
+      0 0 16px rgba(46, 89, 217, 0.4), 0 0 28px rgba(46, 89, 217, 0.25);
   }
 }
