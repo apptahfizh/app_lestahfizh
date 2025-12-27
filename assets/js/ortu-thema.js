@@ -15,6 +15,43 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===============================
+  // AUTO LOGOUT — IDLE 30 MENIT (ORTU ONLY)
+  // ===============================
+  const IDLE_LIMIT = 10 * 1000; // 30 menit
+  let idleTimer;
+
+  function resetIdleTimer() {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      // hapus auth
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      // bersihkan flag UX
+      sessionStorage.clear();
+
+      // redirect ke login
+      window.location.href = "login.html";
+    }, IDLE_LIMIT);
+  }
+
+  // aktivitas yang dianggap "hidup"
+  const idleEvents = [
+    "mousemove",
+    "mousedown",
+    "keydown",
+    "scroll",
+    "touchstart",
+  ];
+
+  idleEvents.forEach((event) => {
+    window.addEventListener(event, resetIdleTimer, { passive: true });
+  });
+
+  // start timer pertama kali
+  resetIdleTimer();
+
+  // ===============================
   // TOPBAR USER NAME
   // ===============================
   const displayName = document.getElementById("displayName");
