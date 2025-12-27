@@ -136,7 +136,7 @@
 .login-loading {
   position: fixed;
   inset: 0;
-  background: rgba(41, 216, 6, 0.459);
+  background: rgba(154, 216, 141, 0.308);
   backdrop-filter: blur(2px);
   z-index: 9999;
 
@@ -149,8 +149,8 @@
   font-size: 1.2rem;
   font-weight: 700;
   color: rgb(6, 20, 216);
-  background: rgba(221, 236, 12, 0.507);
+  background: rgba(236, 202, 12, 0.411);
   padding: 14px 26px;
   border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 1 10px 25px rgba(0, 0, 0, 0.15);
 }
