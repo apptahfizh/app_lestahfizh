@@ -29,7 +29,7 @@
 =============================== */
 .login-bg {
   min-height: 100vh;
-  background: linear-gradient(135deg, #755a0d 0%, #272b38 45%, #7a5e02 100%);
+  background: linear-gradient(135deg, #0d750d 0%, #272b38 45%, #7a7202 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,35 +167,4 @@
     text-shadow: 0 0 6px rgba(217, 191, 46, 0.6),
       0 0 16px rgba(46, 89, 217, 0.4), 0 0 28px rgba(46, 89, 217, 0.25);
   }
-}
-
-/* ===============================
-   LOGIN BACKGROUND ORNAMENT
-================================ */
-.login-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background-image: repeating-linear-gradient(
-      45deg,
-      rgba(0, 0, 0, 0.02) 0,
-      rgba(0, 0, 0, 0.02) 1px,
-      transparent 1px,
-      transparent 20px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      rgba(0, 0, 0, 0.02) 0,
-      rgba(0, 0, 0, 0.02) 1px,
-      transparent 1px,
-      transparent 20px
-    );
-
-  pointer-events: none;
-  z-index: 0;
-}
-.login-bg .card {
-  position: relative;
-  z-index: 1;
 }
