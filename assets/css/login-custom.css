@@ -148,9 +148,10 @@
 .login-loading-text {
   font-size: 1.2rem;
   font-weight: 700;
-  color: rgb(6, 20, 216);
-  background: rgba(236, 202, 12, 0.411);
+  color: rgb(6, 19, 209);
+  text-shadow: 1px 1px 3px rgb(10, 10, 10);
+  background: rgba(236, 202, 12, 0);
   padding: 14px 26px;
   border-radius: 8px;
-  box-shadow: 1 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
