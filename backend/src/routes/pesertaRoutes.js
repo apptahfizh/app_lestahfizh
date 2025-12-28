@@ -101,6 +101,7 @@ router.get("/:id", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
    Hanya admin & ustadz
 ========================================================= */
 router.post("/", auth(["admin", "ustadz"]), async (req, res) => {
+  console.log("BODY:", req.body); // 🔥 TAMBAH INI
   const { nama } = req.body;
 
   if (!nama) {
