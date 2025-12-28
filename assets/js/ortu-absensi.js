@@ -200,7 +200,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     wrapper.innerHTML = `
     <div class="text-center text-muted py-4">
-      <div class="mb-2" style="color:#4ecdc4;">Belum Ada Data Absensi.</div>
       <div style="color:#4ecdc4;">Silakan Search Dengan Bulan dan Tahun</div>
     </div>
   `;
