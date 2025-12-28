@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
 async function loadPeserta() {
   try {
     const data = await apiRequest("/peserta");
-    const data = res.data || [];
 
     // Hapus DataTable lama jika sudah ada
     if (tabel) {
