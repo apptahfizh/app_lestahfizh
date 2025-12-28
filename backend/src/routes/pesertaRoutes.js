@@ -131,9 +131,12 @@ router.post("/", auth(["admin", "ustadz"]), async (req, res) => {
       id: result.rows[0].id,
     });
   } catch (err) {
+    console.error("INSERT PESERTA ERROR:", err); // 🔥 FULL ERROR
     return res.status(500).json({
       message: "Gagal tambah peserta",
       error: err.message,
+      detail: err.detail,
+      code: err.code,
     });
   }
 });
