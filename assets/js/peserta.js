@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==============================
 async function loadPeserta() {
   try {
-    const res = await api.get("/peserta");
+    const data = await apiRequest("/peserta");
     const data = res.data || [];
 
     // Hapus DataTable lama jika sudah ada
@@ -71,7 +71,10 @@ async function simpanPeserta() {
   }
 
   try {
-    await api.post("/peserta", { nama });
+    await apiRequest("/peserta", {
+      method: "POST",
+      body: JSON.stringify({ nama }),
+    });
 
     Swal.fire({
       icon: "success",
@@ -103,7 +106,10 @@ async function hapusPeserta(id) {
   if (!confirm.isConfirmed) return;
 
   try {
-    await api.delete(`/peserta/${id}`);
+    await apiRequest(`/peserta/${id}`, {
+      method: "DELETE",
+    });
+
     Swal.fire("Terhapus", "Peserta sudah dihapus", "success");
     loadPeserta();
   } catch {
