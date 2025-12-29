@@ -1,0 +1,142 @@
+<!-- ================= LAYOUT ADMIN ================= -->
+<div id="wrapper">
+  <!-- ================= SIDEBAR ================= -->
+  <ul
+    class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+    id="accordionSidebar"
+  >
+    <!-- Brand -->
+    <a
+      class="sidebar-brand d-flex align-items-center justify-content-center"
+      href="#"
+      onclick="loadPage('dashboard')"
+    >
+      <div class="sidebar-brand-icon">
+        <i class="fas fa-mosque"></i>
+      </div>
+      <div class="sidebar-brand-text mx-3">Tahfizh App</div>
+    </a>
+
+    <hr class="sidebar-divider my-0" />
+
+    <!-- Dashboard -->
+    <li class="nav-item" id="menu-dashboard">
+      <a class="nav-link" href="#" onclick="loadPage('dashboard')">
+        <i class="fas fa-fw fa-home"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <hr class="sidebar-divider" />
+
+    <div class="sidebar-heading">Menu Utama</div>
+
+    <!-- Peserta -->
+    <li class="nav-item" id="menu-peserta">
+      <a class="nav-link" href="#" onclick="loadPage('peserta')">
+        <i class="fas fa-fw fa-users"></i>
+        <span>Data Peserta</span>
+      </a>
+    </li>
+
+    <!-- Hafalan -->
+    <li class="nav-item" id="menu-hafalan">
+      <a class="nav-link" href="#" onclick="loadPage('hafalan')">
+        <i class="fas fa-fw fa-book"></i>
+        <span>Input & List Hafalan</span>
+      </a>
+    </li>
+
+    <!-- Riwayat -->
+    <li class="nav-item" id="menu-riwayat">
+      <a class="nav-link" href="#" onclick="loadPage('riwayat-hafalan')">
+        <i class="fas fa-fw fa-history"></i>
+        <span>Riwayat Hafalan</span>
+      </a>
+    </li>
+
+    <!-- Absensi -->
+    <li class="nav-item">
+      <a
+        class="nav-link collapsed"
+        href="#"
+        data-toggle="collapse"
+        data-target="#collapseAbsensi"
+      >
+        <i class="fas fa-calendar-check"></i>
+        <span>Absensi</span>
+      </a>
+
+      <div id="collapseAbsensi" class="collapse">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="#" onclick="loadPage('absensi')">
+            Input Absensi
+          </a>
+          <a
+            class="collapse-item"
+            href="#"
+            onclick="loadPage('daftar-absensi')"
+          >
+            Daftar Kehadiran
+          </a>
+          <a class="collapse-item" href="#" onclick="loadPage('rekap-absensi')">
+            Rekap Kehadiran
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <hr class="sidebar-divider d-none d-md-block" />
+
+    <!-- Logout -->
+    <li class="nav-item">
+      <a class="nav-link text-danger" href="#" id="logoutBtn">
+        <i class="fas fa-fw fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </a>
+    </li>
+  </ul>
+  <!-- ================= END SIDEBAR ================= -->
+
+  <!-- ================= CONTENT WRAPPER ================= -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- 🔥 PENTING: FIX SCROLL -->
+    <div id="mainContent" class="fade-content">
+      <!-- ================= TOPBAR ================= -->
+      <nav class="navbar navbar-light bg-white topbar shadow">
+        <div class="topbar-inner w-100 d-flex justify-content-between">
+          <!-- LEFT -->
+          <button
+            id="sidebarToggleTop"
+            class="btn btn-link d-md-none rounded-circle"
+          >
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- RIGHT -->
+          <div class="user-info">
+            <span id="displayName" class="me-2 text-gray-600 small"></span>
+            <i class="fas fa-user-circle fa-lg"></i>
+          </div>
+        </div>
+      </nav>
+      <!-- ================= END TOPBAR ================= -->
+
+      <!-- ================= MAIN SCROLL AREA ================= -->
+      <div id="mainContent" class="fade-content">
+        <div class="main-scroll">
+          <!-- 🔥 SLOT KONTEN -->
+          <div id="page-content"></div>
+        </div>
+      </div>
+      <!-- ================= END MAIN SCROLL ================= -->
+
+      <!-- ================= FOOTER ================= -->
+      <footer class="footer">
+        <span>© 2026 Les Tahfizh — Dzah Fitriani</span>
+      </footer>
+      <!-- ================= END FOOTER ================= -->
+    </div>
+  </div>
+  <!-- ================= END CONTENT WRAPPER ================= -->
+</div>
