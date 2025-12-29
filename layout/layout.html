@@ -100,75 +100,69 @@
 
   <!-- ================= CONTENT WRAPPER ================= -->
   <div id="content-wrapper" class="d-flex flex-column">
-    <!-- 🔥 PENTING: FIX SCROLL -->
-    <div id="mainContent" class="fade-content">
-      <!-- ================= TOPBAR ================= -->
-      <nav class="navbar navbar-light bg-white topbar shadow">
-        <div class="topbar-inner w-100 d-flex justify-content-between">
-          <!-- LEFT -->
-          <button
-            id="sidebarToggleTop"
-            class="btn btn-link d-md-none rounded-circle"
-          >
-            <i class="fa fa-bars"></i>
-          </button>
+    <!-- ================= TOPBAR ================= -->
+    <nav class="navbar navbar-light bg-white topbar shadow">
+      <div class="topbar-inner w-100 d-flex justify-content-between">
+        <button
+          id="sidebarToggleTop"
+          class="btn btn-link d-md-none rounded-circle"
+        >
+          <i class="fa fa-bars"></i>
+        </button>
 
-          <!-- RIGHT -->
-          <div class="user-info">
-            <span id="displayName" class="me-2 text-gray-600 small"></span>
-            <i class="fas fa-user-circle fa-lg"></i>
-          </div>
-        </div>
-      </nav>
-      <!-- ================= END TOPBAR ================= -->
-
-      <!-- ================= MAIN SCROLL AREA ================= -->
-      <div id="mainContent" class="fade-content">
-        <div class="main-scroll">
-          <!-- 🔥 SLOT KONTEN -->
-          <div id="page-content"></div>
+        <div class="user-info">
+          <span id="displayName" class="me-2 text-gray-600 small"></span>
+          <i class="fas fa-user-circle fa-lg"></i>
         </div>
       </div>
-      <!-- ================= END MAIN SCROLL ================= -->
+    </nav>
+    <!-- ================= END TOPBAR ================= -->
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <div id="mainContent" class="fade-content">
+      <!-- SCROLL AREA -->
+      <div class="main-scroll">
+        <!-- 🔥 SEMUA PAGE MASUK KE SINI -->
+        <div id="page-content"></div>
+      </div>
 
       <!-- ================= FOOTER ================= -->
       <footer class="footer">
         <span>© 2026 Les Tahfizh — Dzah Fitriani</span>
       </footer>
-      <!-- ================= END FOOTER ================= -->
     </div>
+    <!-- ================= END MAIN CONTENT ================= -->
   </div>
-  <!-- ================= END CONTENT WRAPPER ================= -->
+
+  <script>
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest("[data-page]");
+      if (!link) return;
+
+      e.preventDefault();
+      const page = link.dataset.page;
+
+      const scripts = {
+        dashboard: "assets/js/dashboard.js",
+        peserta: "assets/js/peserta.js",
+        hafalan: "assets/js/hafalan.js",
+        absensi: "assets/js/absensi.js",
+      };
+
+      loadPage(page, scripts[page]);
+    });
+  </script>
+
+  <script src="assets/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <!-- ================= GLOBAL JS ================= -->
+  <script src="assets/js/layout.js"></script>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <!-- ================= PAGE JS ================= -->
+  <script src="assets/js/dashboard.js"></script>
+  <script src="assets/js/peserta.js"></script>
+  <script src="assets/js/hafalan.js"></script>
+  <script src="assets/js/absensi.js"></script>
 </div>
-
-<script>
-  document.addEventListener("click", (e) => {
-    const link = e.target.closest("[data-page]");
-    if (!link) return;
-
-    e.preventDefault();
-    const page = link.dataset.page;
-
-    const scripts = {
-      dashboard: "assets/js/dashboard.js",
-      peserta: "assets/js/peserta.js",
-      hafalan: "assets/js/hafalan.js",
-      absensi: "assets/js/absensi.js",
-    };
-
-    loadPage(page, scripts[page]);
-  });
-</script>
-
-<script src="assets/vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-<!-- ================= GLOBAL JS ================= -->
-<script src="assets/js/layout.js"></script>
-
-<script src="assets/js/api.js"></script>
-<script src="assets/js/auth.js"></script>
-<!-- ================= PAGE JS ================= -->
-<script src="assets/js/dashboard.js"></script>
-<script src="assets/js/peserta.js"></script>
-<script src="assets/js/hafalan.js"></script>
-<script src="assets/js/absensi.js"></script>
