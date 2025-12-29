@@ -138,12 +138,22 @@
         <!-- ===== MAIN CONTENT WRAPPER (FADE TARGET) ===== -->
         <div id="mainContent" class="fade-content">
           <!-- ================= TOPBAR ================= -->
-          <nav class="navbar navbar-expand navbar-light bg-white topbar shadow">
-            <div class="d-flex align-items-center">
-              <h1 id="pageTitle" class="topbar-title">
-                <i class="fas fa-fw fa-users"></i>
-                <span class="topbar-name">Peserta</span>
-              </h1>
+          <nav class="navbar navbar-light bg-white topbar shadow">
+            <div class="topbar-inner">
+              <!-- LEFT -->
+              <button
+                id="sidebarToggleTop"
+                class="btn btn-link d-md-none rounded-circle me-3 menu-toggle"
+                title="Menu"
+              >
+                <i class="fa fa-bars"></i>
+              </button>
+
+              <!-- RIGHT -->
+              <div class="user-info">
+                <span id="displayName" class="me-2 text-gray-600 small"></span>
+                <i class="fas fa-user-circle fa-lg"></i>
+              </div>
             </div>
           </nav>
           <!-- ================= END TOPBAR ================= -->
