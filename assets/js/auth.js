@@ -125,3 +125,22 @@ function logout(redirect = true) {
 }
 
 document.getElementById("logoutBtn")?.addEventListener("click", logout);
+function loadPage(page) {
+  fetch(`pages/${page}.html`)
+    .then((res) => {
+      if (!res.ok) throw new Error("Page not found");
+      return res.text();
+    })
+    .then((html) => {
+      document.getElementById("page-content").innerHTML = html;
+
+      // 🔥 INIT PER PAGE
+      if (page === "peserta") initPesertaPage();
+      if (page === "dashboard") initDashboardPage?.();
+    })
+    .catch((err) => {
+      document.getElementById("page-content").innerHTML =
+        "<h5 class='text-danger'>Halaman tidak ditemukan</h5>";
+      console.error(err);
+    });
+}
