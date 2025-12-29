@@ -1,3 +1,5 @@
+console.log("🔥 router.js loaded");
+
 async function loadPage(page) {
   const container = document.getElementById("page-content");
 
@@ -27,3 +29,17 @@ async function loadPage(page) {
     console.error(err);
   }
 }
+async function init() {
+  console.log("🔥 init dipanggil");
+
+  const res = await fetch("layout/layout.html");
+  const layoutHTML = await res.text();
+
+  document.getElementById("app").innerHTML = layoutHTML;
+
+  console.log("✅ layout dimuat");
+
+  loadPage("dashboard");
+}
+
+document.addEventListener("DOMContentLoaded", init);
