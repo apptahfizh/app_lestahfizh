@@ -131,52 +131,57 @@
         </li>
       </ul>
       <!-- ================= END SIDEBAR ================= -->
+      <div id="sidebarBackdrop"></div>
 
       <!-- ================= CONTENT WRAPPER ================= -->
       <div id="content-wrapper" class="d-flex flex-column">
-        <!-- ================= TOPBAR ================= -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar shadow">
-          <div class="d-flex align-items-center">
-            <h1 id="pageTitle" class="topbar-title">
-              <i class="fas fa-fw fa-users"></i>
-              <span class="topbar-name">Peserta</span>
-            </h1>
-          </div>
-        </nav>
-        <!-- ================= END TOPBAR ================= -->
+        <!-- ===== MAIN CONTENT WRAPPER (FADE TARGET) ===== -->
+        <div id="mainContent" class="fade-content">
+          <!-- ================= TOPBAR ================= -->
+          <nav class="navbar navbar-expand navbar-light bg-white topbar shadow">
+            <div class="d-flex align-items-center">
+              <h1 id="pageTitle" class="topbar-title">
+                <i class="fas fa-fw fa-users"></i>
+                <span class="topbar-name">Peserta</span>
+              </h1>
+            </div>
+          </nav>
+          <!-- ================= END TOPBAR ================= -->
 
-        <!-- ================= MAIN SCROLL AREA ================= -->
-        <div id="content">
-          <div class="container-fluid mt-4">
-            <button class="btn btn-primary mb-3" id="btnTambahPeserta">
-              <i class="fas fa-plus"></i> Tambah Peserta
-            </button>
+          <!-- ================= MAIN SCROLL AREA ================= -->
+          <div id="content">
+            <div class="container-fluid mt-4">
+              <button class="btn btn-primary mb-3" id="btnTambahPeserta">
+                <i class="fas fa-plus"></i> Tambah Peserta
+              </button>
 
-            <div class="card shadow">
-              <div class="card-body">
-                <table class="table table-bordered" id="tabelPeserta">
-                  <thead class="thead-light">
-                    <tr>
-                      <th>ID</th>
-                      <th>Nama</th>
-                      <th style="width: 120px">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody></tbody>
-                </table>
+              <div class="card shadow">
+                <div class="card-body">
+                  <table class="table table-bordered" id="tabelPeserta">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>ID</th>
+                        <th>Nama</th>
+                        <th style="width: 120px">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- ================= END MAIN SCROLL ================= -->
+          <!-- ================= END MAIN SCROLL ================= -->
 
-        <!-- ================= FOOTER ================= -->
-        <footer class="footer">
-          <span>© 2026 Les Tahfizh — Dzah Fitriani</span>
-        </footer>
-        <!-- ================= END FOOTER ================= -->
+          <!-- ================= FOOTER ================= -->
+          <footer class="footer">
+            <span>© 2026 Les Tahfizh — Dzah Fitriani</span>
+          </footer>
+          <!-- ================= END FOOTER ================= -->
+        </div>
+        <!-- END #mainContent -->
+        <!-- ================= END CONTENT WRAPPER ================= -->
       </div>
-      <!-- ================= END CONTENT WRAPPER ================= -->
     </div>
 
     <!-- =================  Modal Tambah Peserta ================= -->
