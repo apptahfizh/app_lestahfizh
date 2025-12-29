@@ -17,13 +17,6 @@
   z-index: 1030;
 }
 
-/* AREA SCROLL UTAMA */
-#content {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
 /* Footer tetap di bawah */
 footer {
   flex-shrink: 0;
