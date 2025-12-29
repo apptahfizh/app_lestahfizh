@@ -140,3 +140,22 @@
   </div>
   <!-- ================= END CONTENT WRAPPER ================= -->
 </div>
+
+<script>
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("[data-page]");
+    if (!link) return;
+
+    e.preventDefault();
+    const page = link.dataset.page;
+
+    const scripts = {
+      dashboard: "assets/js/dashboard.js",
+      peserta: "assets/js/peserta.js",
+      hafalan: "assets/js/hafalan.js",
+      absensi: "assets/js/absensi.js",
+    };
+
+    loadPage(page, scripts[page]);
+  });
+</script>
