@@ -1,12 +1,4 @@
 // ===============================
-// TOPBAR USER NAME
-// ===============================
-const displayName = document.getElementById("displayName");
-if (displayName) {
-  displayName.textContent = user.username || "admin";
-}
-
-// ===============================
 // MOBILE SIDEBAR CONTROL (SINGLE SOURCE)
 // ===============================
 const body = document.body;
