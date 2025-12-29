@@ -10,6 +10,7 @@ document.getElementById("displayName").textContent = user.username || "User";
 async function loadDashboard() {
   try {
     const data = await apiRequest("/dashboard/peserta-progress");
+    console.log("📦 data dashboard:", data);
 
     const list = Array.isArray(data) ? data : data.data || [];
 
