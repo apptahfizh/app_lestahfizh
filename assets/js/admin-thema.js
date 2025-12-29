@@ -1,46 +1,38 @@
-// ===============================
-// MOBILE SIDEBAR CONTROL (SINGLE SOURCE)
-// ===============================
-const body = document.body;
-const sidebar = document.getElementById("accordionSidebar");
-const backdrop = document.getElementById("sidebarBackdrop");
-const toggleBtn = document.getElementById("sidebarToggleTop");
+/* ===============================
+   FIXED LAYOUT SCROLL SYSTEM
+=============================== */
 
-if (toggleBtn) {
-  toggleBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    body.classList.toggle("sidebar-open");
-  });
+/* Matikan scroll global */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
 }
 
-backdrop?.addEventListener("click", () => {
-  body.classList.remove("sidebar-open");
-});
+/* Wrapper utama */
+#content-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 
-sidebar?.addEventListener("click", (e) => {
-  const link = e.target.closest(".nav-link");
-  if (link && window.innerWidth < 768) {
-    // tandai bahwa navigasi berasal dari sidebar
-    sessionStorage.setItem("ortuFromSidebar", "1");
+/* Topbar tetap */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
 
-    // tutup sidebar
-    body.classList.remove("sidebar-open");
-  }
-});
+/* AREA SCROLL UTAMA */
+#content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
-window.addEventListener("resize", () => {
-  if (window.innerWidth >= 768) {
-    body.classList.remove("sidebar-open");
-  }
-});
-
-// HARD RESET SB-ADMIN LEGACY STATE
-body.classList.remove("sidebar-toggled");
-sidebar?.classList.remove("toggled");
-
-// ===============================
-// MAIN CONTENT FADE-IN (OPTIONAL)
-// ===============================
-const main = document.getElementById("mainContent");
-if (main) main.classList.add("show");
+/* Footer tetap di bawah */
+footer.sticky-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 1020;
+}
