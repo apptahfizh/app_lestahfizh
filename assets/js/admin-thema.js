@@ -3,7 +3,7 @@
 // ===============================
 const displayName = document.getElementById("displayName");
 if (displayName) {
-  displayName.textContent = user.username || "Orang Tua";
+  displayName.textContent = user.username || "admin";
 }
 
 // ===============================
