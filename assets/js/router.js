@@ -1,10 +1,11 @@
 console.log("🔥 router.js loaded");
 
 async function loadPage(page) {
-  const container = document.getElementById("page-content");
+  console.log("➡️ loadPage:", page);
 
+  const container = document.getElementById("page-content");
   if (!container) {
-    console.error("page-content belum ada di DOM");
+    console.error("❌ #page-content belum ada di DOM");
     return;
   }
 
@@ -15,7 +16,9 @@ async function loadPage(page) {
     const html = await res.text();
     container.innerHTML = html;
 
+    // ======================
     // INIT PER PAGE
+    // ======================
     if (page === "dashboard" && window.initDashboardPage) {
       initDashboardPage();
     }
@@ -29,6 +32,7 @@ async function loadPage(page) {
     console.error(err);
   }
 }
+
 async function init() {
   console.log("🔥 init dipanggil");
 
@@ -36,10 +40,10 @@ async function init() {
   const layoutHTML = await res.text();
 
   document.getElementById("app").innerHTML = layoutHTML;
-
   console.log("✅ layout dimuat");
 
-  loadPage("dashboard");
+  // 🔥 LOAD HALAMAN AWAL
+  await loadPage("dashboard");
 }
 
 document.addEventListener("DOMContentLoaded", init);
