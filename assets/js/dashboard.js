@@ -14,6 +14,7 @@ async function loadDashboard() {
     const list = Array.isArray(data) ? data : data.data || [];
 
     const container = document.getElementById("dashboardCards");
+    if (!container) return; // 🔒 cegah error SPA
     container.innerHTML = "";
 
     list.forEach((p) => {
@@ -67,4 +68,18 @@ async function loadDashboard() {
   }
 }
 
-loadDashboard();
+// =========================
+// INIT DASHBOARD (SPA)
+// =========================
+function initDashboardPage() {
+  checkAuth(["admin", "ustadz"]); // auth tetap di sini
+
+  // tampilkan nama user (topbar milik layout)
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const displayNameEl = document.getElementById("displayName");
+  if (displayNameEl) {
+    displayNameEl.textContent = user.username || "User";
+  }
+
+  loadDashboard();
+}
