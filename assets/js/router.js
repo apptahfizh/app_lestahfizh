@@ -14,12 +14,12 @@ async function loadPage(page) {
     container.innerHTML = html;
 
     // INIT PER PAGE
-    if (page === "peserta" && window.initPesertaPage) {
-      initPesertaPage();
-    }
-
     if (page === "dashboard" && window.initDashboardPage) {
       initDashboardPage();
+    }
+
+    if (page === "peserta" && window.initPesertaPage) {
+      initPesertaPage();
     }
   } catch (err) {
     container.innerHTML =
