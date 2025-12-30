@@ -1,6 +1,12 @@
 /* ===============================
    GLOBAL ADMIN LOADER
    =============================== */
+@font-face {
+  font-family: "Amiri";
+  src: url("../vendor/fonts-amiri/Amiri-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 #adminLoader {
   position: fixed;
   inset: 0;
