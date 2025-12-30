@@ -49,6 +49,8 @@ async function init() {
 
   console.log("✅ layout dimuat");
 
+  initSidebarToggle();
+
   // 🔥 LOAD DEFAULT PAGE
   loadPage("dashboard");
 }

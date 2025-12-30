@@ -37,3 +37,30 @@ function loadPage(page) {
         </div>`;
     });
 }
+// ==============================
+// SIDEBAR TOGGLE (MOBILE SPA)
+// ==============================
+function initSidebarToggle() {
+  const btn = document.getElementById("btnToggleSidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+  const sidebar = document.getElementById("accordionSidebar");
+
+  if (!btn || !overlay || !sidebar) return;
+
+  // toggle open
+  btn.onclick = () => {
+    document.body.classList.toggle("sidebar-open");
+  };
+
+  // click overlay → close
+  overlay.onclick = () => {
+    document.body.classList.remove("sidebar-open");
+  };
+
+  // click menu → close
+  sidebar.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      document.body.classList.remove("sidebar-open");
+    });
+  });
+}
