@@ -356,6 +356,13 @@ body {
 }
 
 @media (max-width: 768px) {
+  .sidebar.toggled {
+    width: 0 !important;
+    min-width: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
   .sidebar .nav-link {
     position: relative;
     z-index: 1000;
