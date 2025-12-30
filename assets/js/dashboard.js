@@ -20,7 +20,7 @@ async function loadDashboard() {
       const prosentase = p.prosentase ?? 0;
 
       const card = document.createElement("div");
-      card.className = "col-xl-4 col-lg-6 mb-4";
+      card.className = "col-12 col-sm-6 col-lg-4 mb-3";
 
       card.innerHTML = `
         <div class="card shadow h-100">
@@ -29,25 +29,18 @@ async function loadDashboard() {
               ${p.nama_peserta}
             </h5>
           </div>
-
           <div class="card-body">
             <p class="mb-2 text-muted font-weight-bold">Surah Terakhir</p>
             <h6 class="mb-1">${p.surah || "-"}</h6>
-
             <div style="font-weight:bold;font-size:0.9rem;margin-bottom:10px;">
               Hafalan ${prosentase}%
             </div>
-
             <div class="progress mb-1" style="height:20px;border-radius:10px;">
               <div class="progress-bar"
-                   role="progressbar"
-                   style="width:0%;background:linear-gradient(90deg,#4e73df,#1cc88a);transition:width 1.5s ease-in-out;"
-                   aria-valuenow="${prosentase}"
-                   aria-valuemin="0"
-                   aria-valuemax="100">
+                   style="width:${prosentase}%;
+                          background:linear-gradient(90deg,#4e73df,#1cc88a);">
               </div>
             </div>
-
             <div style="text-align:right;font-weight:bold;font-size:0.9rem;">
               ${p.ayat_terakhir || 0} / ${p.total_ayat || 0}
             </div>
@@ -56,14 +49,15 @@ async function loadDashboard() {
       `;
 
       container.appendChild(card);
+    });
 
-      const progressBar = card.querySelector(".progress-bar");
-      setTimeout(() => {
-        progressBar.style.width = `${prosentase}%`;
-      }, 100);
+    // ✅ DATA SUDAH BENAR-BENAR TAMPIL
+    requestAnimationFrame(() => {
+      AdminLoader.hide();
     });
   } catch (error) {
     console.error("Gagal load dashboard:", error);
+    AdminLoader.hide(); // fail-safe
   }
 }
 

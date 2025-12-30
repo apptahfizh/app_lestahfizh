@@ -95,24 +95,29 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
- * ADMIN GLOBAL LOADER
- * Digabung ke admin-theme.js
+ * ADMIN GLOBAL LOADER CONTROL
  */
-
 (function () {
   "use strict";
 
-  function hideAdminLoader() {
-    const loader = document.getElementById("adminLoader");
-    if (!loader) return;
+  const loaderId = "adminLoader";
 
-    setTimeout(() => {
-      loader.classList.add("hide");
-    }, 200);
+  function getLoader() {
+    return document.getElementById(loaderId);
   }
 
-  // PASTIKAN DOM + RESOURCE SIAP
-  window.addEventListener("load", hideAdminLoader);
+  window.AdminLoader = {
+    show() {
+      const loader = getLoader();
+      if (!loader) return;
+      loader.classList.remove("hide");
+    },
+    hide() {
+      const loader = getLoader();
+      if (!loader) return;
+      loader.classList.add("hide");
+    },
+  };
 })();
 
 // ===============================
