@@ -322,9 +322,13 @@ body {
   }
 }
 
+/* ===============================
+   MOBILE SIDEBAR WIDTH FIX
+   =============================== */
 @media (max-width: 768px) {
   body:not(.sidebar-toggled) .sidebar {
-    width: 170px;
+    width: 150px !important;
+    min-width: 150px !important;
   }
 }
 
@@ -333,8 +337,8 @@ body {
    =============================== */
 @media (max-width: 768px) {
   body:not(.sidebar-toggled)::after {
-    width: 170px;
     content: "";
+    position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.15);
     z-index: 998; /* DI BAWAH SIDEBAR */
