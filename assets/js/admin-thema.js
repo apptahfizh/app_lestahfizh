@@ -62,23 +62,36 @@
   }
 
   // ===============================
-  // CLICK OUTSIDE → CLOSE (MOBILE)
+  // TOGGLE SIDEBAR BUTTON (TOPBAR)
   // ===============================
   document.addEventListener("click", function (e) {
-    if (!isMobile()) return;
-    if (isSidebarClosed()) return;
+    if (window.innerWidth > 768) return;
 
-    // Klik toggle → abaikan
-    if (toggleBtn && toggleBtn.contains(e.target)) return;
+    const sidebar = document.querySelector(".sidebar");
+    const toggleBtn = document.getElementById("sidebarToggleTop");
+    const navLink = e.target.closest(".sidebar .nav-link");
 
-    // Klik menu sidebar → biarkan navigasi
-    if (e.target.closest(".sidebar .nav-link")) return;
+    // CLICK TOGGLE
+    if (toggleBtn && toggleBtn.contains(e.target)) {
+      e.preventDefault();
+      toggleSidebar();
+      return;
+    }
 
-    // Klik di dalam sidebar (area kosong) → abaikan
-    if (sidebar.contains(e.target)) return;
+    // CLICK MENU SIDEBAR → BIARKAN NAVIGASI + TUTUP
+    if (navLink) {
+      collapseSidebar();
+      return;
+    }
 
-    // Klik di luar sidebar
-    closeSidebar();
+    // SIDEBAR SUDAH TERTUTUP
+    if (document.body.classList.contains("sidebar-toggled")) return;
+
+    // CLICK DI DALAM SIDEBAR
+    if (sidebar && sidebar.contains(e.target)) return;
+
+    // CLICK DI LUAR SIDEBAR
+    collapseSidebar();
   });
 
   // ===============================
