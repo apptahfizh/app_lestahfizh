@@ -123,17 +123,21 @@ document.addEventListener("click", function (e) {
 
   const sidebar = document.querySelector(".sidebar");
   const toggleBtn = document.getElementById("sidebarToggleTop");
+  const clickedNavLink = e.target.closest(".sidebar .nav-link");
 
-  // Sidebar sedang tertutup → tidak perlu apa-apa
+  // Sidebar sudah tertutup → tidak perlu apa-apa
   if (document.body.classList.contains("sidebar-toggled")) return;
-
-  // Klik di dalam sidebar → abaikan
-  if (sidebar && sidebar.contains(e.target)) return;
 
   // Klik tombol toggle → biarkan toggle yang mengatur
   if (toggleBtn && toggleBtn.contains(e.target)) return;
 
-  // Tutup sidebar
+  // Klik MENU SIDEBAR → BIARKAN NAVIGASI JALAN
+  if (clickedNavLink) return;
+
+  // Klik di dalam sidebar tapi BUKAN menu (area kosong)
+  if (sidebar && sidebar.contains(e.target)) return;
+
+  // Klik di luar sidebar → tutup sidebar
   document.body.classList.add("sidebar-toggled");
   sidebar?.classList.add("toggled");
 });
