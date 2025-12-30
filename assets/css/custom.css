@@ -324,6 +324,6 @@ body {
 
 @media (max-width: 768px) {
   body:not(.sidebar-toggled) .sidebar {
-    width: 220px;
+    width: 200px;
   }
 }
