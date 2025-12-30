@@ -89,3 +89,11 @@ window.addEventListener("orientationchange", () => {
     window.scrollTo(0, 0);
   }, 200);
 });
+// ===============================
+// ENSURE TOGGLE BUTTON STATE
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  if (window.innerWidth <= 768) {
+    document.body.classList.add("sidebar-toggled");
+  }
+});
