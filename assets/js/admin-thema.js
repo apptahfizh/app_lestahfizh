@@ -114,3 +114,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // PASTIKAN DOM + RESOURCE SIAP
   window.addEventListener("load", hideAdminLoader);
 })();
+
+// ===============================
+// CLOSE SIDEBAR ON OUTSIDE CLICK (MOBILE)
+// ===============================
+document.addEventListener("click", function (e) {
+  if (window.innerWidth > 768) return;
+
+  const sidebar = document.querySelector(".sidebar");
+  const toggleBtn = document.getElementById("sidebarToggleTop");
+
+  // Sidebar sedang tertutup → tidak perlu apa-apa
+  if (document.body.classList.contains("sidebar-toggled")) return;
+
+  // Klik di dalam sidebar → abaikan
+  if (sidebar && sidebar.contains(e.target)) return;
+
+  // Klik tombol toggle → biarkan toggle yang mengatur
+  if (toggleBtn && toggleBtn.contains(e.target)) return;
+
+  // Tutup sidebar
+  document.body.classList.add("sidebar-toggled");
+  sidebar?.classList.add("toggled");
+});
