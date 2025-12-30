@@ -68,15 +68,8 @@
     inset: 0;
     background: rgba(0, 0, 0, 0.15);
     z-index: 998;
-  }
 
-  body.sidebar-toggled::after {
-    display: none;
-  }
-
-  .sidebar {
-    position: fixed;
-    z-index: 999;
+    pointer-events: none; /* 🔥 INI KUNCI ABSOLUT */
   }
 }
 
