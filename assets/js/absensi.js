@@ -1,18 +1,44 @@
-checkAuth(["admin", "ustadz"]); // hanya admin / ustadz
+// ==============================
+// absensi.js – SPA SAFE VERSION
+// ==============================
 
-const tanggalInput = document.getElementById("tanggal");
-const tabel = document.getElementById("tabelAbsensi");
-const btnLoad = document.getElementById("btnLoad");
-const btnSimpan = document.getElementById("btnSimpan");
+let tanggalInputAbsensi = null;
+let tabelAbsensi = null;
 
-// default hari ini
-tanggalInput.valueAsDate = new Date();
+// ==============================
+// INIT ABSENSI PAGE (SPA)
+// ==============================
+window.initAbsensiPage = function () {
+  console.log("🚀 initAbsensiPage dipanggil");
+
+  checkAuth(["admin", "ustadz"]);
+
+  tanggalInputAbsensi = document.getElementById("tanggal");
+  tabelAbsensi = document.getElementById("tabelAbsensi");
+
+  const btnLoad = document.getElementById("btnLoad");
+  const btnSimpan = document.getElementById("btnSimpan");
+
+  if (!tanggalInputAbsensi || !tabelAbsensi) {
+    console.warn("⛔ Elemen absensi belum siap");
+    return;
+  }
+
+  // default tanggal hari ini
+  tanggalInputAbsensi.valueAsDate = new Date();
+
+  if (btnLoad) btnLoad.onclick = loadAbsensi;
+  if (btnSimpan) btnSimpan.onclick = simpanAbsensi;
+
+  // auto load saat page dibuka
+  loadAbsensi();
+};
 
 // ===============================
 // LOAD ABSENSI
 // ===============================
 async function loadAbsensi() {
-  const tanggal = tanggalInput.value;
+  const tanggal = tanggalInputAbsensi?.value;
   if (!tanggal) {
     Swal.fire("Peringatan", "Tanggal wajib dipilih", "warning");
     return;
@@ -23,11 +49,11 @@ async function loadAbsensi() {
       params: { tanggal },
     });
 
-    const data = res.data;
-    tabel.innerHTML = "";
+    const data = res.data || [];
+    tabelAbsensi.innerHTML = "";
 
     if (data.length === 0) {
-      tabel.innerHTML = `
+      tabelAbsensi.innerHTML = `
         <tr>
           <td colspan="3" class="text-center text-muted">
             Tidak ada data peserta
@@ -56,7 +82,7 @@ async function loadAbsensi() {
             }>Sakit</option>
             <option value="tidak hadir" ${
               p.status === "tidak hadir" ? "selected" : ""
-            }>tidak hadir</option>
+            }>Tidak Hadir</option>
           </select>
         </td>
         <td>
@@ -70,7 +96,7 @@ async function loadAbsensi() {
         </td>
       `;
 
-      tabel.appendChild(tr);
+      tabelAbsensi.appendChild(tr);
     });
   } catch (err) {
     console.error("Load absensi error:", err);
@@ -82,7 +108,7 @@ async function loadAbsensi() {
 // SIMPAN ABSENSI
 // ===============================
 async function simpanAbsensi() {
-  const tanggal = tanggalInput.value;
+  const tanggal = tanggalInputAbsensi?.value;
   if (!tanggal) {
     Swal.fire("Peringatan", "Tanggal wajib dipilih", "warning");
     return;
@@ -96,34 +122,24 @@ async function simpanAbsensi() {
       if (!el.value) continue;
 
       const peserta_id = el.dataset.id;
-      const keterangan = document.querySelector(
+      const ketEl = document.querySelector(
         `.keterangan[data-id="${peserta_id}"]`
-      ).value;
+      );
 
       await api.post("/absensi", {
         peserta_id,
         tanggal,
         status: el.value,
-        keterangan,
+        keterangan: ketEl?.value || "",
       });
 
       total++;
     }
 
     Swal.fire("Berhasil", `Absensi tersimpan (${total} peserta)`, "success");
-
     loadAbsensi();
   } catch (err) {
     console.error("Simpan absensi error:", err);
     Swal.fire("Error", "Gagal menyimpan absensi", "error");
   }
 }
-
-// ===============================
-// EVENT
-// ===============================
-btnLoad.addEventListener("click", loadAbsensi);
-btnSimpan.addEventListener("click", simpanAbsensi);
-
-// auto load saat buka halaman
-loadAbsensi();
