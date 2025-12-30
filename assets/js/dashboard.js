@@ -72,15 +72,14 @@ async function loadDashboard() {
 // =========================
 // INIT DASHBOARD (SPA)
 // =========================
-function initDashboardPage() {
-  checkAuth(["admin", "ustadz"]); // auth tetap di sini
+window.initDashboardPage = function () {
+  console.log("🚀 initDashboardPage dipanggil");
 
-  // tampilkan nama user (topbar milik layout)
+  checkAuth(["admin", "ustadz"]);
+
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const displayNameEl = document.getElementById("displayName");
-  if (displayNameEl) {
-    displayNameEl.textContent = user.username || "User";
-  }
+  const el = document.getElementById("displayName");
+  if (el) el.textContent = user.username || "User";
 
   loadDashboard();
-}
+};
