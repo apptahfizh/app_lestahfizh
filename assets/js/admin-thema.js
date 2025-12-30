@@ -114,3 +114,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 200);
   });
 })();
+
+window.AdminLoader = {
+  show() {
+    document.getElementById("adminLoader")?.classList.remove("hide");
+  },
+  hide() {
+    document.getElementById("adminLoader")?.classList.add("hide");
+  },
+};

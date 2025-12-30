@@ -68,3 +68,7 @@ async function loadDashboard() {
 }
 
 loadDashboard();
+
+AdminLoader.show();
+await loadDashboard();
+AdminLoader.hide();
