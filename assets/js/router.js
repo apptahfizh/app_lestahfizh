@@ -5,7 +5,7 @@ async function loadPage(page) {
 
   const container = document.getElementById("page-content");
   if (!container) {
-    console.error("❌ #page-content belum ada di DOM");
+    console.error("❌ #page-content tidak ditemukan");
     return;
   }
 
@@ -16,9 +16,7 @@ async function loadPage(page) {
     const html = await res.text();
     container.innerHTML = html;
 
-    // ======================
-    // INIT PER PAGE
-    // ======================
+    // 🔥 PANGGIL INIT SETELAH HTML MASUK
     if (page === "dashboard" && window.initDashboardPage) {
       initDashboardPage();
     }
@@ -26,10 +24,18 @@ async function loadPage(page) {
     if (page === "peserta" && window.initPesertaPage) {
       initPesertaPage();
     }
+
+    if (page === "hafalan" && window.initHafalanPage) {
+      initHafalanPage();
+    }
+
+    if (page === "absensi" && window.initAbsensiPage) {
+      initAbsensiPage();
+    }
   } catch (err) {
+    console.error(err);
     container.innerHTML =
       "<h5 class='text-danger'>Halaman tidak ditemukan</h5>";
-    console.error(err);
   }
 }
 
@@ -40,10 +46,11 @@ async function init() {
   const layoutHTML = await res.text();
 
   document.getElementById("app").innerHTML = layoutHTML;
+
   console.log("✅ layout dimuat");
 
-  // 🔥 LOAD HALAMAN AWAL
-  await loadPage("dashboard");
+  // 🔥 LOAD DEFAULT PAGE
+  loadPage("dashboard");
 }
 
 document.addEventListener("DOMContentLoaded", init);
