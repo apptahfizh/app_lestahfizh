@@ -49,3 +49,11 @@
     transform: rotate(360deg);
   }
 }
+
+#adminLoader {
+  will-change: opacity;
+}
+
+#adminLoader.hide {
+  pointer-events: none;
+}
