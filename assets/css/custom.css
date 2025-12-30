@@ -329,7 +329,7 @@ body {
 }
 
 /* ===============================
-   SIDEBAR OVERLAY (MOBILE)
+   SIDEBAR OVERLAY (MOBILE) - FIXED
    =============================== */
 @media (max-width: 768px) {
   body:not(.sidebar-toggled)::after {
@@ -337,10 +337,23 @@ body {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.15);
-    z-index: 1010;
+    z-index: 998; /* DI BAWAH SIDEBAR */
   }
 
   body.sidebar-toggled::after {
     display: none;
+  }
+
+  /* PASTIKAN SIDEBAR DI ATAS OVERLAY */
+  .sidebar {
+    position: fixed;
+    z-index: 999;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar .nav-link {
+    position: relative;
+    z-index: 1000;
   }
 }
