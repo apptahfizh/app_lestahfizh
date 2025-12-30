@@ -1,3 +1,16 @@
+// ==============================
+// GLOBAL LOADER CONTROL
+// ==============================
+function showLoader() {
+  const loader = document.getElementById("adminLoader");
+  if (loader) loader.classList.remove("hide");
+}
+
+function hideLoader() {
+  const loader = document.getElementById("adminLoader");
+  if (loader) loader.classList.add("hide");
+}
+
 checkAuth(["admin", "ustadz"]); // hanya admin/ustadz bisa akses
 // ==============================
 // peserta.js – FINAL CLEAN v2
@@ -9,6 +22,7 @@ checkAuth();
 let tabel = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+  showLoader(); // ⬅️ tampilkan loader
   // Load data pertama kali
   loadPeserta();
 
@@ -51,8 +65,13 @@ async function loadPeserta() {
           `,
         },
       ],
+      initComplete: function () {
+        // ⬅️ Data benar-benar sudah render
+        hideLoader();
+      },
     });
-  } catch {
+  } catch (err) {
+    hideLoader();
     Swal.fire("Error", "Tidak dapat memuat data peserta", "error");
   }
 }
@@ -66,6 +85,7 @@ async function simpanPeserta() {
   }
 
   try {
+    showLoader();
     await apiRequest("/peserta", {
       method: "POST",
       body: JSON.stringify({ nama }),
@@ -98,6 +118,7 @@ async function hapusPeserta(id) {
   if (!confirm.isConfirmed) return;
 
   try {
+    showLoader();
     await apiRequest(`/peserta/${id}`, {
       method: "DELETE",
     });
