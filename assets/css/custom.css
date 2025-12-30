@@ -333,6 +333,7 @@ body {
    =============================== */
 @media (max-width: 768px) {
   body:not(.sidebar-toggled)::after {
+    width: 170px;
     content: "";
     position: fixed;
     inset: 0;
