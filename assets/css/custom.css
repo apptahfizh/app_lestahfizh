@@ -86,9 +86,10 @@ footer {
   letter-spacing: 0.6px;
 }
 
-.nav-item .nav-link span {
-  text-align: left;
-  display: inline-block; /* supaya text-align bekerja */
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* bikin ikon + teks ke kiri */
 }
 /* ===============================
    SIDEBAR ICON COLOR - FINAL
