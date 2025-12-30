@@ -92,8 +92,8 @@ footer {
 }
 
 .nav-item .nav-link i {
-  text-align: left;
-  display: inline-block; /* supaya text-align bekerja */
+  align-items: left;
+  display: inline-block;
 }
 /* ===============================
    SIDEBAR ICON COLOR - FINAL
