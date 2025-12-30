@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input Hafalan - App Lestahfizh</title>
+
+    <!-- SB Admin 2 CSS -->
+    <link href="assets/css/sb-admin-2.min.css" rel="stylesheet" />
+    <link href="assets/css/custom.css" rel="stylesheet" />
+    <!-- Select2 CSS -->
+    <link href="assets/vendor/select2/select2.min.css" rel="stylesheet" />
+    <!-- FontAwesome -->
+    <link
+      href="assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- DataTables -->
+    <link
+      href="assets/vendor/datatables/dataTables.bootstrap4.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body id="page-top">
+    <div id="wrapper">
+      <!-- ================= SIDEBAR ================= -->
+      <ul
+        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+        id="accordionSidebar"
+      >
+        <!-- Sidebar - Brand -->
+        <a
+          class="sidebar-brand d-flex align-items-center justify-content-center"
+          href="index.html"
+        >
+          <div class="sidebar-brand-icon">
+            <i class="fas fa-mosque"></i>
+          </div>
+          <div class="sidebar-brand-text mx-3">Tahfizh App</div>
+        </a>
+
+        <hr class="sidebar-divider my-0" />
+
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">
+            <i class="fas fa-fw fa-home"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <hr class="sidebar-divider" />
+
+        <div class="sidebar-heading">Menu Utama</div>
+
+        <li class="nav-item">
+          <a class="nav-link" href="peserta.html">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Data Peserta</span>
+          </a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href="hafalan.html">
+            <i class="fas fa-fw fa-book"></i>
+            <span>Input & List Hafalan</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="riwayat-hafalan.html">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Riwayat Hafalan</span>
+          </a>
+        </li>
+
+        <!-- Absensi -->
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            href="#"
+            data-toggle="collapse"
+            data-target="#collapseAbsensi"
+            aria-expanded="false"
+            aria-controls="collapseAbsensi"
+          >
+            <i class="fas fa-calendar-check"></i>
+            <span>Absensi</span>
+          </a>
+
+          <div
+            id="collapseAbsensi"
+            class="collapse"
+            data-parent="#accordionSidebar"
+          >
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Absensi Peserta</h6>
+
+              <a class="collapse-item" href="absensi.html"> Input Absensi </a>
+
+              <a class="collapse-item" href="daftar-absensi.html">
+                Daftar Kehadiran
+              </a>
+
+              <a class="collapse-item" href="rekap-absensi.html">
+                Rekap Kehadiran
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <hr class="sidebar-divider d-none d-md-block" />
+
+        <li class="nav-item">
+          <a class="nav-link" href="user-create.html">
+            <i class="fas fa-user-plus"></i>
+            <span>Create User</span>
+          </a>
+        </li>
+
+        <hr class="sidebar-divider d-none d-md-block" />
+
+        <li class="nav-item">
+          <a class="nav-link text-danger" id="logoutBtn" href="login.html">
+            <i class="fas fa-fw fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </li>
+      </ul>
+      <!-- ================= END SIDEBAR ================= -->
+
+      <!-- ================= CONTENT WRAPPER ================= -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- ================= TOPBAR ================= -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar shadow">
+          <div class="d-flex align-items-center">
+            <h1 id="pageTitle" class="topbar-title">
+              <i class="fas fa-fw fa-book"></i>
+              <span class="topbar-name">Input & List Hafalan</span>
+            </h1>
+          </div>
+        </nav>
+        <!-- ================= END TOPBAR ================= -->
+
+        <!-- ================= MAIN SCROLL AREA ================= -->
+        <div class="main-scroll">
+          <div id="content">
+            <div class="container-fluid mt-4">
+              <!-- Tombol Tambah -->
+              <div class="mb-3">
+                <button
+                  class="btn btn-primary"
+                  data-toggle="modal"
+                  data-target="#modalHafalan"
+                >
+                  + Tambah Hafalan
+                </button>
+              </div>
+
+              <!-- Card Tabel Hafalan -->
+              <div class="card shadow">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                    Tabel Hafalan Per Peserta
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table
+                      id="tabelHafalan"
+                      class="table table-bordered table-striped"
+                    >
+                      <thead>
+                        <tr>
+                          <th>No</th>
+                          <th>Tanggal</th>
+                          <th>Nama</th>
+                          <th>Surah</th>
+                          <th>Ayat Hafal</th>
+                          <th>Keterangan</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Data dari hafalan.js -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ================= END MAIN SCROLL ================= -->
+        <!-- ================= FOOTER ================= -->
+        <footer class="footer">
+          <span>© 2026 Les Tahfizh — Dzah Fitriani</span>
+        </footer>
+        <!-- ================= END FOOTER ================= -->
+      </div>
+      <!-- ================= END CONTENT WRAPPER ================= -->
+    </div>
+
+    <!-- ====================== MODAL INPUT HAFALAN ====================== -->
+    <div class="modal fade" id="modalHafalan" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Input Hafalan</h5>
+            <button class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <div class="modal-body">
+            <form id="formHafalan">
+              <!-- PESERTA -->
+              <div class="form-group">
+                <label>Peserta</label>
+                <select id="peserta_id" class="form-control"></select>
+              </div>
+
+              <!-- TANGGAL -->
+              <div class="form-group">
+                <label>Tanggal</label>
+                <input type="date" id="tanggal" class="form-control" />
+              </div>
+
+              <!-- SURAH -->
+              <div class="form-group">
+                <label>Surah</label>
+                <select id="surah" class="form-control"></select>
+              </div>
+
+              <!-- MULAI SETOR AYAT -->
+              <div class="form-group">
+                <label>Mulai Setor Ayat</label>
+                <input
+                  type="number"
+                  id="mulai_setor_ayat"
+                  class="form-control"
+                />
+              </div>
+
+              <!-- SELESAI SETOR AYAT -->
+              <div class="form-group">
+                <label>Selesai Setor Ayat</label>
+                <input
+                  type="number"
+                  id="selesai_setor_ayat"
+                  class="form-control"
+                />
+              </div>
+
+              <!-- AYAT HAFAL (AUTO) -->
+              <div class="form-group">
+                <label>Ayat Hafal (otomatis)</label>
+                <input
+                  type="text"
+                  id="ayat_hafal"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+
+              <!-- AYAT SETOR (AUTO) -->
+              <div class="form-group">
+                <label>Ayat Setor (otomatis)</label>
+                <input
+                  type="text"
+                  id="ayat_setor"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+
+              <!-- KETERANGAN -->
+              <div class="form-group">
+                <label>Keterangan</label>
+                <textarea
+                  id="keterangan"
+                  rows="3"
+                  class="form-control"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-dismiss="modal">
+              Batal
+            </button>
+            <button class="btn btn-primary" id="btnSimpanHafalan">
+              Simpan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ====================== END MODAL ====================== -->
+
+    <!-- jQuery -->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables -->
+    <script src="assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- SweetAlert -->
+    <script src="assets/vendor/sweetalert2/sweetalert2.all.min.js"></script>
+
+    <!-- Axios -->
+    <script src="assets/vendor/axios/axios.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="assets/vendor/select2/select2.min.js"></script>
+
+    <!-- SB Admin -->
+    <script src="assets/js/sb-admin-2.min.js"></script>
+    <!-- api.js harus duluan -->
+    <script src="assets/js/api.js"></script>
+
+    <!-- auth.js harus sebelum JS halaman -->
+    <script src="assets/js/auth.js"></script>
+
+    <!-- File utama untuk halaman ini -->
+    <script src="assets/js/hafalan.js"></script>
+  </body>
+</html>

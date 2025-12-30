@@ -1,0 +1,656 @@
+/* =====================================================
+GLOBAL RESET
+===================================================== */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* =====================================================
+WRAPPER UTAMA
+===================================================== */
+#wrapper {
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* =====================================================
+CONTENT WRAPPER
+===================================================== */
+#content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100vh;
+  overflow: hidden;
+}
+/* =====================================================
+MAIN SCROLL (SATU-SATUNYA AREA SCROLL)
+===================================================== */
+.main-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* =====================================================
+TOPBAR THEME
+===================================================== */
+.topbar {
+  background: #ffffff;
+}
+.topbar {
+  flex-shrink: 0;
+  height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+/* =====================================================
+MAIN SCROLL THEME
+===================================================== */
+.main-scroll {
+  overflow-y: auto;
+  height: calc(100vh - 56px); /* tinggi topbar */
+}
+
+/* =====================================================
+FOOTER THEME
+===================================================== */
+.footer {
+  background: #d8d8da;
+  border-top: 1px solid #e5e7eb;
+  font-size: 11px;
+}
+
+/* =====================================================
+SIDEBAR THEME
+===================================================== */
+.sidebar {
+  background: linear-gradient(180deg, #1f2937 0%, #1b2e25 45%, #2a2a15 100%);
+}
+
+.sidebar::before {
+  background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255, 215, 0, 0.04) 0,
+      rgba(255, 215, 0, 0.04) 1px,
+      transparent 1px,
+      transparent 14px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255, 215, 0, 0.03) 0,
+      rgba(255, 215, 0, 0.03) 1px,
+      transparent 1px,
+      transparent 18px
+    );
+}
+
+/* =====================================================
+SIDEBAR BRAND
+===================================================== */
+.sidebar-brand {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 215, 0, 0.18),
+    rgba(255, 215, 0, 0.04)
+  );
+}
+
+.sidebar-brand-text,
+.sidebar-brand-icon i {
+  color: #facc15;
+}
+
+/* =====================================================
+SIDEBAR LINK
+===================================================== */
+.sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.75);
+  border-left: 3px solid transparent;
+  transition: all 0.25s ease;
+}
+
+.sidebar .nav-link:hover {
+  background: rgba(255, 215, 0, 0.08);
+  color: #fde68a;
+}
+
+.sidebar .nav-item.active .nav-link {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 215, 0, 0.22),
+    rgba(255, 215, 0, 0.06)
+  );
+  border-left: 4px solid #facc15;
+  color: #fde68a;
+}
+
+/* =====================================================
+SIDEBAR ICON
+===================================================== */
+.sidebar .nav-link i {
+  color: #fbbf24;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.sidebar .nav-link:hover i {
+  transform: translateX(2px);
+  color: #fde68a;
+}
+
+.sidebar .nav-item.active i {
+  color: #fde68a;
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.4));
+}
+/* =====================================================
+SIDEBAR ORNAMENT
+===================================================== */
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+/* =====================================================
+MENU TOGGLE BUTTON
+===================================================== */
+#sidebarToggleTop {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    rgba(129, 231, 129, 0.61),
+    rgba(253, 230, 138, 0.85)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: all 0.25s ease;
+}
+
+#sidebarToggleTop i {
+  color: #16a34a !important;
+}
+
+/* =====================================================
+MENU INDICATOR & ANIMATION
+===================================================== */
+.menu-toggle::after {
+  background: #2563eb;
+  box-shadow: 0 0 0 2px #fff;
+}
+
+@keyframes pulseMenu {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+  }
+}
+
+.menu-toggle.pulse {
+  border-radius: 50%;
+  animation: pulseMenu 1.5s ease-out 2;
+}
+
+/* =====================================================
+TABLE & CARD
+===================================================== */
+#tabelAbsensi {
+  font-size: 0.9rem;
+}
+
+#tabelAbsensi tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.absensi-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* =====================================================
+FILTER & BUTTON
+===================================================== */
+.filter-btn-active {
+  background-color: #0d6efd;
+  color: #fff;
+}
+/* TOPBAR LAYOUT FIX */
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* ⬅️ INI KUNCINYA */
+  width: 100%;
+  padding: 0 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+/* =====================================================
+SIDEBAR UKURAN PENUH DI MOBILE
+===================================================== */
+@media (max-width: 767.98px) {
+  /* WRAPPER JANGAN FLEX */
+  #wrapper {
+    display: block;
+  }
+
+  /* SIDEBAR FULL SCREEN */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 1050;
+
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  /* SAAT TOGGLE */
+  body.sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+
+  /* SEMBUNYIKAN CONTENT */
+  body.sidebar-open #content-wrapper {
+    display: none;
+  }
+
+  /* BACKDROP */
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1040;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  body.sidebar-open .sidebar-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* KUNCI SCROLL */
+  body.sidebar-open {
+    overflow: hidden;
+  }
+}
+/* =====================================================
+   MOBILE SIDEBAR — CENTERED & CLEAN (GLOBAL ORTU)
+===================================================== */
+@media (max-width: 767.98px) {
+  /* SIDEBAR SEBAGAI FLEX COLUMN */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+  }
+
+  /* ================= BRAND ================= */
+  .sidebar-brand {
+    flex-shrink: 0;
+    padding: 1.5rem 1rem 1.25rem !important;
+    text-align: center;
+  }
+
+  .sidebar-brand-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .sidebar-brand-text {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* ================= MENU CENTER ================= */
+  .sidebar .navbar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* ⬅️ MENU TENGAH LAYAR */
+    padding: 0 1.25rem;
+  }
+
+  .sidebar .nav-item {
+    margin: 0.4rem 0;
+  }
+
+  .sidebar .nav-link {
+    padding: 0.95rem 1.25rem;
+    border-radius: 14px;
+    font-size: 0.95rem;
+  }
+
+  .sidebar .nav-link i {
+    width: 20px;
+    margin-right: 0.75rem;
+    text-align: center;
+  }
+
+  /* ================= CLOSE BUTTON ================= */
+  .sidebar-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    font-size: 1.25rem;
+    color: #fff;
+    opacity: 0.85;
+    z-index: 1060;
+  }
+
+  .sidebar-close:hover {
+    opacity: 1;
+  }
+}
+
+/* ===== USER INFO ALWAYS RIGHT ===== */
+.topbar > div:last-child,
+.topbar .user-info {
+  margin-left: auto !important;
+}
+/* =====================================
+   MAIN CONTENT — SOFT ISLAMIC BACKGROUND
+===================================== */
+#mainContent {
+  min-height: 100vh;
+
+  /* Gradient lembut hijau → emas */
+  background: linear-gradient(
+    135deg,
+    #f7fbf7 1%,
+    #d2f1dd 35%,
+    #f9f6ec 70%,
+    #f1d7a2 100%
+  );
+
+  /* Transisi halus saat loader hilang */
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+/* Saat konten tampil */
+#mainContent.show {
+  opacity: 1;
+}
+/* layer cahaya halus */
+#mainContent::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  background: radial-gradient(
+      circle at top right,
+      rgba(212, 175, 55, 0.08),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(46, 125, 50, 0.06),
+      transparent 50%
+    );
+}
+
+/* ===============================
+   MOBILE SIDEBAR PERFORMANCE FIX
+   (MOBILE ONLY)
+================================ */
+@media (max-width: 991.98px) {
+  #accordionSidebar {
+    will-change: transform;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Saat sidebar aktif */
+  body.sidebar-open #accordionSidebar {
+    transform: translateX(0);
+  }
+
+  /* Hindari repaint berat */
+  #accordionSidebar,
+  #sidebarBackdrop {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
+/* =====================================================
+   MOBILE SIDEBAR — CENTER MENU FIX (HTML WRAPPER)
+===================================================== */
+@media (max-width: 767.98px) {
+  .sidebar-menu-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .sidebar-menu-wrapper .nav-item {
+    width: 100%;
+    max-width: 260px;
+  }
+
+  .sidebar-menu-wrapper .nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    padding: 1rem 0.75rem;
+    border-radius: 16px;
+  }
+
+  .sidebar-menu-wrapper .nav-link i {
+    margin: 0 0 0.4rem 0;
+    font-size: 1.25rem;
+  }
+
+  .sidebar-menu-wrapper .nav-link span {
+    font-size: 0.85rem;
+    letter-spacing: 0.3px;
+  }
+
+  .sidebar-menu-wrapper .nav-item.active .nav-link {
+    border-left: none;
+  }
+}
+/* =====================================================
+   MOBILE SIDEBAR — TRUE CENTER ALIGNMENT FIX
+===================================================== */
+@media (max-width: 767.98px) {
+  /* HAPUS INDENT UL */
+  #accordionSidebar {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* NETRALKAN NAVBAR-NAV */
+  .sidebar .navbar-nav {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  /* HAPUS OFFSET LIST ITEM */
+  .sidebar-menu-wrapper {
+    width: 100%;
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  .sidebar-menu-wrapper .nav-item {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    list-style: none;
+  }
+
+  /* PAKSA LINK BENAR-BENAR CENTER */
+  .sidebar-menu-wrapper .nav-link {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+.sidebar-menu-wrapper .nav-link i {
+  transform: translateX(0.5px);
+}
+/* =====================================================
+   MOBILE SIDEBAR — ROTATION & OVERFLOW FIX
+===================================================== */
+@media (max-width: 767.98px) {
+  /* SIDEBAR FULL TAPI AMAN ROTASI */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* BRAND TETAP */
+  .sidebar-brand {
+    flex-shrink: 0;
+  }
+
+  /* AREA MENU SCROLLABLE */
+  .sidebar-menu-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    padding-bottom: 24px; /* ruang aman bawah */
+  }
+
+  /* JAGA ITEM BAWAH (LOGOUT) */
+  .sidebar-menu-wrapper .nav-item:last-child {
+    margin-bottom: 12px;
+  }
+}
+/* =====================================================
+   ORTU MOBILE — FIX TOPBAR & FOOTER SCROLL
+   (FINAL, SAFE, GLOBAL)
+===================================================== */
+@media (max-width: 767.98px) {
+  /* KUNCI BODY */
+  body {
+    overflow: hidden;
+  }
+
+  /* FOOTER FIXED */
+  .footer,
+  footer.sticky-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1040;
+  }
+
+  /* MAIN SCROLL AREA (SATU-SATUNYA SCROLL) */
+  .main-scroll {
+    position: fixed;
+    top: 70px; /* tinggi topbar */
+    bottom: 40px; /* tinggi footer (sesuaikan jika beda) */
+    left: 0;
+    right: 0;
+
+    height: auto; /* ⬅️ WAJIB */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+/* =====================================================
+   ORTU MOBILE — FINAL SCROLL & LAYER FIX (V2)
+===================================================== */
+@media (max-width: 767.98px) {
+  /* ================= BODY ================= */
+  body {
+    overflow: hidden;
+  }
+
+  /* ================= TOPBAR ================= */
+  body:not(.sidebar-open) .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    z-index: 1030;
+  }
+
+  /* SAAT SIDEBAR OPEN → TOPBAR DI BAWAH */
+  body.sidebar-open .topbar {
+    z-index: 1000;
+  }
+
+  /* ================= FOOTER ================= */
+  body:not(.sidebar-open) .footer,
+  body:not(.sidebar-open) footer.sticky-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1020;
+  }
+
+  /* ================= MAIN SCROLL ================= */
+  .main-scroll {
+    position: fixed;
+    top: 70px;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ================= SIDEBAR ================= */
+  .sidebar {
+    z-index: 1100; /* ⬅️ SELALU DI ATAS TOPBAR */
+  }
+
+  .sidebar-backdrop {
+    z-index: 1090;
+  }
+}
+
+/* =====================================================
+FOOTER
+===================================================== */
+.footer {
+  flex-shrink: 0;
+  height: 32px;
+  position: sticky;
+  bottom: 0;
+  z-index: 1020;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

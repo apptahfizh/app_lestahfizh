@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Riwayat Hafalan</title>
+
+    <!-- CSS -->
+    <link
+      href="assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/css/sb-admin-2.min.css" rel="stylesheet" />
+    <link href="assets/css/layout-ortu-riwayat.css" rel="stylesheet" />
+    <link href="assets/css/theme-ortu.css" rel="stylesheet" />
+    <link href="assets/css/loader-ortu.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/datatables/dataTables.bootstrap4.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body id="page-top">
+    <div id="wrapper">
+      <!-- ================= SIDEBAR ================ -->
+      <ul
+        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+        id="accordionSidebar"
+      >
+        <a
+          class="sidebar-brand d-flex align-items-center justify-content-center"
+          href="ortu.html"
+        >
+          <div class="sidebar-brand-icon">
+            <i class="fas fa-fw fa-home"></i>
+          </div>
+          <div class="sidebar-brand-text mx-3">Tahfizh App</div>
+        </a>
+
+        <div class="sidebar-menu-wrapper">
+          <hr class="sidebar-divider my-0" />
+
+          <li class="nav-item">
+            <a class="nav-link" href="ortu.html">
+              <i class="fas fa-fw fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="ortu-riwayat.html">
+              <i class="fas fa-book"></i>
+              <span>Riwayat Hafalan</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="ortu-absensi.html">
+              <i class="fas fa-calendar-check"></i>
+              <span>Kehadiran</span>
+            </a>
+          </li>
+
+          <hr class="sidebar-divider" />
+
+          <li class="nav-item">
+            <a class="nav-link text-danger" id="logoutBtn" href="login.html">
+              <i class="fas fa-fw fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </a>
+          </li>
+        </div>
+      </ul>
+      <!-- ================= END SIDEBAR ================= -->
+      <div id="sidebarBackdrop"></div>
+
+      <!-- ================= CONTENT WRAPPER ================= -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- ===== MAIN CONTENT WRAPPER (FADE TARGET) ===== -->
+        <div id="mainContent" class="fade-content">
+          <!-- ================= TOPBAR ================= -->
+          <nav class="navbar navbar-light bg-white topbar shadow">
+            <div class="topbar-inner">
+              <!-- LEFT -->
+              <button
+                id="sidebarToggleTop"
+                class="btn btn-link d-md-none rounded-circle me-3 menu-toggle"
+                title="Menu"
+              >
+                <i class="fa fa-bars"></i>
+              </button>
+
+              <!-- RIGHT -->
+              <div class="user-info">
+                <span id="displayName" class="me-2 text-gray-600 small"></span>
+                <i class="fas fa-user-circle fa-lg"></i>
+              </div>
+            </div>
+          </nav>
+          <!-- ================= END TOPBAR ================= -->
+
+          <!-- ================= MAIN CONTENT (scroll area)================= -->
+          <div class="main-scroll">
+            <div class="container-fluid mt-4">
+              <!-- FILTER -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-filter"></i> Filter
+                  </h6>
+                </div>
+
+                <div class="card-body">
+                  <div class="form-row">
+                    <div class="col-md-3 mb-2">
+                      <label class="small text-muted">Tanggal Mulai</label>
+                      <input
+                        type="date"
+                        id="filterTanggalMulai"
+                        class="form-control"
+                      />
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                      <label class="small text-muted">Tanggal Selesai</label>
+                      <input
+                        type="date"
+                        id="filterTanggalSelesai"
+                        class="form-control"
+                      />
+                    </div>
+
+                    <div class="col-md-4 mb-2 position-relative">
+                      <label class="small text-muted">Surah</label>
+                      <input
+                        type="text"
+                        id="filterSurah"
+                        class="form-control"
+                        placeholder="Ketik nama surah"
+                      />
+                      <input type="hidden" id="filterSurahId" />
+                      <div
+                        id="surahList"
+                        class="list-group position-absolute w-100"
+                        style="z-index: 1000"
+                      ></div>
+                    </div>
+
+                    <div class="col-md-2 mb-2 d-flex align-items-end">
+                      <button
+                        id="btnFilter"
+                        class="btn btn-primary btn-block mr-2"
+                      >
+                        <i class="fas fa-search"></i>
+                      </button>
+                      <button id="btnReset" class="btn btn-secondary btn-block">
+                        <i class="fas fa-sync"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TABEL -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-success">
+                    <i class="fas fa-list"></i> Riwayat Hafalan
+                  </h6>
+                </div>
+
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table
+                      class="table table-bordered table-hover mb-0"
+                      id="tabelRiwayat"
+                    >
+                      <thead class="thead-light text-center">
+                        <tr>
+                          <th>No</th>
+                          <th>Tanggal</th>
+                          <th>Setor</th>
+                          <th>Surah</th>
+                          <th>Hafalan</th>
+                          <th>Progres</th>
+                          <th>Keterangan</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr id="loadingRow">
+                          <td colspan="8" class="text-center text-muted py-4">
+                            <i class="fas fa-spinner fa-spin"></i> Memuat
+                            data...
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="col-md-6 mb-3 mt-3">
+                      <button
+                        type="button"
+                        id="btnSavePdf"
+                        class="btn btn-danger btn-icon-split btn-sm"
+                      >
+                        <span class="icon text-white-50">
+                          <i class="fas fa-file-pdf"></i></span
+                        ><span class="text d-flex align-items-center"
+                          >Save As</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ================= END MAIN SCROLL ================= -->
+
+          <!-- ================= FOOTER ================= -->
+          <footer class="footer mt-auto py-3 bg-light">
+            <div class="container text-center">
+              <span>© 2026 Les Tahfizh — Dzah Fitriani</span>
+            </div>
+          </footer>
+          <!-- ================= END FOOTER ================= -->
+        </div>
+        <!-- END #mainContent -->
+        <!-- ================= END CONTENT WRAPPER ================= -->
+      </div>
+    </div>
+
+    <!-- ====== MODAL pilih bulan untuk save pdf (MOBILE) ====== -->
+    <div
+      class="modal fade"
+      id="filterModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="filterModalTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title" id="filterModalTitle">Filter</h6>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Tutup"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <!-- PILIH BULAN -->
+            <div class="mb-3">
+              <button
+                type="button"
+                id="btnOpenBulan"
+                class="btn btn-outline-primary btn-block"
+              >
+                Pilih Bulan
+              </button>
+
+              <div
+                id="bulanList"
+                class="list-group mt-2 d-none"
+                style="max-height: 240px; overflow-y: auto"
+              ></div>
+            </div>
+
+            <!-- PILIH TAHUN -->
+            <div class="mb-3">
+              <button
+                type="button"
+                id="btnOpenTahun"
+                class="btn btn-outline-primary btn-block"
+              >
+                Pilih Tahun
+              </button>
+
+              <div
+                id="tahunList"
+                class="list-group mt-2 d-none"
+                style="max-height: 240px; overflow-y: auto"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ====== END MODAL pilih bulan untuk save pdf (MOBILE) ====== -->
+
+    <!-- GLOBAL LOADING -->
+    <div id="globalLoading" class="global-loading d-none">
+      <div class="loader-wrapper">
+        <span class="loader"></span>
+
+        <div class="loader-text">
+          <div class="arabic basmallah">﷽</div>
+          <div class="latin">Memuat Data…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JS -->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <!--<script src="assets/js/sb-admin-2.min.js"></script>-->
+    <script src="assets/js/ortu-thema.js"></script>
+    <script src="assets/vendor/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="assets/vendor/axios/axios.min.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/vendor/jspdf/jspdf.umd.min.js"></script>
+    <script src="assets/vendor/jspdf/jspdf.plugin.autotable.min.js"></script>
+    <script src="assets/js/loader.js"></script>
+    <script src="assets/js/ortu-riwayat.js"></script>
+  </body>
+</html>
