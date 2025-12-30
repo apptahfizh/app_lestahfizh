@@ -95,31 +95,22 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
- * admin-loader.js
- * Loader global untuk halaman admin / ustadz (MPA)
+ * ADMIN GLOBAL LOADER
+ * Digabung ke admin-theme.js
  */
 
 (function () {
   "use strict";
 
-  const loader = document.getElementById("adminLoader");
+  function hideAdminLoader() {
+    const loader = document.getElementById("adminLoader");
+    if (!loader) return;
 
-  if (!loader) return;
-
-  // Hide loader setelah DOM siap
-  window.addEventListener("load", () => {
-    // Delay kecil agar transisi halus
     setTimeout(() => {
       loader.classList.add("hide");
     }, 200);
-  });
-})();
+  }
 
-window.AdminLoader = {
-  show() {
-    document.getElementById("adminLoader")?.classList.remove("hide");
-  },
-  hide() {
-    document.getElementById("adminLoader")?.classList.add("hide");
-  },
-};
+  // PASTIKAN DOM + RESOURCE SIAP
+  window.addEventListener("load", hideAdminLoader);
+})();
