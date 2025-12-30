@@ -335,7 +335,6 @@ body {
   body:not(.sidebar-toggled)::after {
     width: 170px;
     content: "";
-    position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.15);
     z-index: 998; /* DI BAWAH SIDEBAR */
