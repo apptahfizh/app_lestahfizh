@@ -142,22 +142,31 @@
       <div id="content-wrapper" class="d-flex flex-column">
         <!-- ================= TOPBAR ================= -->
           <nav
-            class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
-          >
-          <i class="fas fa-fw fa-home"></i>
-          <h1 class="h3 mt-4 mb-4 text-gray-800">Dashboard</h1>
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle">
-                  <span
-                    class="mr-2 d-none d-lg-inline text-gray-600 small"
-                    id="displayName"
-                  ></span>
-                  <i class="fas fa-user-circle fa-lg"></i>
-                </a>
-              </li>
-            </ul>
-          </nav>
+  class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+>
+  <!-- Toggle Sidebar (Mobile) -->
+  <button
+    id="sidebarToggleTop"
+    class="btn btn-link d-md-none rounded-circle mr-3"
+  >
+    <i class="fa fa-bars"></i>
+  </button>
+
+  <h1 class="h5 mb-0 text-gray-800">Dashboard</h1>
+
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item dropdown no-arrow">
+      <a class="nav-link dropdown-toggle">
+        <span
+          class="mr-2 d-none d-lg-inline text-gray-600 small"
+          id="displayName"
+        ></span>
+        <i class="fas fa-user-circle fa-lg"></i>
+      </a>
+    </li>
+  </ul>
+</nav>
+
           <!-- ================= END TOPBAR ================= -->
 
           <!-- ================= MAIN SCROLL AREA ================= -->
