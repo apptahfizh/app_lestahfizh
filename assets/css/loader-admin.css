@@ -22,7 +22,7 @@
   position: fixed;
   inset: 0;
   background: #f8f9fc;
-  z-index: 2000;
+  z-index: 1500;
 
   display: flex;
   align-items: center;
@@ -32,6 +32,7 @@
 #adminLoader.hide {
   opacity: 0;
   visibility: hidden;
+  pointer-events: none; /* 🔥 INI KUNCI */
   transition: opacity 0.3s ease;
 }
 
@@ -69,8 +70,4 @@
 
 #adminLoader {
   will-change: opacity;
-}
-
-#adminLoader.hide {
-  pointer-events: none;
 }
