@@ -1,38 +1,85 @@
-// ===============================
-// GLOBAL LOADER (ORTU)
-// ===============================
-function showGlobalLoading(text = "Memuat Data…") {
-  const loading = document.getElementById("globalLoading");
-  if (!loading) return;
+/**
+ * admin-theme.js
+ * Theme & UX helper khusus halaman admin / ustadz
+ * Fokus:
+ * - Sidebar auto-collapse di mobile
+ * - Toggle sidebar responsif & smooth
+ * - UX ramah MPA (tanpa SPA logic)
+ */
 
-  const textEl = loading.querySelector(".latin");
-  if (textEl) textEl.textContent = text;
+(function () {
+  "use strict";
 
-  document.body.classList.add("loading");
-  loading.classList.remove("d-none");
-}
+  // ===============================
+  // KONFIGURASI
+  // ===============================
+  const MOBILE_WIDTH = 768;
 
-function hideGlobalLoading(delay = 300) {
-  const loading = document.getElementById("globalLoading");
-  if (!loading) return;
-
-  setTimeout(() => {
-    loading.classList.add("d-none");
-    document.body.classList.remove("loading");
-  }, delay);
-}
-
-// ===============================
-// SAFE GLOBAL LOADER WRAPPER
-// ===============================
-function safeShowLoader(text) {
-  if (typeof showGlobalLoading === "function") {
-    showGlobalLoading(text);
+  // ===============================
+  // UTIL
+  // ===============================
+  function isMobile() {
+    return window.innerWidth <= MOBILE_WIDTH;
   }
-}
 
-function safeHideLoader(delay) {
-  if (typeof hideGlobalLoading === "function") {
-    hideGlobalLoading(delay);
+  function getSidebar() {
+    return document.querySelector(".sidebar");
   }
-}
+
+  function collapseSidebar() {
+    document.body.classList.add("sidebar-toggled");
+    getSidebar()?.classList.add("toggled");
+  }
+
+  function expandSidebar() {
+    document.body.classList.remove("sidebar-toggled");
+    getSidebar()?.classList.remove("toggled");
+  }
+
+  function toggleSidebar() {
+    document.body.classList.toggle("sidebar-toggled");
+    getSidebar()?.classList.toggle("toggled");
+  }
+
+  // ===============================
+  // AUTO COLLAPSE SAAT LOAD (MOBILE)
+  // ===============================
+  document.addEventListener("DOMContentLoaded", function () {
+    if (isMobile()) {
+      collapseSidebar();
+    }
+  });
+
+  // ===============================
+  // TOGGLE SIDEBAR BUTTON (TOPBAR)
+  // ===============================
+  document.addEventListener("click", function (e) {
+    const toggleBtn = e.target.closest("#sidebarToggleTop");
+    if (!toggleBtn) return;
+
+    e.preventDefault();
+    toggleSidebar();
+  });
+
+  // ===============================
+  // AUTO CLOSE SIDEBAR SAAT MENU DIKLIK (MOBILE)
+  // ===============================
+  document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
+    link.addEventListener("click", function () {
+      if (isMobile()) {
+        collapseSidebar();
+      }
+    });
+  });
+
+  // ===============================
+  // HANDLE RESIZE (ROTATE HP / RESIZE WINDOW)
+  // ===============================
+  window.addEventListener("resize", function () {
+    if (isMobile()) {
+      collapseSidebar();
+    } else {
+      expandSidebar();
+    }
+  });
+})();
