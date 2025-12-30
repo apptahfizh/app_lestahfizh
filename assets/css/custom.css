@@ -1,7 +1,6 @@
 /* ===============================
    GLOBAL LOCK SCROLL
 =============================== */
-/* Wrapper utama */
 #content-wrapper {
   display: flex;
   flex-direction: column;
@@ -9,41 +8,25 @@
   overflow: hidden;
 }
 
-/* Topbar tetap */
+/* ===============================
+   TOPBAR
+=============================== */
 .topbar {
   flex-shrink: 0;
   height: 70px;
   position: relative;
-  z-index: 1030;
+  z-index: 2000;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-/* Footer tetap di bawah */
-footer {
-  flex-shrink: 0;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  background: #d8d8da;
-  border-top: 1px solid #e5e7eb;
-  color: rgba(10, 10, 10, 0.85);
+.topbar i {
+  color: #2563eb;
 }
 
 /* ===============================
-   TOPBAR TETAP
+   MAIN SCROLL AREA
 =============================== */
-
-.topbar {
-  flex-shrink: 0;
-  height: 70px; /* samakan dengan tinggi asli */
-  z-index: 1020;
-}
-
-/* ===============================
-   AREA KONTEN SCROLL
-=============================== */
-
 .main-scroll {
   flex: 1;
   overflow-y: auto;
@@ -59,12 +42,12 @@ footer {
 }
 
 /* ===============================
-   BACKGROUND SIDEBAR
+   SIDEBAR
 =============================== */
-
 .sidebar {
   background: linear-gradient(180deg, #1f2937 0%, #272511 100%) !important;
 }
+
 .sidebar .nav-link {
   color: rgba(255, 255, 255, 0.75);
 }
@@ -75,305 +58,42 @@ footer {
   border-left: 4px solid #2563eb;
 }
 
-/* Icon brand */
-.sidebar-brand-icon i {
-  color: #c7c408;
-}
-/* Text brand */
-.sidebar-brand-text {
-  color: #c7c408;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-}
-
 /* ===============================
-   SIDEBAR ICON COLOR - FINAL
+   MOBILE SIDEBAR OVERLAY
 =============================== */
-
-/* Dashboard */
-.sidebar .nav-item .nav-link i.fa-home {
-  color: #38bdf8 !important;
-}
-
-/* Riwayat Hafalan */
-.sidebar .nav-item .nav-link i.fa-history,
-.sidebar .nav-item .nav-link i.fa-book {
-  color: #4ade80 !important;
-}
-
-/* Input / Setor */
-.sidebar .nav-item .nav-link i.fa-edit,
-.sidebar .nav-item .nav-link i.fa-pen {
-  color: #facc15 !important;
-}
-
-/* Peserta */
-.sidebar .nav-item .nav-link i.fa-users {
-  color: #a78bfa !important;
-}
-
-/* User */
-.sidebar .nav-item .nav-link i.fa-user,
-.sidebar .nav-item .nav-link i.fa-user-cog {
-  color: #fb7185 !important;
-}
-
-/* Logout */
-.sidebar .nav-item .nav-link i.fa-sign-out-alt {
-  color: #f87171 !important;
-}
-.sidebar .nav-item.active .nav-link i {
-  filter: brightness(1.15);
-}
-
-/* ===============================
-   BACKGROUND MAIN CONTENT
-=============================== */
-body {
-  background: #f9fafb;
-}
-.card {
-  border-radius: 12px;
-  border: none;
-}
-
-.card-header {
-  background: transparent;
-  border-bottom: 1px solid #e5e7eb;
-}
-.progress {
-  background: #e5e7eb;
-}
-
-.progress-bar {
-  background: linear-gradient(90deg, #16a34a, #4ade80);
-  font-weight: 600;
-}
-
-/* ===============================
-   BACKGROUND TOPBAR
-=============================== */
-
-.topbar {
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-}
-.topbar h1 {
-  color: #111827;
-}
-
-.topbar i {
-  color: #2563eb;
-}
-
-/* ===============================
-   PROGRESS BAR RIWAYAT HAFALAN
-=============================== */
-
-.progress-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.progress {
-  height: 10px;
-  background-color: #e5e7eb;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.progress-bar {
-  border-radius: 6px;
-}
-
-.progress-text {
-  font-size: 12px;
-  font-weight: 600;
-  color: #1f2937;
-  text-align: right;
-}
-
-/* ===============================
-   DASHBOARD CARD
-=============================== */
-
-.card {
-  border-radius: 12px;
-}
-
-/* ===============================
-   FULL WIDTH CHART CARD
-=============================== */
-
-.chart-card-full {
-  min-height: 460px;
-  border-radius: 12px;
-}
-
-/* canvas chart */
-.chart-card-full canvas {
-  width: 100% !important;
-  min-height: 360px;
-}
-
-/* Desktop besar */
-@media (min-width: 1200px) {
-  .chart-card-full {
-    min-height: 520px;
-  }
-
-  .chart-card-full canvas {
-    min-height: 420px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 575px) {
-  .chart-card-full {
-    min-height: 380px;
-  }
-
-  .chart-card-full canvas {
-    min-height: 300px;
-  }
-}
-
-/* ===============================
-   ABSENSI CARD VIEW (MOBILE)
-=============================== */
-.absensi-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 12px;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.absensi-card .tanggal {
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.absensi-card .status {
-  margin-top: 6px;
-}
-
-.absensi-card .keterangan {
-  font-size: 0.85rem;
-  color: #6b7280;
-  margin-top: 6px;
-}
-
-/* ===============================
-   FIX FOOTER MOBILE
-   =============================== */
-@media (max-width: 768px) {
-  .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50px;
-
-    background: #fff;
-    border-top: 1px solid #e3e6f0;
-    text-align: center;
-    line-height: 50px;
-    font-size: 0.85rem;
-
-    z-index: 1020;
-  }
-
-  /* beri ruang agar konten tidak ketutup footer */
-  .main-scroll {
-    padding-bottom: 40px;
-  }
-}
-
-@media (max-width: 768px) {
-  body {
-    overflow: hidden;
-  }
-
-  .main-scroll {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    height: calc(100vh - 56px);
-  }
-}
-/* ===============================
-   MOBILE SIDEBAR SCROLL FIX
-   =============================== */
-@media (max-width: 768px) {
-  .sidebar {
-    max-height: 100vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-}
-/* ===============================
-   TOGGLE BUTTON VISIBILITY
-   =============================== */
-@media (max-width: 768px) {
-  body:not(.sidebar-toggled) #sidebarToggleTop {
-    display: none;
-  }
-}
-
-/* ===============================
-   MOBILE SIDEBAR WIDTH FIX
-   =============================== */
-@media (max-width: 768px) {
-  body:not(.sidebar-toggled) .sidebar {
-    width: 100px !important;
-    min-width: 100px !important;
-  }
-}
-
-/* ===============================
-   SIDEBAR OVERLAY (MOBILE) - FIXED
-   =============================== */
 @media (max-width: 768px) {
   body:not(.sidebar-toggled)::after {
     content: "";
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.15);
-    z-index: 998; /* DI BAWAH SIDEBAR */
+    z-index: 998;
   }
 
   body.sidebar-toggled::after {
     display: none;
   }
 
-  /* PASTIKAN SIDEBAR DI ATAS OVERLAY */
   .sidebar {
     position: fixed;
     z-index: 999;
   }
 }
 
-@media (max-width: 768px) {
-  .sidebar.toggled {
-    width: 0 !important;
-    min-width: 0 !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .sidebar .nav-link {
-    position: relative;
-    z-index: 1000;
-  }
-}
 /* ===============================
-   FIX SIDEBAR TOGGLE CLICK
+   SIDEBAR TOGGLE BUTTON
    =============================== */
-
 #sidebarToggleTop {
   position: relative;
-  z-index: 2001; /* HARUS > loader */
+  z-index: 2001; /* PALING ATAS */
   pointer-events: auto;
 }
+
+/* ❌ DIBUANG — INI BIANG KELADI */
+/*
+@media (max-width: 768px) {
+  body:not(.sidebar-toggled) #sidebarToggleTop {
+    display: none;
+  }
+}
+*/
