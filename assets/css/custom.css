@@ -264,3 +264,41 @@ body {
   color: #6b7280;
   margin-top: 6px;
 }
+
+/* ===============================
+   FIX FOOTER MOBILE
+   =============================== */
+@media (max-width: 768px) {
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+
+    background: #fff;
+    border-top: 1px solid #e3e6f0;
+    text-align: center;
+    line-height: 50px;
+    font-size: 0.85rem;
+
+    z-index: 1020;
+  }
+
+  /* beri ruang agar konten tidak ketutup footer */
+  .main-scroll {
+    padding-bottom: 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow: hidden;
+  }
+
+  .main-scroll {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    height: calc(100vh - 56px);
+  }
+}

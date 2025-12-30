@@ -83,3 +83,9 @@
     }
   });
 })();
+// Fix viewport jump on mobile rotate
+window.addEventListener("orientationchange", () => {
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 200);
+});
