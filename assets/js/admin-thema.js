@@ -1,13 +1,13 @@
 /*
  * admin-thema.js
- * Theme & UX helper global
- * Admin / Ustadz (MPA)
+ * FINAL — race-condition safe
  */
 
 (function () {
   "use strict";
 
   const MOBILE_WIDTH = 768;
+  let isToggling = false; // 🔒 LOCK STATE
 
   /* ===============================
      UTIL
@@ -16,120 +16,109 @@
     return window.innerWidth <= MOBILE_WIDTH;
   }
 
-  function getSidebar() {
+  function sidebar() {
     return document.querySelector(".sidebar");
   }
 
   function collapseSidebar() {
     document.body.classList.add("sidebar-toggled");
-    getSidebar()?.classList.add("toggled");
+    sidebar()?.classList.add("toggled");
   }
 
   function expandSidebar() {
     document.body.classList.remove("sidebar-toggled");
-    getSidebar()?.classList.remove("toggled");
+    sidebar()?.classList.remove("toggled");
   }
 
   function toggleSidebar() {
     document.body.classList.toggle("sidebar-toggled");
-    getSidebar()?.classList.toggle("toggled");
+    sidebar()?.classList.toggle("toggled");
   }
 
   /* ===============================
-     AUTO COLLAPSE SAAT LOAD (MOBILE)
+     AUTO COLLAPSE ON LOAD (MOBILE)
   =============================== */
   document.addEventListener("DOMContentLoaded", () => {
-    if (isMobile()) {
-      collapseSidebar();
-    }
+    if (isMobile()) collapseSidebar();
   });
 
   /* ===============================
-     TOGGLE ☰ (EVENT LANGSUNG)
-     🔥 INI KUNCI UTAMA
+     TOGGLE ☰ — HARD SAFE
   =============================== */
   document.addEventListener("DOMContentLoaded", () => {
-    const toggleBtn = document.getElementById("sidebarToggleTop");
-    if (!toggleBtn) return;
+    const btn = document.getElementById("sidebarToggleTop");
+    if (!btn) return;
 
-    toggleBtn.addEventListener("click", function (e) {
+    btn.addEventListener("click", (e) => {
       e.preventDefault();
-      e.stopPropagation(); // 🔥 WAJIB
+      e.stopPropagation();
+
+      isToggling = true;
       toggleSidebar();
+
+      // 🔓 unlock AFTER event loop selesai
+      setTimeout(() => {
+        isToggling = false;
+      }, 50);
     });
   });
 
   /* ===============================
-     MENU SIDEBAR CLICK (MOBILE)
-     → Tutup sidebar, BIARKAN NAVIGASI
+     MENU CLICK (MOBILE)
   =============================== */
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
       link.addEventListener("click", () => {
-        if (isMobile()) {
-          collapseSidebar();
-        }
+        if (isMobile()) collapseSidebar();
       });
     });
   });
 
   /* ===============================
-     OUTSIDE CLICK (MOBILE ONLY)
-     → Tutup sidebar jika klik di luar
+     OUTSIDE CLICK — mousedown!
+     (ANTI RACE)
   =============================== */
-  document.addEventListener("click", function (e) {
+  document.addEventListener("mousedown", (e) => {
     if (!isMobile()) return;
+    if (isToggling) return; // 🔥 KUNCI UTAMA
 
-    const sidebar = getSidebar();
+    const sb = sidebar();
 
-    // Jika sidebar sudah tertutup → skip
     if (document.body.classList.contains("sidebar-toggled")) return;
-
-    // Klik di dalam sidebar → skip
-    if (sidebar && sidebar.contains(e.target)) return;
+    if (sb && sb.contains(e.target)) return;
 
     collapseSidebar();
   });
 
   /* ===============================
-     HANDLE RESIZE / ROTATE
+     RESIZE / ROTATE
   =============================== */
   window.addEventListener("resize", () => {
-    if (isMobile()) {
-      collapseSidebar();
-    } else {
-      expandSidebar();
-    }
+    if (isMobile()) collapseSidebar();
+    else expandSidebar();
   });
 
   window.addEventListener("orientationchange", () => {
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
+    setTimeout(() => window.scrollTo(0, 0), 200);
   });
 })();
 
 /* ===============================
-   ADMIN GLOBAL LOADER API
-   (dipakai oleh peserta.js, dll)
+   GLOBAL ADMIN LOADER API
 =============================== */
 (function () {
   "use strict";
 
-  function getLoader() {
+  function loader() {
     return document.getElementById("adminLoader");
   }
 
   window.AdminLoader = {
     show() {
-      const loader = getLoader();
-      if (!loader) return;
-      loader.classList.remove("hide");
+      loader()?.classList.remove("hide");
     },
     hide() {
-      const loader = getLoader();
-      if (!loader) return;
-      loader.classList.add("hide");
+      loader()?.classList.add("hide");
     },
   };
 })();
