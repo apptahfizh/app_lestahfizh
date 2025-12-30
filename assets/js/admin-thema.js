@@ -1,6 +1,7 @@
 /*
  * admin-thema.js
- * Global Admin Theme Controller (MPA SAFE)
+ * Theme & UX helper global
+ * Admin / Ustadz (MPA)
  */
 
 (function () {
@@ -8,112 +9,96 @@
 
   const MOBILE_WIDTH = 768;
 
-  const body = document.body;
-  const sidebar = document.querySelector(".sidebar");
-  const toggleBtn = document.getElementById("sidebarToggleTop");
-
-  if (!sidebar) return;
-
-  // ===============================
-  // STATE HELPERS
-  // ===============================
+  /* ===============================
+     UTIL
+  =============================== */
   function isMobile() {
     return window.innerWidth <= MOBILE_WIDTH;
   }
 
-  function isSidebarClosed() {
-    return body.classList.contains("sidebar-toggled");
+  function getSidebar() {
+    return document.querySelector(".sidebar");
   }
 
-  function closeSidebar() {
-    body.classList.add("sidebar-toggled");
-    sidebar.classList.add("toggled");
+  function collapseSidebar() {
+    document.body.classList.add("sidebar-toggled");
+    getSidebar()?.classList.add("toggled");
   }
 
-  function openSidebar() {
-    body.classList.remove("sidebar-toggled");
-    sidebar.classList.remove("toggled");
+  function expandSidebar() {
+    document.body.classList.remove("sidebar-toggled");
+    getSidebar()?.classList.remove("toggled");
   }
 
   function toggleSidebar() {
-    isSidebarClosed() ? openSidebar() : closeSidebar();
+    document.body.classList.toggle("sidebar-toggled");
+    getSidebar()?.classList.toggle("toggled");
   }
 
-  // ===============================
-  // INIT (ON LOAD)
-  // ===============================
+  /* ===============================
+     AUTO COLLAPSE SAAT LOAD (MOBILE)
+  =============================== */
   document.addEventListener("DOMContentLoaded", () => {
     if (isMobile()) {
-      closeSidebar();
-    } else {
-      openSidebar();
+      collapseSidebar();
     }
   });
 
-  // ===============================
-  // TOGGLE BUTTON
-  // ===============================
-  if (toggleBtn) {
+  /* ===============================
+     TOGGLE ☰ (EVENT LANGSUNG)
+     🔥 INI KUNCI UTAMA
+  =============================== */
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById("sidebarToggleTop");
+    if (!toggleBtn) return;
+
     toggleBtn.addEventListener("click", function (e) {
       e.preventDefault();
-      e.stopPropagation();
+      e.stopPropagation(); // 🔥 WAJIB
       toggleSidebar();
     });
-  }
+  });
 
-  // ===============================
-  // TOGGLE SIDEBAR BUTTON (TOPBAR)
-  // ===============================
+  /* ===============================
+     MENU SIDEBAR CLICK (MOBILE)
+     → Tutup sidebar, BIARKAN NAVIGASI
+  =============================== */
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
+      link.addEventListener("click", () => {
+        if (isMobile()) {
+          collapseSidebar();
+        }
+      });
+    });
+  });
+
+  /* ===============================
+     OUTSIDE CLICK (MOBILE ONLY)
+     → Tutup sidebar jika klik di luar
+  =============================== */
   document.addEventListener("click", function (e) {
-    if (window.innerWidth > 768) return;
+    if (!isMobile()) return;
 
-    const sidebar = document.querySelector(".sidebar");
-    const toggleBtn = document.getElementById("sidebarToggleTop");
-    const navLink = e.target.closest(".sidebar .nav-link");
+    const sidebar = getSidebar();
 
-    // CLICK TOGGLE
-    if (toggleBtn && toggleBtn.contains(e.target)) {
-      e.preventDefault();
-      toggleSidebar();
-      return;
-    }
-
-    // CLICK MENU SIDEBAR → BIARKAN NAVIGASI + TUTUP
-    if (navLink) {
-      collapseSidebar();
-      return;
-    }
-
-    // SIDEBAR SUDAH TERTUTUP
+    // Jika sidebar sudah tertutup → skip
     if (document.body.classList.contains("sidebar-toggled")) return;
 
-    // CLICK DI DALAM SIDEBAR
+    // Klik di dalam sidebar → skip
     if (sidebar && sidebar.contains(e.target)) return;
 
-    // CLICK DI LUAR SIDEBAR
     collapseSidebar();
   });
 
-  // ===============================
-  // AUTO CLOSE AFTER MENU CLICK (MOBILE)
-  // ===============================
-  sidebar.addEventListener("click", function (e) {
-    const link = e.target.closest(".nav-link");
-    if (!link) return;
-
-    if (isMobile()) {
-      closeSidebar();
-    }
-  });
-
-  // ===============================
-  // RESIZE / ROTATE
-  // ===============================
+  /* ===============================
+     HANDLE RESIZE / ROTATE
+  =============================== */
   window.addEventListener("resize", () => {
     if (isMobile()) {
-      closeSidebar();
+      collapseSidebar();
     } else {
-      openSidebar();
+      expandSidebar();
     }
   });
 
@@ -124,22 +109,27 @@
   });
 })();
 
-/**
- * ADMIN GLOBAL LOADER
- */
+/* ===============================
+   ADMIN GLOBAL LOADER API
+   (dipakai oleh peserta.js, dll)
+=============================== */
 (function () {
   "use strict";
 
-  const id = "adminLoader";
+  function getLoader() {
+    return document.getElementById("adminLoader");
+  }
 
   window.AdminLoader = {
     show() {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove("hide");
+      const loader = getLoader();
+      if (!loader) return;
+      loader.classList.remove("hide");
     },
     hide() {
-      const el = document.getElementById(id);
-      if (el) el.classList.add("hide");
+      const loader = getLoader();
+      if (!loader) return;
+      loader.classList.add("hide");
     },
   };
 })();
