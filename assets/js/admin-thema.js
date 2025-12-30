@@ -1,10 +1,6 @@
-/**
+/*
  * admin-theme.js
  * Theme & UX helper khusus halaman admin / ustadz
- * Fokus:
- * - Sidebar auto-collapse di mobile
- * - Toggle sidebar responsif & smooth
- * - UX ramah MPA (tanpa SPA logic)
  */
 
 (function () {
@@ -97,3 +93,24 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("sidebar-toggled");
   }
 });
+
+/**
+ * admin-loader.js
+ * Loader global untuk halaman admin / ustadz (MPA)
+ */
+
+(function () {
+  "use strict";
+
+  const loader = document.getElementById("adminLoader");
+
+  if (!loader) return;
+
+  // Hide loader setelah DOM siap
+  window.addEventListener("load", () => {
+    // Delay kecil agar transisi halus
+    setTimeout(() => {
+      loader.classList.add("hide");
+    }, 200);
+  });
+})();
