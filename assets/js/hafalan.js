@@ -153,10 +153,16 @@ async function simpanHafalan() {
       body: JSON.stringify(data),
     });
 
-    Swal.fire("Berhasil", "Hafalan berhasil disimpan", "success");
-
-    $("#formHafalan")[0].reset();
-    loadTabelHafalan();
+    Swal.fire({
+      icon: "success",
+      title: "Berhasil",
+      text: "Hafalan berhasil disimpan",
+      timer: 1200,
+      showConfirmButton: false,
+    }).then(() => {
+      resetModalHafalan(); // 🔥 TUTUP & RESET MODAL
+      loadTabelHafalan(); // 🔁 REFRESH TABEL
+    });
   } catch (err) {
     console.error("Gagal simpan hafalan:", err);
     Swal.fire("Error", "Gagal menyimpan hafalan", "error");
