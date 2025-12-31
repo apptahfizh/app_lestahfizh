@@ -1,25 +1,25 @@
 checkAuth(["admin", "ustadz"]); // hanya admin/ustadz bisa akses
+
 // =========================
 // HAFALAN.JS FINAL FIX
 // =========================
 
-$(document).ready(function () {
-  // Load data awal
-  loadPeserta(); // apiRequest internal
-  loadSurah(); // apiRequest internal
-  loadTabelHafalan(); // apiRequest internal
+let dataSurah = [];
 
-  // Auto hitung ayat
+$(document).ready(function () {
+  loadPeserta();
+  loadSurah();
+  loadTabelHafalan();
+
   $("#mulai_setor_ayat, #selesai_setor_ayat").on("input", updateAyatAuto);
 
-  // Simpan hafalan
   $("#btnSimpanHafalan").on("click", function () {
-    simpanHafalan(); // token ditangani apiRequest
+    simpanHafalan();
   });
 });
 
 // =========================
-// LOAD PESERTA (FINAL)
+// LOAD PESERTA
 // =========================
 async function loadPeserta() {
   try {
@@ -39,26 +39,26 @@ async function loadPeserta() {
 }
 
 // =========================
-// LOAD SURAH
+// LOAD SURAH ✅ FIX
 // =========================
-let dataSurah = [];
+async function loadSurah() {
+  try {
+    const data = await apiRequest("/surah");
 
-function loadSurah() {
-  async function loadSurah() {
-    try {
-      const data = await apiRequest("/surah");
+    dataSurah = data; // 🔥 penting untuk auto ayat
 
-      const select = $("#surah");
-      select.empty();
-      select.append(`<option value="">-- Pilih Surah --</option>`);
+    const select = $("#surah");
+    select.empty();
+    select.append(`<option value="">-- Pilih Surah --</option>`);
 
-      data.forEach((s) => {
-        select.append(`<option value="${s.id}">${s.nomor}. ${s.nama}</option>`);
-      });
-    } catch (err) {
-      console.error("Gagal load surah:", err);
-      Swal.fire("Error", "Gagal memuat data surah", "error");
-    }
+    data.forEach((s) => {
+      select.append(
+        `<option value="${s.id}">${s.nomor}. ${s.nama_surah}</option>`
+      );
+    });
+  } catch (err) {
+    console.error("Gagal load surah:", err);
+    Swal.fire("Error", "Gagal memuat data surah", "error");
   }
 }
 
@@ -79,17 +79,15 @@ function updateAyatAuto() {
       "warning"
     );
     $("#selesai_setor_ayat").val("");
-    selesai = 0;
+    return;
   }
 
-  // Ayat Hafal = 1 - selesai
   if (selesai > 0) {
     $("#ayat_hafal").val(`1 - ${selesai}`);
   } else {
     $("#ayat_hafal").val("");
   }
 
-  // Ayat Setor = mulai - selesai
   if (mulai > 0 && selesai > 0) {
     $("#ayat_setor").val(`${mulai} - ${selesai}`);
   } else {
@@ -98,7 +96,7 @@ function updateAyatAuto() {
 }
 
 // =========================
-// SIMPAN HAFALAN (FINAL)
+// SIMPAN HAFALAN
 // =========================
 async function simpanHafalan() {
   const data = {
@@ -112,7 +110,6 @@ async function simpanHafalan() {
     keterangan: $("#keterangan").val(),
   };
 
-  // Validasi
   if (
     !data.peserta_id ||
     !data.surah ||
@@ -133,7 +130,7 @@ async function simpanHafalan() {
     Swal.fire("Berhasil", "Hafalan berhasil disimpan", "success");
 
     $("#formHafalan")[0].reset();
-    loadTabelHafalan(); // 🔥 reload tabel
+    loadTabelHafalan();
   } catch (err) {
     console.error("Gagal simpan hafalan:", err);
     Swal.fire("Error", "Gagal menyimpan hafalan", "error");
@@ -153,12 +150,9 @@ async function loadTabelHafalan() {
 
     $("#tabelHafalan").DataTable({
       data,
-      searching: false, // 🔥 MATIKAN SEARCH
+      searching: false,
       columns: [
-        {
-          data: null,
-          render: (d, t, r, meta) => meta.row + 1,
-        },
+        { data: null, render: (d, t, r, meta) => meta.row + 1 },
         { data: "tanggal" },
         { data: "peserta" },
         { data: "surah_nama" },
