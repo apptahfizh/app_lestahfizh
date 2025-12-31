@@ -16,3 +16,9 @@
   position: relative;
   z-index: 2500;
 }
+/* IZINKAN EVENT BUBBLE DI HAFALAN */
+@media (max-width: 768px) {
+  body {
+    position: relative !important;
+  }
+}

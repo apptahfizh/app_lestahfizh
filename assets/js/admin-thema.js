@@ -122,3 +122,7 @@
     },
   };
 })();
+
+document.getElementById("sidebarToggleTop")?.addEventListener("click", () => {
+  console.log("☰ toggle clicked");
+});
