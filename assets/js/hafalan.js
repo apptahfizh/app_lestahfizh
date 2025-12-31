@@ -254,6 +254,10 @@ function renderHafalanCards(data) {
         📖 ${h.surah_nama} (${h.ayat_hafal})
       </div>
 
+      <div class="keterangan">
+        📖 ${h.keterangan}
+      </div>
+
       <div class="aksi">
         <button class="btn btn-sm btn-primary">OK</button>
       </div>
