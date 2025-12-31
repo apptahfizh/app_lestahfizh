@@ -179,11 +179,6 @@
     width: 100%;
   }
 }=============================== */
-@media (max-width: 768px) {
-  body:not(.sidebar-toggled) .main-scroll {
-    overflow: hidden;
-  }
-}
 
 @media (max-width: 768px) {
   .sidebar {
