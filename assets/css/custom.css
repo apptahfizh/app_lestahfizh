@@ -186,8 +186,6 @@
     position: fixed !important;
     top: 0;
     left: 0;
-    width: var(--sidebar-mobile-width);
-    min-width: var(--sidebar-mobile-width);
     height: 100dvh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
