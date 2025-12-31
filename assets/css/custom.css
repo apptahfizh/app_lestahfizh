@@ -162,8 +162,7 @@
     position: fixed !important;
     top: 0;
     left: 0;
-    height: 100dvh; /* viewport real mobile */
-    max-height: 100dvh;
+
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
