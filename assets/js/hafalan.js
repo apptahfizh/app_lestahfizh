@@ -9,18 +9,6 @@ function withLoader(promise) {
   });
 }
 
-$(document).ready(function () {
-  withLoader(loadPeserta());
-  withLoader(loadSurah());
-  withLoader(loadTabelHafalan());
-
-  $("#mulai_setor_ayat, #selesai_setor_ayat").on("input", updateAyatAuto);
-
-  $("#btnSimpanHafalan").on("click", function () {
-    withLoader(simpanHafalan());
-  });
-});
-
 checkAuth(["admin", "ustadz"]); // hanya admin/ustadz bisa akses
 
 // =========================
@@ -30,14 +18,14 @@ checkAuth(["admin", "ustadz"]); // hanya admin/ustadz bisa akses
 let dataSurah = [];
 
 $(document).ready(function () {
-  loadPeserta();
-  loadSurah();
-  loadTabelHafalan();
+  withLoader(loadPeserta());
+  withLoader(loadSurah());
+  withLoader(loadTabelHafalan());
 
   $("#mulai_setor_ayat, #selesai_setor_ayat").on("input", updateAyatAuto);
 
   $("#btnSimpanHafalan").on("click", function () {
-    simpanHafalan();
+    withLoader(simpanHafalan());
   });
 });
 
