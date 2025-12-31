@@ -157,22 +157,31 @@ function simpanHafalan(token) {
 // =========================
 // DATATABLE HAFALAN
 // =========================
-function loadTabelHafalan(token) {
-  $("#tabelHafalan").DataTable({
-    ajax: {
-      url: "http://localhost:5000/api/hafalan/table", // untuk tampilkan seluruh peserta gunakan /table bukan /last
-      headers: { Authorization: "Bearer " + token },
-      dataSrc: "",
-    },
-    searching: false, // 🔥 MATIKAN FITUR SEARCH
-    columns: [
-      { data: null, render: (d, t, r, meta) => meta.row + 1 },
-      { data: "tanggal" },
-      { data: "peserta" },
-      { data: "surah_nama" }, // gunakan nama surah
-      { data: "ayat_hafal" }, // kolom ayat hafal benar
-      { data: "keterangan" },
-    ],
-    destroy: true, // supaya bisa reload ulang
-  });
+async function loadTabelHafalan() {
+  try {
+    const data = await apiRequest("/hafalan/table");
+
+    if ($.fn.DataTable.isDataTable("#tabelHafalan")) {
+      $("#tabelHafalan").DataTable().clear().destroy();
+    }
+
+    $("#tabelHafalan").DataTable({
+      data,
+      searching: false, // 🔥 MATIKAN SEARCH
+      columns: [
+        {
+          data: null,
+          render: (d, t, r, meta) => meta.row + 1,
+        },
+        { data: "tanggal" },
+        { data: "peserta" },
+        { data: "surah_nama" },
+        { data: "ayat_hafal" },
+        { data: "keterangan" },
+      ],
+    });
+  } catch (err) {
+    console.error("Gagal load tabel hafalan:", err);
+    Swal.fire("Error", "Gagal memuat data hafalan", "error");
+  }
 }
