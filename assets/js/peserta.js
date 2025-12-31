@@ -1,15 +1,6 @@
 // ==============================
 // GLOBAL LOADER CONTROL
 // ==============================
-function showLoader() {
-  const loader = document.getElementById("adminLoader");
-  if (loader) loader.classList.remove("hide");
-}
-
-function hideLoader() {
-  const loader = document.getElementById("adminLoader");
-  if (loader) loader.classList.add("hide");
-}
 
 // ==============================
 // AUTH
