@@ -1,0 +1,18 @@
+/* FIX TOGGLE HAFALAN */
+#sidebarToggleTop {
+  position: relative;
+  z-index: 3000;
+  pointer-events: auto;
+}
+
+/* KHUSUS HAFALAN */
+.main-scroll {
+  position: relative;
+  z-index: 1;
+}
+
+/* KHUSUS HAFALAN */
+.topbar {
+  position: relative;
+  z-index: 2500;
+}
