@@ -2,6 +2,16 @@
 // GLOBAL LOADER CONTROL
 // ==============================
 
+function showLoader() {
+  const loader = document.getElementById("adminLoader");
+  if (loader) loader.classList.remove("hide");
+}
+
+function hideLoader() {
+  const loader = document.getElementById("adminLoader");
+  if (loader) loader.classList.add("hide");
+}
+
 // ==============================
 // AUTH
 // ==============================
@@ -33,8 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==============================
 async function loadPeserta() {
   try {
-    showLoader();
-
     const data = await apiRequest("/peserta");
 
     if (tabel) {
@@ -81,8 +89,6 @@ async function simpanPeserta() {
   }
 
   try {
-    showLoader();
-
     await apiRequest("/peserta", {
       method: "POST",
       body: JSON.stringify({ nama }),
