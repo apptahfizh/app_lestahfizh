@@ -83,11 +83,22 @@
   }
 }
 
-/* ❌ DIBUANG — INI BIANG KELADI */
-/*
+/* ===============================
+   DATATABLE MOBILE FIX
+=============================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 @media (max-width: 768px) {
-  body:not(.sidebar-toggled) #sidebarToggleTop {
-    display: none;
+  table.dataTable {
+    width: 100% !important;
+    min-width: 600px; /* paksa scroll, bukan lompat */
+  }
+
+  .card-body {
+    padding: 0.75rem;
   }
 }
-*/

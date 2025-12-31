@@ -52,6 +52,8 @@ async function loadPeserta() {
     }
 
     tabel = $("#tabelPeserta").DataTable({
+      scrollX: true,
+      autoWidth: false,
       data,
       columns: [
         { data: "id" },
