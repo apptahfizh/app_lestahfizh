@@ -157,8 +157,18 @@ async function loadTabelHafalan() {
       data,
       searching: false,
       columns: [
-        { data: null, render: (d, t, r, meta) => meta.row + 1 },
-        { data: "tanggal" },
+        {
+          data: null,
+          render: (d, t, r, meta) => meta.row + 1,
+        },
+        {
+          data: "tanggal",
+          render: function (data) {
+            if (!data) return "";
+            const d = new Date(data);
+            return d.toLocaleDateString("id-ID");
+          },
+        },
         { data: "peserta" },
         { data: "surah_nama" },
         { data: "ayat_hafal" },
