@@ -19,24 +19,22 @@ $(document).ready(function () {
 });
 
 // =========================
-// LOAD PESERTA
+// LOAD PESERTA (FINAL)
 // =========================
-function loadPeserta(token) {
-  async function loadPeserta() {
-    try {
-      const data = await apiRequest("/peserta/simple");
+async function loadPeserta() {
+  try {
+    const data = await apiRequest("/peserta/simple");
 
-      const select = $("#pesertaId");
-      select.empty();
-      select.append(`<option value="">-- Pilih Peserta --</option>`);
+    const select = $("#peserta_id");
+    select.empty();
+    select.append(`<option value="">-- Pilih Peserta --</option>`);
 
-      data.forEach((p) => {
-        select.append(`<option value="${p.id}">${p.nama}</option>`);
-      });
-    } catch (err) {
-      console.error("Gagal load peserta:", err);
-      Swal.fire("Error", "Gagal memuat data peserta", "error");
-    }
+    data.forEach((p) => {
+      select.append(`<option value="${p.id}">${p.nama}</option>`);
+    });
+  } catch (err) {
+    console.error("Gagal load peserta:", err);
+    Swal.fire("Error", "Gagal memuat data peserta", "error");
   }
 }
 
@@ -100,10 +98,10 @@ function updateAyatAuto() {
 }
 
 // =========================
-// SIMPAN HAFALAN
+// SIMPAN HAFALAN (FINAL)
 // =========================
-function simpanHafalan(token) {
-  let data = {
+async function simpanHafalan() {
+  const data = {
     peserta_id: $("#peserta_id").val(),
     tanggal: $("#tanggal").val(),
     surah: $("#surah").val(),
@@ -114,7 +112,7 @@ function simpanHafalan(token) {
     keterangan: $("#keterangan").val(),
   };
 
-  // Validasi wajib isi
+  // Validasi
   if (
     !data.peserta_id ||
     !data.surah ||
@@ -126,28 +124,19 @@ function simpanHafalan(token) {
     return;
   }
 
-  async function loadTabelHafalan() {
-    try {
-      const data = await apiRequest("/hafalan/table");
+  try {
+    await apiRequest("/hafalan", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
 
-      if ($.fn.DataTable.isDataTable("#tabelHafalan")) {
-        $("#tabelHafalan").DataTable().clear().destroy();
-      }
+    Swal.fire("Berhasil", "Hafalan berhasil disimpan", "success");
 
-      $("#tabelHafalan").DataTable({
-        data,
-        columns: [
-          { data: "tanggal" },
-          { data: "nama_peserta" },
-          { data: "surah" },
-          { data: "ayat" },
-          { data: "nilai" },
-        ],
-      });
-    } catch (err) {
-      console.error("Gagal load tabel hafalan:", err);
-      Swal.fire("Error", "Gagal memuat data hafalan", "error");
-    }
+    $("#formHafalan")[0].reset();
+    loadTabelHafalan(); // 🔥 reload tabel
+  } catch (err) {
+    console.error("Gagal simpan hafalan:", err);
+    Swal.fire("Error", "Gagal menyimpan hafalan", "error");
   }
 }
 
