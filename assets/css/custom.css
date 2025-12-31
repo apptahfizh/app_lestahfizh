@@ -213,14 +213,3 @@
     --sidebar-mobile-width: 240px;
   }
 }
-
-@media (max-width: 768px) {
-  body:not(.sidebar-toggled) #content-wrapper {
-    margin-left: var(--sidebar-mobile-width);
-    transition: margin-left 0.25s ease;
-  }
-
-  body.sidebar-toggled #content-wrapper {
-    margin-left: 0;
-  }
-}
