@@ -22,20 +22,17 @@
 
   function collapseSidebar() {
     document.body.classList.add("sidebar-toggled");
-    document.body.classList.remove("sidebar-open");
     sidebar()?.classList.add("toggled");
   }
 
   function expandSidebar() {
     document.body.classList.remove("sidebar-toggled");
-    document.body.classList.remove("sidebar-open");
     sidebar()?.classList.remove("toggled");
   }
 
   function toggleSidebar() {
     document.body.classList.toggle("sidebar-toggled");
-    document.body.classList.toggle("sidebar-open");
-    getSidebar()?.classList.toggle("toggled");
+    sidebar()?.classList.toggle("toggled");
   }
 
   /* ===============================

@@ -154,31 +154,3 @@
     display: none;
   }
 }
-
-/* ===============================
-   FIX SIDEBAR SCROLL ISSUE (MOBILE)
-=============================== */
-@media (max-width: 768px) {
-  .sidebar {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    height: 100dvh; /* viewport real mobile */
-    max-height: 100dvh;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    z-index: 1050;
-  }
-
-  body.sidebar-toggled .sidebar {
-    transform: translateX(-100%);
-  }
-}
-
-@media (max-width: 768px) {
-  body.sidebar-open {
-    overflow: hidden;
-    height: 100vh;
-  }
-}
