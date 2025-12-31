@@ -232,3 +232,9 @@
     min-width: 0;
   }
 }
+/* FIX TOGGLE HAFALAN */
+#sidebarToggleTop {
+  position: relative;
+  z-index: 3000;
+  pointer-events: auto;
+}
