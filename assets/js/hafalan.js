@@ -259,15 +259,7 @@ function renderHafalanCards(data) {
       </div>
 
       <div class="aksi">
-        <button class="btn btn-warning btn-sm"
-          onclick="editPeserta(${p.id}, '${p.nama.replace(/'/g, "\\'")}')">
-          <i class="fas fa-edit"></i>
-        </button>
-
-        <button class="btn btn-danger btn-sm"
-          onclick="hapusPeserta(${p.id})">
-          <i class="fas fa-trash"></i>
-        </button>
+        <button class="btn btn-sm btn-primary">OK</button>
       </div>
     `;
 
