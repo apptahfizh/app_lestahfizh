@@ -247,7 +247,7 @@ function renderHafalanCards(data) {
       <div class="nama">${p.peserta}<br>
         📅 ${formatTanggalID(p.tanggal)}<br>
         📖 ${p.surah_nama} (${p.ayat_hafal || "-"})<br>
-        ${p.keterangan || ""}
+        ✏️ ${p.keterangan || ""}
       </div>
 
       <div class="aksi">
