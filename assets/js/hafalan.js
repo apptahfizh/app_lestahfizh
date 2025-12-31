@@ -172,7 +172,7 @@ async function loadTabelHafalan() {
     // MOBILE → CARD LIST
     if (window.innerWidth < 768) {
       renderHafalanCards(data);
-      hideLoader();
+      AdminLoader.hide();
       return;
     }
 
