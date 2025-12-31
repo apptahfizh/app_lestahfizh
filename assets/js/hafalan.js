@@ -233,6 +233,9 @@ function resetModalHafalan() {
 // ==============================
 // RENDER HAFALAN CARD LIST (MOBILE)
 // ==============================
+// ==============================
+// RENDER HAFALAN CARD LIST (MOBILE)
+// ==============================
 function renderHafalanCards(data) {
   const container = document.getElementById("hafalanCardList");
   if (!container) return;
@@ -244,22 +247,27 @@ function renderHafalanCards(data) {
     card.className = "hafalan-card";
 
     card.innerHTML = `
-      <div class="nama">${h.peserta}</div>
+      <div class="nama">${h._peserta}</div>
 
-      <div class="tanggal">
-        📅 ${formatTanggalID(h.tanggal)}
+      <div class="meta">
+        📅 ${h.tanggal || "-"}<br>
+        📖 ${h.surah_nama} (${h.ayat_hafal || "-"})
       </div>
 
-      <div class="surah">
-        📖 ${h.surah_nama} (${h.ayat_hafal})
-      </div>
-
-      <div class="keterangan">
-        Ket: ${h.keterangan}
+      <div class="meta">
+        ${h.keterangan || ""}
       </div>
 
       <div class="aksi">
-        <button class="btn btn-sm btn-primary">OK</button>
+        <button class="btn btn-warning btn-sm"
+          onclick="editHafalan(${h.id})">
+          <i class="fas fa-edit"></i>
+        </button>
+
+        <button class="btn btn-danger btn-sm"
+          onclick="hapusHafalan(${h.id})">
+          <i class="fas fa-trash"></i>
+        </button>
       </div>
     `;
 
