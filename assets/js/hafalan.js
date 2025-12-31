@@ -4,20 +4,17 @@ checkAuth(["admin", "ustadz"]); // hanya admin/ustadz bisa akses
 // =========================
 
 $(document).ready(function () {
-  // Ambil token dari localStorage
-  const token = localStorage.getItem("token");
-
   // Load data awal
-  loadPeserta(token);
-  loadSurah();
-  loadTabelHafalan(token);
+  loadPeserta(); // apiRequest internal
+  loadSurah(); // apiRequest internal
+  loadTabelHafalan(); // apiRequest internal
 
-  // Trigger otomatis perhitungan ayat
+  // Auto hitung ayat
   $("#mulai_setor_ayat, #selesai_setor_ayat").on("input", updateAyatAuto);
 
   // Simpan hafalan
   $("#btnSimpanHafalan").on("click", function () {
-    simpanHafalan(token);
+    simpanHafalan(); // token ditangani apiRequest
   });
 });
 
