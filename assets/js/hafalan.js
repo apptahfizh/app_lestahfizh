@@ -39,22 +39,27 @@ async function loadPeserta() {
 }
 
 // =========================
-// LOAD SURAH ✅ FIX
+// LOAD SURAH (SELECT2 AUTOCOMPLETE)
 // =========================
 async function loadSurah() {
   try {
     const data = await apiRequest("/surah");
 
-    dataSurah = data; // 🔥 penting untuk auto ayat
+    dataSurah = data;
 
     const select = $("#surah");
     select.empty();
-    select.append(`<option value="">-- Pilih Surah --</option>`);
 
-    data.forEach((s) => {
-      select.append(
-        `<option value="${s.id}">${s.nomor}. ${s.nama_surah}</option>`
-      );
+    // Init Select2
+    select.select2({
+      data: data.map((s) => ({
+        id: s.id,
+        text: s.nama_surah, // 🔥 FIX: tanpa nomor
+      })),
+      placeholder: "Cari & pilih surah...",
+      allowClear: true,
+      width: "100%",
+      dropdownParent: $("#modalHafalan"), // 🔥 wajib untuk modal
     });
   } catch (err) {
     console.error("Gagal load surah:", err);
