@@ -169,6 +169,12 @@ async function simpanHafalan() {
 async function loadTabelHafalan() {
   try {
     const data = await apiRequest("/hafalan/table");
+    // MOBILE → CARD LIST
+    if (window.innerWidth < 768) {
+      renderHafalanCards(data);
+      hideLoader();
+      return;
+    }
 
     if ($.fn.DataTable.isDataTable("#tabelHafalan")) {
       $("#tabelHafalan").DataTable().clear().destroy();
@@ -222,4 +228,46 @@ function resetModalHafalan() {
     $(".modal-backdrop").remove();
     $("body").removeClass("modal-open");
   }, 200);
+}
+
+// ==============================
+// RENDER HAFALAN CARD LIST (MOBILE)
+// ==============================
+function renderHafalanCards(data) {
+  const container = document.getElementById("hafalanCardList");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  data.forEach((h) => {
+    const card = document.createElement("div");
+    card.className = "hafalan-card";
+
+    card.innerHTML = `
+      <div class="nama">${h.nama_peserta}</div>
+
+      <div class="meta">
+        📅 ${h.tanggal || "-"}<br>
+        📖 ${h.surah} (${h.ayat_hafal || "-"})
+      </div>
+
+      <div class="meta">
+        ${h.keterangan || ""}
+      </div>
+
+      <div class="aksi">
+        <button class="btn btn-warning btn-sm"
+          onclick="editHafalan(${h.id})">
+          <i class="fas fa-edit"></i>
+        </button>
+
+        <button class="btn btn-danger btn-sm"
+          onclick="hapusHafalan(${h.id})">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
 }
