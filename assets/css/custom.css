@@ -122,7 +122,7 @@
 }
 
 /* ===============================
-   PESERTA CARD LIST (MOBILE)
+   PESERTA & HAFALAN CARD LIST (MOBILE)
 =============================== */
 .peserta-card {
   background: #fff;
@@ -147,10 +147,16 @@
   display: flex;
   gap: 8px;
 }
-/* Sembunyikan tabel saat mobile */
+/* Sembunyikan tabel peserta saat mobile */
 @media (max-width: 768px) {
   #tabelPeserta {
     display: none;
+  }
+}
+/* Sembunyikan tabel hafalan saat mobile */
+@media (max-width: 768px) {
+  #tabelHafalan {
+    display: none !important;
   }
 }
 
