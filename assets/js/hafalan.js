@@ -120,7 +120,7 @@ async function simpanHafalan() {
 
     tanggal: $("#tanggal").val() || null,
 
-    surah: parseInt($("#surah").val(), 10),
+    surah: $("#surah").val() ? parseInt($("#surah").val(), 10) : null,
 
     ayat_hafal: $("#ayat_hafal").val() || null,
     ayat_setor: $("#ayat_setor").val() || null,
