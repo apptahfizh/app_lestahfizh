@@ -239,7 +239,7 @@ function renderHafalanCards(data) {
 
   container.innerHTML = "";
 
-  data.forEach((p) => {
+  data.forEach((h) => {
     const card = document.createElement("div");
     card.className = "hafalan-card";
 
