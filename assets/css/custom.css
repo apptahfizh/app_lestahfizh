@@ -62,24 +62,25 @@
    MOBILE SIDEBAR OVERLAY
 =============================== */
 @media (max-width: 768px) {
-  body:not(.sidebar-toggled)::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.15);
-    z-index: 998;
+  body.sidebar-toggled .sidebar {
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
+  }
 
-    pointer-events: none; /* 🔥 INI KUNCI ABSOLUT */
+  body:not(.sidebar-toggled) .sidebar {
+    width: 100px; /* atau 150px */
+    min-width: 100px;
   }
 }
 
 /* ===============================
    SIDEBAR TOGGLE BUTTON
    =============================== */
-#sidebarToggleTop {
-  position: relative;
-  z-index: 2001; /* PALING ATAS */
-  pointer-events: auto;
+@media (max-width: 768px) {
+  #sidebarToggleTop {
+    display: inline-flex;
+  }
 }
 
 /* ❌ DIBUANG — INI BIANG KELADI */
