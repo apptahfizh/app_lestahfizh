@@ -251,7 +251,7 @@ function renderHafalanCards(data) {
       </div>
 
       <div class="surah">
-        📖 ${h.surah_nama} (${h.ayat_awal}-${h.ayat_akhir})
+        📖 ${h.surah_nama} (${h.ayat_hafal})
       </div>
 
       <div class="aksi">
