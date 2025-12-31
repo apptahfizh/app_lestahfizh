@@ -1,3 +1,26 @@
+// =========================
+// LOADER WRAPPER (PAGE LEVEL)
+// =========================
+function withLoader(promise) {
+  if (window.AdminLoader) AdminLoader.show();
+
+  return promise.finally(() => {
+    if (window.AdminLoader) AdminLoader.hide();
+  });
+}
+
+$(document).ready(function () {
+  withLoader(loadPeserta());
+  withLoader(loadSurah());
+  withLoader(loadTabelHafalan());
+
+  $("#mulai_setor_ayat, #selesai_setor_ayat").on("input", updateAyatAuto);
+
+  $("#btnSimpanHafalan").on("click", function () {
+    withLoader(simpanHafalan());
+  });
+});
+
 checkAuth(["admin", "ustadz"]); // hanya admin/ustadz bisa akses
 
 // =========================
