@@ -210,3 +210,13 @@
     --sidebar-mobile-width: 240px;
   }
 }
+
+/* ===============================
+   PADDING CONTENT KHUSUS MOBILE
+=============================== */
+@media (max-width: 768px) {
+  #content .container-fluid {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
