@@ -244,30 +244,32 @@ function renderHafalanCards(data) {
     card.className = "hafalan-card";
 
     card.innerHTML = `
-      <div class="nama">${h.nama_peserta}</div>
+      <div class="nama">${h.peserta}</div>
 
-      <div class="meta">
-        📅 ${h.tanggal || "-"}<br>
-        📖 ${h.surah} (${h.ayat_hafal || "-"})
+      <div class="tanggal">
+        📅 ${formatTanggalID(h.tanggal)}
       </div>
 
-      <div class="meta">
-        ${h.keterangan || ""}
+      <div class="surah">
+        📖 ${h.surah_nama} (${h.ayat_awal}-${h.ayat_akhir})
       </div>
 
       <div class="aksi">
-        <button class="btn btn-warning btn-sm"
-          onclick="editHafalan(${h.id})">
-          <i class="fas fa-edit"></i>
-        </button>
-
-        <button class="btn btn-danger btn-sm"
-          onclick="hapusHafalan(${h.id})">
-          <i class="fas fa-trash"></i>
-        </button>
+        <button class="btn btn-sm btn-primary">OK</button>
       </div>
     `;
 
     container.appendChild(card);
+  });
+}
+
+function formatTanggalID(dateString) {
+  if (!dateString) return "-";
+
+  const d = new Date(dateString);
+  return d.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
   });
 }
