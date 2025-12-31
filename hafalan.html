@@ -7,6 +7,7 @@
 
     <!-- SB Admin 2 CSS -->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet" />
+    <link href="assets/css/loader-admin.css" rel="stylesheet" />
     <link href="assets/css/custom.css" rel="stylesheet" />
     <!-- Select2 CSS -->
     <link href="assets/vendor/select2/select2.min.css" rel="stylesheet" />
@@ -132,13 +133,30 @@
       <!-- ================= CONTENT WRAPPER ================= -->
       <div id="content-wrapper" class="d-flex flex-column">
         <!-- ================= TOPBAR ================= -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar shadow">
-          <div class="d-flex align-items-center">
-            <h1 id="pageTitle" class="topbar-title">
-              <i class="fas fa-fw fa-book"></i>
-              <span class="topbar-name">Input & List Hafalan</span>
-            </h1>
-          </div>
+        <nav
+          class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+        >
+          <!-- Toggle Sidebar (Mobile) -->
+          <button
+            id="sidebarToggleTop"
+            class="btn btn-link d-md-none rounded-circle mr-3"
+          >
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <h1 class="h5 mb-0 text-gray-800">Hafalan</h1>
+
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle">
+                <span
+                  class="mr-2 d-none d-lg-inline text-gray-600 small"
+                  id="displayName"
+                ></span>
+                <i class="fas fa-user-circle fa-lg"></i>
+              </a>
+            </li>
+          </ul>
         </nav>
         <!-- ================= END TOPBAR ================= -->
 
@@ -295,6 +313,17 @@
       </div>
     </div>
     <!-- ====================== END MODAL ====================== -->
+
+    <!-- ================= GLOBAL LOADER ================= -->
+    <div id="adminLoader">
+      <div class="loader-content">
+        <div class="spinner"></div>
+        <div class="loader-text">
+          <div class="arabic basmallah">﷽</div>
+          <div class="latin">Memuat Data…</div>
+        </div>
+      </div>
+    </div>
 
     <script src="assets/vendor/jquery/jquery.min.js"></script>
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
