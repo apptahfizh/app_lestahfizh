@@ -172,14 +172,14 @@
 
 /* ===============================
    LOCK FOOTER ketika SIDEBAR OPEN (MOBILE)
-=============================== */
+
 @media (max-width: 768px) {
   body:not(.sidebar-toggled) {
     overflow: hidden;
     position: fixed;
     width: 100%;
   }
-}
+}=============================== */
 
 @media (max-width: 768px) {
   .sidebar {
@@ -193,9 +193,9 @@
     transition: transform 0.25s ease;
   }
 
-  body.sidebar-toggled .sidebar {
+  /* body.sidebar-toggled .sidebar {
     transform: translateX(-100%);
-  }
+  }*/
 }
 
 @media (max-width: 768px) {
