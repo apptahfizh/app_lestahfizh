@@ -169,3 +169,13 @@
     padding-top: 0 !important;
   }
 }
+
+/* ===============================
+   LOCK FOOTER ketika SIDEBAR OPEN (MOBILE)
+=============================== */
+@media (max-width: 768px) {
+  body:not(.sidebar-toggled) footer,
+  body:not(.sidebar-toggled) .footer {
+    display: none !important;
+  }
+}
