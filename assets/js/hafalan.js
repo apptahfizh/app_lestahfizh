@@ -118,7 +118,7 @@ async function simpanHafalan() {
   const data = {
     peserta_id: $("#peserta_id").val(),
     tanggal: $("#tanggal").val(),
-    surah_id: $("#surah").val(),
+    surah: parseInt($("#surah").val(), 10),
     mulai_setor_ayat: $("#mulai_setor_ayat").val(),
     selesai_setor_ayat: $("#selesai_setor_ayat").val(),
     ayat_hafal: $("#ayat_hafal").val(),
@@ -128,7 +128,7 @@ async function simpanHafalan() {
 
   if (
     !data.peserta_id ||
-    !data.surah_id ||
+    !data.surah ||
     !data.tanggal ||
     !data.mulai_setor_ayat ||
     !data.selesai_setor_ayat
