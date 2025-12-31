@@ -102,3 +102,22 @@
     padding: 0.75rem;
   }
 }
+/* ===============================
+   DATATABLE TEXT WRAP FIX
+=============================== */
+
+/* Kolom Nama Peserta */
+#tabelPeserta td:nth-child(2),
+#tabelPeserta th:nth-child(2) {
+  white-space: normal !important; /* BOLEH TURUN BARIS */
+  word-break: break-word;
+  max-width: 220px; /* BATAS AMAN MOBILE */
+}
+
+/* Desktop boleh lebih lebar */
+@media (min-width: 769px) {
+  #tabelPeserta td:nth-child(2),
+  #tabelPeserta th:nth-child(2) {
+    max-width: 400px;
+  }
+}

@@ -22,6 +22,7 @@ checkAuth(["admin", "ustadz"]); // hanya admin / ustadz
 // ==============================
 
 let tabel = null;
+let editingId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   loadPeserta();
@@ -61,11 +62,16 @@ async function loadPeserta() {
         {
           data: null,
           render: (d) => `
-            <button class="btn btn-danger btn-sm"
-              onclick="hapusPeserta(${d.id})">
-              <i class="fas fa-trash"></i>
-            </button>
-          `,
+    <button class="btn btn-warning btn-sm mr-1"
+      onclick="editPeserta(${d.id}, '${d.nama.replace(/'/g, "\\'")}')">
+      <i class="fas fa-edit"></i>
+    </button>
+
+    <button class="btn btn-danger btn-sm"
+      onclick="hapusPeserta(${d.id})">
+      <i class="fas fa-trash"></i>
+    </button>
+  `,
         },
       ],
       initComplete() {
@@ -91,24 +97,35 @@ async function simpanPeserta() {
   }
 
   try {
-    await apiRequest("/peserta", {
-      method: "POST",
-      body: JSON.stringify({ nama }),
-    });
+    showLoader();
 
-    Swal.fire({
-      icon: "success",
-      title: "Berhasil",
-      text: "Peserta berhasil ditambahkan",
-      timer: 1200,
-      showConfirmButton: false,
-    });
+    if (editingId) {
+      // UPDATE
+      await apiRequest(`/peserta/${editingId}`, {
+        method: "PUT",
+        body: JSON.stringify({ nama }),
+      });
+
+      Swal.fire("Berhasil", "Data peserta diperbarui", "success");
+    } else {
+      // CREATE
+      await apiRequest("/peserta", {
+        method: "POST",
+        body: JSON.stringify({ nama }),
+      });
+
+      Swal.fire("Berhasil", "Peserta berhasil ditambahkan", "success");
+    }
 
     $("#modalPeserta").modal("hide");
+    editingId = null;
+    document.getElementById("btnSimpanPeserta").innerText = "Simpan";
+
     loadPeserta();
-  } catch (err) {
+  } catch {
+    Swal.fire("Error", "Gagal menyimpan data", "error");
+  } finally {
     hideLoader();
-    Swal.fire("Error", "Gagal menambah peserta", "error");
   }
 }
 
@@ -140,3 +157,22 @@ async function hapusPeserta(id) {
     Swal.fire("Error", "Gagal menghapus peserta", "error");
   }
 }
+// ==============================
+// EDIT PESERTA
+// ==============================
+function editPeserta(id, nama) {
+  editingId = id;
+
+  document.getElementById("namaPeserta").value = nama;
+
+  // Ganti teks tombol
+  document.getElementById("btnSimpanPeserta").innerText = "Update";
+
+  $("#modalPeserta").modal("show");
+}
+
+$("#modalPeserta").on("hidden.bs.modal", () => {
+  editingId = null;
+  document.getElementById("namaPeserta").value = "";
+  document.getElementById("btnSimpanPeserta").innerText = "Simpan";
+});
