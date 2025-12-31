@@ -136,13 +136,7 @@ async function simpanHafalan() {
     keterangan: $("#keterangan").val() || null,
   };
 
-  if (
-    !data.peserta_id ||
-    !data.surah ||
-    !data.tanggal ||
-    !data.mulai_setor_ayat ||
-    !data.selesai_setor_ayat
-  ) {
+  if (!data.peserta_id || !data.surah || !data.tanggal) {
     Swal.fire("Lengkapi data!", "Field wajib tidak boleh kosong.", "warning");
     return;
   }
