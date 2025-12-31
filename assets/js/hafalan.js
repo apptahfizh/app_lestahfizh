@@ -201,3 +201,25 @@ async function loadTabelHafalan() {
     Swal.fire("Error", "Gagal memuat data hafalan", "error");
   }
 }
+
+// =========================
+// Helper Reset Modal
+// =========================
+function resetModalHafalan() {
+  const modal = $("#modalHafalan");
+
+  // Reset form native
+  $("#formHafalan")[0].reset();
+
+  // Reset Select2 (WAJIB manual)
+  $("#surah").val(null).trigger("change");
+
+  // Pastikan modal benar-benar tertutup
+  modal.modal("hide");
+
+  // Bersihkan backdrop & class (ANTI BUG BOOTSTRAP)
+  setTimeout(() => {
+    $(".modal-backdrop").remove();
+    $("body").removeClass("modal-open");
+  }, 200);
+}
