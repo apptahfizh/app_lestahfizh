@@ -116,14 +116,18 @@ function updateAyatAuto() {
 // =========================
 async function simpanHafalan() {
   const data = {
-    peserta_id: $("#peserta_id").val(),
-    tanggal: $("#tanggal").val(),
-    surah: parseInt($("#surah").val(), 10),
-    mulai_setor_ayat: $("#mulai_setor_ayat").val(),
-    selesai_setor_ayat: $("#selesai_setor_ayat").val(),
-    ayat_hafal: $("#ayat_hafal").val(),
-    ayat_setor: $("#ayat_setor").val(),
-    keterangan: $("#keterangan").val(),
+    peserta_id: parseInt($("#peserta_id").val(), 10),
+    tanggal: $("#tanggal").val() || null,
+    surah: parseInt($("#surah").val(), 10), // 🔥 WAJIB `surah`
+    ayat_hafal: $("#ayat_hafal").val() || null,
+    ayat_setor: $("#ayat_setor").val() || null,
+    mulai_setor_ayat: $("#mulai_setor_ayat").val()
+      ? parseInt($("#mulai_setor_ayat").val(), 10)
+      : null,
+    selesai_setor_ayat: $("#selesai_setor_ayat").val()
+      ? parseInt($("#selesai_setor_ayat").val(), 10)
+      : null,
+    keterangan: $("#keterangan").val() || null,
   };
 
   if (
