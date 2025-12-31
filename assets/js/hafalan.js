@@ -25,29 +25,22 @@ $(document).ready(function () {
 // LOAD PESERTA
 // =========================
 function loadPeserta(token) {
-  $.ajax({
-    url: "http://localhost:5000/api/peserta/simple",
-    method: "GET",
-    headers: { Authorization: "Bearer " + token }, // pastikan token dikirim
-    success: function (res) {
-      $("#peserta_id")
-        .empty()
-        .append(`<option value="">-- Pilih Peserta --</option>`);
+  async function loadPeserta() {
+    try {
+      const data = await apiRequest("/peserta/simple");
 
-      res.forEach((r) => {
-        $("#peserta_id").append(`<option value="${r.id}">${r.nama}</option>`);
-      });
+      const select = $("#pesertaId");
+      select.empty();
+      select.append(`<option value="">-- Pilih Peserta --</option>`);
 
-      // Initialize Select2
-      $("#peserta_id").select2({
-        dropdownParent: $("#modalHafalan"),
-        width: "100%",
+      data.forEach((p) => {
+        select.append(`<option value="${p.id}">${p.nama}</option>`);
       });
-    },
-    error: function (err) {
+    } catch (err) {
       console.error("Gagal load peserta:", err);
-    },
-  });
+      Swal.fire("Error", "Gagal memuat data peserta", "error");
+    }
+  }
 }
 
 // =========================
@@ -56,33 +49,22 @@ function loadPeserta(token) {
 let dataSurah = [];
 
 function loadSurah() {
-  $.ajax({
-    url: "http://localhost:5000/api/surah",
-    method: "GET",
-    success: function (res) {
-      dataSurah = res;
+  async function loadSurah() {
+    try {
+      const data = await apiRequest("/surah");
 
-      $("#surah").empty().append(`<option value="">-- Pilih Surah --</option>`);
+      const select = $("#surah");
+      select.empty();
+      select.append(`<option value="">-- Pilih Surah --</option>`);
 
-      res.forEach((s) => {
-        $("#surah").append(
-          `<option value="${s.id}" data-ayat="${s.jumlah_ayat}">
-            ${s.nama_surah}
-          </option>`
-        );
+      data.forEach((s) => {
+        select.append(`<option value="${s.id}">${s.nomor}. ${s.nama}</option>`);
       });
-
-      $("#surah").select2({
-        dropdownParent: $("#modalHafalan"),
-        width: "100%",
-      });
-
-      $("#surah").on("change", updateAyatAuto);
-    },
-    error: function (err) {
+    } catch (err) {
       console.error("Gagal load surah:", err);
-    },
-  });
+      Swal.fire("Error", "Gagal memuat data surah", "error");
+    }
+  }
 }
 
 // =========================
@@ -147,25 +129,29 @@ function simpanHafalan(token) {
     return;
   }
 
-  $.ajax({
-    url: "http://localhost:5000/api/hafalan",
-    method: "POST",
-    headers: { Authorization: "Bearer " + token },
-    contentType: "application/json",
-    data: JSON.stringify(data),
-    success: function () {
-      Swal.fire("Berhasil!", "Data hafalan berhasil disimpan", "success");
+  async function loadTabelHafalan() {
+    try {
+      const data = await apiRequest("/hafalan/table");
 
-      $("#modalHafalan").modal("hide");
-      $("#formHafalan")[0].reset();
+      if ($.fn.DataTable.isDataTable("#tabelHafalan")) {
+        $("#tabelHafalan").DataTable().clear().destroy();
+      }
 
-      $("#tabelHafalan").DataTable().ajax.reload();
-    },
-    error: function (err) {
-      console.error(err);
-      Swal.fire("Gagal!", "Terjadi kesalahan saat menyimpan", "error");
-    },
-  });
+      $("#tabelHafalan").DataTable({
+        data,
+        columns: [
+          { data: "tanggal" },
+          { data: "nama_peserta" },
+          { data: "surah" },
+          { data: "ayat" },
+          { data: "nilai" },
+        ],
+      });
+    } catch (err) {
+      console.error("Gagal load tabel hafalan:", err);
+      Swal.fire("Error", "Gagal memuat data hafalan", "error");
+    }
+  }
 }
 
 // =========================
