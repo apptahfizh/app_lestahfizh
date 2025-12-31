@@ -46,6 +46,13 @@ async function loadPeserta() {
   try {
     const data = await apiRequest("/peserta");
 
+    // MOBILE → CARD LIST
+    if (window.innerWidth < 768) {
+      renderPesertaCards(data);
+      hideLoader();
+      return;
+    }
+
     if (tabel) {
       tabel.clear();
       tabel.destroy();
@@ -176,3 +183,36 @@ $("#modalPeserta").on("hidden.bs.modal", () => {
   document.getElementById("namaPeserta").value = "";
   document.getElementById("btnSimpanPeserta").innerText = "Simpan";
 });
+
+// ==============================
+// RENDER CARD LIST
+// ==============================
+function renderPesertaCards(data) {
+  const container = document.getElementById("pesertaCardList");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  data.forEach((p) => {
+    const card = document.createElement("div");
+    card.className = "peserta-card";
+
+    card.innerHTML = `
+      <div class="nama">${p.nama}</div>
+
+      <div class="aksi">
+        <button class="btn btn-warning btn-sm"
+          onclick="editPeserta(${p.id}, '${p.nama.replace(/'/g, "\\'")}')">
+          <i class="fas fa-edit"></i>
+        </button>
+
+        <button class="btn btn-danger btn-sm"
+          onclick="hapusPeserta(${p.id})">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
