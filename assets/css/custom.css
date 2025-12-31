@@ -179,3 +179,14 @@
     display: none !important;
   }
 }
+
+@media (max-width: 768px) {
+  body:not(.sidebar-toggled) {
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  body:not(.sidebar-toggled) .sidebar {
+    touch-action: pan-y;
+  }
+}
