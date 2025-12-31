@@ -174,19 +174,31 @@
    LOCK FOOTER ketika SIDEBAR OPEN (MOBILE)
 =============================== */
 @media (max-width: 768px) {
-  body:not(.sidebar-toggled) footer,
-  body:not(.sidebar-toggled) .footer {
-    display: none !important;
+  body:not(.sidebar-toggled) {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
   }
 }
 
 @media (max-width: 768px) {
-  body:not(.sidebar-toggled) {
-    overflow: hidden;
-    touch-action: none;
-  }
-
   body:not(.sidebar-toggled) .sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
+    z-index: 1050;
+  }
+}
+
+@media (max-width: 768px) {
+  body:not(.sidebar-toggled) footer,
+  body:not(.sidebar-toggled) .footer {
+    display: none !important;
   }
 }
