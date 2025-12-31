@@ -154,3 +154,18 @@
     display: none;
   }
 }
+
+/* ===============================
+   HIDE TOPBAR WHEN SIDEBAR OPEN (MOBILE)
+=============================== */
+@media (max-width: 768px) {
+  body:not(.sidebar-toggled) .topbar {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    padding-top: 0 !important;
+  }
+}
