@@ -42,12 +42,14 @@ $(document).ready(function () {
     serverSide: true,
     searching: true,
 
-    ajax: function (data, callback) {
+    ajax: function (dt, callback) {
       const tanggalMulai = $("#filterTanggalMulai").val();
       const tanggalSelesai = $("#filterTanggalSelesai").val();
       const peserta = $("#filterPeserta").val();
 
-      // VALIDASI FRONTEND (khusus DataTables)
+      // =============================
+      // VALIDASI FILTER TANGGAL
+      // =============================
       if (
         (tanggalMulai && !tanggalSelesai) ||
         (!tanggalMulai && tanggalSelesai)
@@ -58,9 +60,8 @@ $(document).ready(function () {
           text: "Pilih tanggal mulai dan tanggal selesai",
         });
 
-        // 🔴 INI PENTING → HENTIKAN PROCESSING
         callback({
-          draw: data.draw,
+          draw: dt.draw,
           recordsTotal: 0,
           recordsFiltered: 0,
           data: [],
@@ -68,26 +69,32 @@ $(document).ready(function () {
         return;
       }
 
+      // =============================
+      // PARAMETER KHUSUS DATATABLES
+      // =============================
       const params = {
-        ...data,
+        draw: dt.draw,
+        start: dt.start,
+        length: dt.length,
+        search: dt.search?.value || "",
         tanggal_mulai: tanggalMulai,
         tanggal_selesai: tanggalSelesai,
-        peserta,
+        peserta: peserta,
       };
 
       apiRequest("/hafalan/all", "GET", params)
         .then((res) => {
           callback({
-            draw: res.draw ?? data.draw,
-            recordsTotal: res.recordsTotal ?? 0,
-            recordsFiltered: res.recordsFiltered ?? 0,
-            data: res.data ?? [],
+            draw: res.draw,
+            recordsTotal: res.recordsTotal,
+            recordsFiltered: res.recordsFiltered,
+            data: res.data,
           });
         })
         .catch((err) => {
-          console.error(err);
+          console.error("DT error:", err);
           callback({
-            draw: data.draw,
+            draw: dt.draw,
             recordsTotal: 0,
             recordsFiltered: 0,
             data: [],
