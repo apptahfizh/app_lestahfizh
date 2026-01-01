@@ -9,50 +9,57 @@ function withLoader(promise) {
   });
 }
 
+// ===============================
+// VALIDASI FILTER TANGGAL (GLOBAL)
+// ===============================
+function validateFilterTanggal() {
+  const mulai = $("#filterTanggalMulai").val();
+  const selesai = $("#filterTanggalSelesai").val();
+
+  // Keduanya kosong → OK
+  if (!mulai && !selesai) return true;
+
+  // Salah satu saja → TOLAK
+  if (!mulai || !selesai) {
+    Swal.fire({
+      icon: "warning",
+      title: "Filter tanggal tidak valid",
+      text: "Tanggal mulai dan tanggal selesai harus diisi bersamaan",
+    });
+    return false;
+  }
+
+  // Range terbalik
+  if (mulai > selesai) {
+    Swal.fire({
+      icon: "warning",
+      title: "Range tanggal salah",
+      text: "Tanggal mulai tidak boleh lebih besar dari tanggal selesai",
+    });
+    return false;
+  }
+
+  return true;
+}
+
+// =========================
+// FLAG LOADER
+// =========================
 let suppressLoader = false;
 
 $(document).ready(function () {
-  checkAuth(["admin", "ustadz"]); // hanya admin / ustadz
-  /* ===============================
-     VALIDASI FILTER TANGGAL
-  =============================== */
-  function validateFilterTanggal() {
-    const mulai = $("#filterTanggalMulai").val();
-    const selesai = $("#filterTanggalSelesai").val();
+  // =========================
+  // AUTH
+  // =========================
+  checkAuth(["admin", "ustadz"]);
 
-    // Keduanya kosong → OK (tampilkan semua data)
-    if (!mulai && !selesai) return true;
-
-    // Salah satu saja diisi → TOLAK
-    if (!mulai || !selesai) {
-      Swal.fire({
-        icon: "warning",
-        title: "Filter tanggal tidak valid",
-        text: "Tanggal mulai dan tanggal selesai harus diisi bersamaan",
-      });
-      return false;
-    }
-
-    // Range terbalik
-    if (mulai > selesai) {
-      Swal.fire({
-        icon: "warning",
-        title: "Range tanggal salah",
-        text: "Tanggal mulai tidak boleh lebih besar dari tanggal selesai",
-      });
-      return false;
-    }
-
-    return true;
-  }
-
-  /* ===============================
-     DATATABLES
-  =============================== */
+  // ===============================
+  // DATATABLES INIT
+  // ===============================
   const table = $("#riwayatHafalanTable").DataTable({
     processing: true,
     serverSide: true,
-    searching: false,
+    searching: false, // ❌ matikan search kanan atas
 
     ajax: function (dt, callback) {
       const tanggalMulai = $("#filterTanggalMulai").val();
@@ -60,7 +67,7 @@ $(document).ready(function () {
       const peserta = $("#filterPeserta").val();
 
       // =============================
-      // VALIDASI FILTER TANGGAL
+      // VALIDASI TANGGAL
       // =============================
       if (
         (tanggalMulai && !tanggalSelesai) ||
@@ -82,7 +89,7 @@ $(document).ready(function () {
       }
 
       // =============================
-      // PARAMETER KHUSUS DATATABLES
+      // PARAMETER DATATABLES
       // =============================
       const params = {
         draw: dt.draw,
@@ -141,28 +148,42 @@ $(document).ready(function () {
     lengthMenu: [10, 25, 50, 100],
   });
 
-  /* ===============================
-     EVENT FILTER
-  =============================== */
+  // ===============================
+  // EVENT FILTER
+  // ===============================
 
-  // Filter tanggal → WAJIB valid
+  // ❌ Tidak auto-search saat ketik
+  $("#filterPeserta").on("input", function () {
+    suppressLoader = true; // jangan tampilkan loader
+  });
+
+  // Filter tanggal → reload jika valid
   $("#filterTanggalMulai, #filterTanggalSelesai").on("change", function () {
     if (!validateFilterTanggal()) return;
+
+    suppressLoader = false;
     table.ajax.reload();
   });
 
-  // Reset → selalu valid
+  // ===============================
+  // TOMBOL SEARCH
+  // ===============================
+  $("#btnSearch").on("click", function () {
+    if (!validateFilterTanggal()) return;
+
+    suppressLoader = false; // loader aktif
+    table.ajax.reload();
+  });
+
+  // ===============================
+  // RESET FILTER
+  // ===============================
   $("#resetFilter").on("click", function () {
     $("#filterTanggalMulai").val("");
     $("#filterTanggalSelesai").val("");
     $("#filterPeserta").val("");
+
+    suppressLoader = false;
     table.ajax.reload();
   });
-});
-
-$("#btnSearch").on("click", function () {
-  if (!validateFilterTanggal()) return;
-
-  suppressLoader = false; // pastikan loader AKTIF
-  table.ajax.reload();
 });
