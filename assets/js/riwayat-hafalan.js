@@ -118,19 +118,16 @@ $(document).ready(function () {
   const table = $("#riwayatHafalanTable").DataTable({
     processing: true,
     serverSide: true,
-    searching: false, // ❌ matikan search kanan atas
+    searching: false,
 
-    // 🔥 PINDAHKAN INFO & PAGINATION KE BAWAH
-    dom: "rt<'row mt-2'<'col-12 text-center'i><'col-12'p>>",
+    // DOM hanya untuk desktop
+    dom: "rt<'row mt-2 d-none d-md-flex'<'col-md-6'i><'col-md-6'p>>",
 
     ajax: function (dt, callback) {
       const tanggalMulai = $("#filterTanggalMulai").val();
       const tanggalSelesai = $("#filterTanggalSelesai").val();
       const peserta = $("#filterPeserta").val();
 
-      // =============================
-      // VALIDASI TANGGAL
-      // =============================
       if (
         (tanggalMulai && !tanggalSelesai) ||
         (!tanggalMulai && tanggalSelesai)
@@ -150,9 +147,6 @@ $(document).ready(function () {
         return;
       }
 
-      // =============================
-      // PARAMETER DATATABLES
-      // =============================
       const params = {
         draw: dt.draw,
         start: dt.start,
@@ -160,39 +154,26 @@ $(document).ready(function () {
         search: dt.search?.value || "",
         tanggal_mulai: tanggalMulai,
         tanggal_selesai: tanggalSelesai,
-        peserta: peserta,
+        peserta,
       };
 
       const query = new URLSearchParams(params).toString();
+      const request = apiRequest(`/hafalan/all?${query}`, { method: "GET" });
+      const wrapped = suppressLoader ? request : withLoader(request);
 
-      const request = apiRequest(`/hafalan/all?${query}`, {
-        method: "GET",
-      });
-
-      const wrappedRequest = suppressLoader ? request : withLoader(request);
-
-      wrappedRequest
+      wrapped
         .then((res) => {
-          callback({
-            draw: res.draw,
-            recordsTotal: res.recordsTotal,
-            recordsFiltered: res.recordsFiltered,
-            data: res.data,
-          });
-
-          // 👇 RENDER CARD UNTUK MOBILE
+          callback(res);
           renderMobileCards(res.data);
         })
-
-        .catch((err) => {
-          console.error("DT error:", err);
+        .catch(() =>
           callback({
             draw: dt.draw,
             recordsTotal: 0,
             recordsFiltered: 0,
             data: [],
-          });
-        });
+          })
+        );
     },
 
     columns: [
@@ -202,9 +183,8 @@ $(document).ready(function () {
       },
       {
         data: "tanggal",
-        render: function (data) {
+        render: (data) => {
           if (!data) return "-";
-
           const d = new Date(data);
           return `${String(d.getDate()).padStart(2, "0")}-${String(
             d.getMonth() + 1
@@ -220,11 +200,14 @@ $(document).ready(function () {
 
     pageLength: 10,
     lengthMenu: [10, 25, 50, 100],
-  });
 
-  $("#riwayatHafalanTable").on("draw.dt", function () {
-    $(".page-item.previous .page-link").html("‹");
-    $(".page-item.next .page-link").html("›");
+    // 🔥 INI POSISI drawCallback YANG BENAR
+    drawCallback: function () {
+      relocatePaginationToBottom();
+
+      $(".page-item.previous .page-link").html("‹");
+      $(".page-item.next .page-link").html("›");
+    },
   });
 
   // ===============================
