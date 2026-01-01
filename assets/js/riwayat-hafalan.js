@@ -47,6 +47,65 @@ function validateFilterTanggal() {
 // =========================
 let suppressLoader = false;
 
+// ===================================
+// RENDER RIWAYAT HAFALAN KE CARD LIST
+// ===================================
+function renderMobileCards(data) {
+  const container = $("#riwayatCardList");
+  container.empty();
+
+  if (!data || data.length === 0) {
+    container.html(
+      `<div class="text-center text-muted py-4">Tidak ada data</div>`
+    );
+    return;
+  }
+
+  data.forEach((row) => {
+    const d = new Date(row.tanggal);
+    const tanggal = `${String(d.getDate()).padStart(2, "0")}-${String(
+      d.getMonth() + 1
+    ).padStart(2, "0")}-${d.getFullYear()}`;
+
+    const card = `
+      <div class="riwayat-card">
+        <div class="surah">${row.surah_nama}</div>
+
+        <div class="row-item">
+          <span class="label">Tanggal</span>
+          <span class="value">${tanggal}</span>
+        </div>
+
+        <div class="row-item">
+          <span class="label">Peserta</span>
+          <span class="value">${row.peserta}</span>
+        </div>
+
+        <div class="row-item">
+          <span class="label">Ayat Hafal</span>
+          <span class="value">${row.ayat_hafal}</span>
+        </div>
+
+        <div class="row-item">
+          <span class="label">Total Ayat</span>
+          <span class="value">${row.ayat_setor}</span>
+        </div>
+
+        ${
+          row.keterangan
+            ? `<div class="row-item">
+                <span class="label">Catatan</span>
+                <span class="value">${row.keterangan}</span>
+              </div>`
+            : ""
+        }
+      </div>
+    `;
+
+    container.append(card);
+  });
+}
+
 $(document).ready(function () {
   // =========================
   // AUTH
@@ -117,7 +176,11 @@ $(document).ready(function () {
             recordsFiltered: res.recordsFiltered,
             data: res.data,
           });
+
+          // 👇 RENDER CARD UNTUK MOBILE
+          renderMobileCards(res.data);
         })
+
         .catch((err) => {
           console.error("DT error:", err);
           callback({
