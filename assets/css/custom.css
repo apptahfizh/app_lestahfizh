@@ -221,20 +221,20 @@
 }
 
 .riwayat-card .row-item {
-  display: flex;
-  color: #111827;
+  font-weight: 600;
+  font-size: 0.95rem;
   justify-content: space-between;
   margin-bottom: 6px;
 }
 
 .riwayat-card .label {
   color: #111827;
-  font-size: 12px;
+  font-size: 0.95rem;
 }
 
 .riwayat-card .value {
   font-weight: 600;
-  font-size: 12px;
+  font-size: 0.95rem;
   color: #111827;
   text-align: right;
 }
@@ -243,7 +243,7 @@
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 6px;
-  color: #4e73df;
+  color: #1f4cd3;
 }
 
 /* ===============================
