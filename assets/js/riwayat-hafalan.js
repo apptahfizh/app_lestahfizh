@@ -81,7 +81,11 @@ $(document).ready(function () {
         peserta: peserta,
       };
 
-      apiRequest("/hafalan/all", "GET", params)
+      const query = new URLSearchParams(params).toString();
+
+      apiRequest(`/hafalan/all?${query}`, {
+        method: "GET",
+      })
         .then((res) => {
           callback({
             draw: res.draw,
