@@ -34,6 +34,8 @@ const getLastHafalanQuery = `
 ========================================================= */
 router.get("/all", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
   try {
+    const mode = req.query.mode || "";
+
     const draw = Number(req.query.draw) || 1;
     const start = Math.max(0, Number(req.query.start) || 0);
     const length = Math.min(100, Number(req.query.length) || 10);
@@ -47,6 +49,23 @@ router.get("/all", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
     let where = "WHERE 1=1";
     const values = [];
     let idx = 1;
+
+    // ================================
+    // 🔒 MODE DATATABLES VALIDATION
+    // ================================
+    if (mode === "datatable") {
+      if (
+        (tanggal_mulai && !tanggal_selesai) ||
+        (!tanggal_mulai && tanggal_selesai)
+      ) {
+        return res.json({
+          draw,
+          recordsTotal: 0,
+          recordsFiltered: 0,
+          data: [],
+        });
+      }
+    }
 
     // ORTU: hanya anak sendiri
     if (req.user?.role === "ortu") {

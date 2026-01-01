@@ -60,7 +60,7 @@ $(document).ready(function () {
         params.peserta = peserta;
       }
 
-      apiRequest("/hafalan/all", "GET", params)
+      apiRequest("/hafalan/all?mode=datatable", "GET", params)
         .then((res) => {
           callback({
             draw: res.draw,
