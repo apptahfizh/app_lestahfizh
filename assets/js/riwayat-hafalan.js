@@ -9,6 +9,8 @@ function withLoader(promise) {
   });
 }
 
+let suppressLoader = false;
+
 $(document).ready(function () {
   checkAuth(["admin", "ustadz"]); // hanya admin / ustadz
   /* ===============================
@@ -94,11 +96,13 @@ $(document).ready(function () {
 
       const query = new URLSearchParams(params).toString();
 
-      withLoader(
-        apiRequest(`/hafalan/all?${query}`, {
-          method: "GET",
-        })
-      )
+      const request = apiRequest(`/hafalan/all?${query}`, {
+        method: "GET",
+      });
+
+      const wrappedRequest = suppressLoader ? request : withLoader(request);
+
+      wrappedRequest
         .then((res) => {
           callback({
             draw: res.draw,
