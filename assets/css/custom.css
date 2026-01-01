@@ -172,6 +172,7 @@
   color: #111827;
   word-break: break-word;
   white-space: normal;
+  bottom: 2px;
 }
 .hafalan-card .tanggal {
   font-weight: 600;
