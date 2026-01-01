@@ -244,7 +244,7 @@ function renderHafalanCards(data) {
     card.className = "hafalan-card";
 
     card.innerHTML = `
-      <div class="nama"><span class="badge badge-${hafalan.peserta}</div>
+      <div class="nama">${hafalan.peserta}</div>
         <div class="tanggal">📅 ${formatTanggalID(hafalan.tanggal)}</div>
         <div class="surah">📖 ${hafalan.surah_nama} (${
       hafalan.ayat_hafal || "-"
