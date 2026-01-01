@@ -17,21 +17,37 @@ $(document).ready(function () {
     processing: true,
     serverSide: true,
     searching: true,
-    ajax: {
-      url: "http://localhost:5000/api/hafalan/all",
-      type: "GET",
-      headers: { Authorization: "Bearer " + token },
-      data: function (d) {
-        // send custom filter values along with DataTables params
-        d.tanggal_mulai = $("#filterTanggalMulai").val();
-        d.tanggal_selesai = $("#filterTanggalSelesai").val();
-        d.peserta = $("#filterPeserta").val();
-      },
-      dataSrc: function (json) {
-        // DataTables expects json.data (we return that in backend)
-        return json.data;
-      },
+
+    ajax: function (data, callback, settings) {
+      // gabungkan parameter DataTables + filter custom
+      const params = {
+        ...data,
+        tanggal_mulai: $("#filterTanggalMulai").val(),
+        tanggal_selesai: $("#filterTanggalSelesai").val(),
+        peserta: $("#filterPeserta").val(),
+      };
+
+      apiRequest("/hafalan/all", "GET", params)
+        .then((res) => {
+          // pastikan format sesuai DataTables
+          callback({
+            draw: res.draw,
+            recordsTotal: res.recordsTotal,
+            recordsFiltered: res.recordsFiltered,
+            data: res.data,
+          });
+        })
+        .catch((err) => {
+          console.error("Gagal load riwayat hafalan:", err);
+          callback({
+            draw: data.draw,
+            recordsTotal: 0,
+            recordsFiltered: 0,
+            data: [],
+          });
+        });
     },
+
     columns: [
       {
         data: null,
@@ -46,6 +62,7 @@ $(document).ready(function () {
       { data: "ayat_setor" },
       { data: "keterangan" },
     ],
+
     pageLength: 10,
     lengthMenu: [10, 25, 50, 100],
   });
