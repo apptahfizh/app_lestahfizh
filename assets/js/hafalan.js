@@ -304,7 +304,7 @@ const editId = form.dataset.editId;
 
 if (editId) {
   // UPDATE
-  await apiRequest(`/hafalan/${editId}`, {
+  await apiRequest(`/hafalan/${editingId}`, {
     method: "PUT",
     body: JSON.stringify({ nama }),
   });
