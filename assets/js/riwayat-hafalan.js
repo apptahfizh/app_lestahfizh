@@ -69,7 +69,7 @@ function renderMobileCards(data) {
 
     const card = `
       <div class="riwayat-card">
-        <div class="surah">${row.surah_nama}</div>
+        <div class="surah">${row.peserta}</div>
 
         <div class="row-item">
           <span class="label">Tanggal</span>
@@ -78,7 +78,7 @@ function renderMobileCards(data) {
 
         <div class="row-item">
           <span class="label">Peserta</span>
-          <span class="value">${row.peserta}</span>
+          <span class="value">${row.surah_nama}</span>
         </div>
 
         <div class="row-item">
