@@ -304,9 +304,18 @@ const editId = form.dataset.editId;
 
 if (editId) {
   // UPDATE
-  await axios.put(`/hafalan/${editId}`, payload);
-  delete form.dataset.editId;
+  await apiRequest(`/hafalan/${editId}`, {
+    method: "PUT",
+    body: JSON.stringify({ nama }),
+  });
+
+  Swal.fire("Berhasil", "Data hafalan diperbarui", "success");
 } else {
   // CREATE
-  await axios.post("/hafalan", payload);
+  await apiRequest("/hafalan", {
+    method: "POST",
+    body: JSON.stringify({ nama }),
+  });
+
+  Swal.fire("Berhasil", "Hafalan berhasil ditambahkan", "success");
 }
