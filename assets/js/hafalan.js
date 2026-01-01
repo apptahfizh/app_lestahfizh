@@ -142,21 +142,20 @@ async function simpanHafalan() {
   }
 
   try {
-    await apiRequest("/hafalan", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    const editId = $("#formHafalan").attr("data-edit-id");
 
-    Swal.fire({
-      icon: "success",
-      title: "Berhasil",
-      text: "Hafalan berhasil disimpan",
-      timer: 1200,
-      showConfirmButton: false,
-    }).then(() => {
-      resetModalHafalan(); // 🔥 TUTUP & RESET MODAL
-      loadTabelHafalan(); // 🔁 REFRESH TABEL
-    });
+    if (editId) {
+      await apiRequest(`/hafalan/${editId}`, {
+        method: "PUT",
+        body: JSON.stringify(data),
+      });
+      $("#formHafalan").removeAttr("data-edit-id");
+    } else {
+      await apiRequest("/hafalan", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+    }
   } catch (err) {
     console.error("Gagal simpan hafalan:", err);
     Swal.fire("Error", "Gagal menyimpan hafalan", "error");
@@ -169,6 +168,7 @@ async function simpanHafalan() {
 async function loadTabelHafalan() {
   try {
     const data = await apiRequest("/hafalan/table");
+    window._hafalanCache = data;
     // MOBILE → CARD LIST
     if (window.innerWidth < 768) {
       renderHafalanCards(data);
@@ -273,3 +273,28 @@ function formatTanggalID(dateString) {
     year: "numeric",
   });
 }
+
+// ==============================
+// EDIT HAFALAN
+// ==============================
+window.editHafalan = function (id) {
+  const data = window._hafalanCache?.find((h) => h.id === id);
+  if (!data) return;
+
+  // isi form
+  $("#peserta_id").val(data.peserta_id);
+  $("#tanggal").val(data.tanggal?.slice(0, 10));
+  $("#surah").val(data.surah_id).trigger("change");
+
+  $("#mulai_setor_ayat").val(data.mulai_setor_ayat);
+  $("#selesai_setor_ayat").val(data.selesai_setor_ayat);
+  $("#ayat_hafal").val(data.ayat_hafal);
+  $("#ayat_setor").val(data.ayat_setor);
+  $("#keterangan").val(data.keterangan || "");
+
+  // tandai MODE EDIT
+  $("#formHafalan").attr("data-edit-id", id);
+
+  // buka modal
+  $("#modalHafalan").modal("show");
+};
