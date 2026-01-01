@@ -120,9 +120,6 @@ $(document).ready(function () {
     serverSide: true,
     searching: false, // ❌ matikan search kanan atas
 
-    // 🔥 PINDAHKAN INFO & PAGINATION KE BAWAH
-    dom: "rt<'row mt-3'<'col-12'p>><'row'<'col-12 text-center'i>>",
-
     ajax: function (dt, callback) {
       const tanggalMulai = $("#filterTanggalMulai").val();
       const tanggalSelesai = $("#filterTanggalSelesai").val();
@@ -198,7 +195,9 @@ $(document).ready(function () {
     columns: [
       {
         data: null,
-        render: (d, t, r, m) => m.row + m.settings._iDisplayStart + 1,
+        render: function (data, type, row, meta) {
+          return meta.row + meta.settings._iDisplayStart + 1;
+        },
       },
       {
         data: "tanggal",
