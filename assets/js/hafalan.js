@@ -300,9 +300,9 @@ const data = res.data.data;
 window._hafalanCache = data;
 
 const form = document.getElementById("formHafalan");
-const editId = form.dataset.editId;
+const editingId = form.dataset.editingId;
 
-if (editId) {
+if (editingId) {
   // UPDATE
   await apiRequest(`/hafalan/${editingId}`, {
     method: "PUT",
