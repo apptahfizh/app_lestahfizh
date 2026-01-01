@@ -262,7 +262,7 @@ function renderHafalanCards(data) {
     container.appendChild(card);
   });
 }
-
+// format tanggal dd/mm/yyyy
 function formatTanggalID(dateString) {
   if (!dateString) return "-";
 
@@ -272,4 +272,41 @@ function formatTanggalID(dateString) {
     month: "2-digit",
     year: "numeric",
   });
+}
+
+// ==============================
+// EDIT HAFALAN
+// ==============================
+window.editHafalan = function (id) {
+  const data = window._hafalanCache?.find((h) => h.id === id);
+  if (!data) return;
+
+  // isi form
+  document.getElementById("peserta_id").value = data.peserta_id;
+  document.getElementById("tanggal").value = data.tanggal.slice(0, 10);
+  document.getElementById("surah").value = data.surah_id;
+  document.getElementById("mulai_setor_ayat").value = data.mulai_setor_ayat;
+  document.getElementById("selesai_setor_ayat").value = data.selesai_setor_ayat;
+  document.getElementById("keterangan").value = data.keterangan || "";
+
+  // simpan ID (mode edit)
+  document.getElementById("formHafalan").dataset.editId = id;
+
+  // buka modal
+  $("#modalHafalan").modal("show");
+};
+
+const data = res.data.data;
+window._hafalanCache = data;
+
+const form = document.getElementById("formHafalan");
+const editId = form.dataset.editId;
+
+if (editId) {
+  // UPDATE
+  await axios.put(`/hafalan/${editId}`, payload);
+  delete form.dataset.editId;
+} else {
+  // CREATE
+  await axios.post("/hafalan", payload);
 }
