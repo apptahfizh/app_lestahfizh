@@ -120,6 +120,9 @@ $(document).ready(function () {
     serverSide: true,
     searching: false, // ❌ matikan search kanan atas
 
+    // 🔥 PINDAHKAN INFO & PAGINATION KE BAWAH
+    dom: "rt<'row mt-2'<'col-12 text-center'i><'col-12'p>>",
+
     ajax: function (dt, callback) {
       const tanggalMulai = $("#filterTanggalMulai").val();
       const tanggalSelesai = $("#filterTanggalSelesai").val();
@@ -195,9 +198,7 @@ $(document).ready(function () {
     columns: [
       {
         data: null,
-        render: function (data, type, row, meta) {
-          return meta.row + meta.settings._iDisplayStart + 1;
-        },
+        render: (d, t, r, m) => m.row + m.settings._iDisplayStart + 1,
       },
       {
         data: "tanggal",
@@ -219,6 +220,11 @@ $(document).ready(function () {
 
     pageLength: 10,
     lengthMenu: [10, 25, 50, 100],
+  });
+
+  $("#riwayatHafalanTable").on("draw.dt", function () {
+    $(".page-item.previous .page-link").html("‹");
+    $(".page-item.next .page-link").html("›");
   });
 
   // ===============================

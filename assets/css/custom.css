@@ -248,18 +248,6 @@
   color: #0c41e2;
 }
 
-@media (max-width: 768px) {
-  .dataTables_info {
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-  .dataTables_paginate {
-    justify-content: center !important;
-    display: flex;
-  }
-}
-
 /* ===============================
    HIDE TOPBAR WHEN SIDEBAR OPEN (MOBILE)
 =============================== */
@@ -343,4 +331,56 @@
   position: relative;
   z-index: 3000;
   pointer-events: auto;
+}
+
+/* ===============================
+   DATATABLES MOBILE FIX (CARD UI)
+================================ */
+@media (max-width: 768px) {
+  /* HILANGKAN "Show X entries" */
+  .dataTables_length {
+    display: none;
+  }
+
+  /* INFO TEXT */
+  .dataTables_info {
+    text-align: center;
+    font-size: 13px;
+    color: #6c757d;
+    margin-bottom: 8px;
+  }
+
+  /* WRAPPER PAGINATION */
+  .dataTables_paginate {
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+  }
+
+  /* PAGINATION UL */
+  .dataTables_paginate ul.pagination {
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+  }
+
+  /* TOMBOL PAGINATION */
+  .dataTables_paginate .page-item .page-link {
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  /* ACTIVE PAGE */
+  .dataTables_paginate .page-item.active .page-link {
+    background-color: #4e73df;
+    border-color: #4e73df;
+    color: #fff;
+  }
+
+  /* PREV / NEXT */
+  .dataTables_paginate .page-item.previous .page-link,
+  .dataTables_paginate .page-item.next .page-link {
+    font-weight: 600;
+  }
 }
