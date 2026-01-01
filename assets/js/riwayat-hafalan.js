@@ -94,9 +94,11 @@ $(document).ready(function () {
 
       const query = new URLSearchParams(params).toString();
 
-      apiRequest(`/hafalan/all?${query}`, {
-        method: "GET",
-      })
+      withLoader(
+        apiRequest(`/hafalan/all?${query}`, {
+          method: "GET",
+        })
+      )
         .then((res) => {
           callback({
             draw: res.draw,
