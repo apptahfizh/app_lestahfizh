@@ -213,10 +213,11 @@
 =============================== */
 .riwayat-card {
   background: #fff;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(42, 199, 21, 0.466);
+  box-shadow: 0 2px 6px rgba(55, 168, 3, 0.959);
   font-size: 14px;
 }
 
