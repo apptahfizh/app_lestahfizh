@@ -52,7 +52,7 @@ $(document).ready(function () {
   const table = $("#riwayatHafalanTable").DataTable({
     processing: true,
     serverSide: true,
-    searching: true,
+    searching: false,
 
     ajax: function (dt, callback) {
       const tanggalMulai = $("#filterTanggalMulai").val();
@@ -151,16 +151,6 @@ $(document).ready(function () {
     table.ajax.reload();
   });
 
-  // Filter peserta → boleh sendiri, tapi tetap cek tanggal
-  let pesertaTimer = null;
-  $("#filterPeserta").on("input", function () {
-    clearTimeout(pesertaTimer);
-    pesertaTimer = setTimeout(() => {
-      if (!validateFilterTanggal()) return;
-      table.ajax.reload();
-    }, 350);
-  });
-
   // Reset → selalu valid
   $("#resetFilter").on("click", function () {
     $("#filterTanggalMulai").val("");
@@ -168,6 +158,13 @@ $(document).ready(function () {
     $("#filterPeserta").val("");
     table.ajax.reload();
   });
+});
+
+$("#btnSearch").on("click", function () {
+  if (!validateFilterTanggal()) return;
+
+  suppressLoader = false; // pastikan loader AKTIF
+  table.ajax.reload();
 });
 
 // MATIKAN loader khusus filter peserta
