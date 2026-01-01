@@ -255,14 +255,8 @@ function renderHafalanCards(data) {
       <div class="aksi">
         <button class="btn btn-warning btn-sm"
           onclick="editHafalan(${hafalan.id})">
-          <i class="fas fa-edit"></i>
+          <i class="fas fa-edit">Edit</i>
         </button>
-
-        <button class="btn btn-danger btn-sm"
-          onclick="hapusHafalan(${hafalan.id})">
-          <i class="fas fa-trash"></i>
-        </button>
-      </div>
     `;
 
     container.appendChild(card);
