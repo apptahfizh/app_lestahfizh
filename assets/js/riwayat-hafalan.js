@@ -87,7 +87,7 @@ function renderMobileCards(data) {
         </div>
 
         <div class="row-item">
-          <span class="label">Total Ayat</span>
+          <span class="label">Setor Ayat</span>
           <span class="value">${row.ayat_setor}</span>
         </div>
 
