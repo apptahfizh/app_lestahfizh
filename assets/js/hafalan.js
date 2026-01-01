@@ -239,10 +239,6 @@ function renderHafalanCards(data) {
 
   container.innerHTML = "";
 
-  const namaColor = {
-    peserta: "success",
-  };
-
   data.forEach((hafalan) => {
     const card = document.createElement("div");
     card.className = "hafalan-card";
