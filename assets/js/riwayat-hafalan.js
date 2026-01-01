@@ -1,18 +1,6 @@
 checkAuth(["admin", "ustadz"]); // hanya admin/ustadz bisa akses
 
 $(document).ready(function () {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    Swal.fire({
-      icon: "warning",
-      title: "Sesi Habis",
-      text: "Silakan login kembali",
-    }).then(() => {
-      window.location.href = "login.html";
-    });
-    return;
-  }
-
   const table = $("#riwayatHafalanTable").DataTable({
     processing: true,
     serverSide: true,
