@@ -43,17 +43,6 @@ $(document).ready(function () {
     searching: true,
 
     ajax: function (data, callback) {
-      // 🚫 Jangan kirim request kalau validasi gagal
-      if (!validateFilterTanggal()) {
-        callback({
-          draw: data.draw,
-          recordsTotal: 0,
-          recordsFiltered: 0,
-          data: [],
-        });
-        return;
-      }
-
       const params = { ...data };
 
       const mulai = $("#filterTanggalMulai").val();
