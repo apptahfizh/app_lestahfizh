@@ -239,29 +239,31 @@ function renderHafalanCards(data) {
 
   container.innerHTML = "";
 
-  const statusColor = {
-    nama: "success",
+  const namaColor = {
+    peserta: "success",
   };
 
-  data.forEach((p) => {
+  data.forEach((hafalan) => {
     const card = document.createElement("div");
     card.className = "hafalan-card";
 
     card.innerHTML = `
-      <div class="nama">${p.peserta}<br>
-        📅 ${formatTanggalID(p.tanggal)}<br>
-        📖 ${p.surah_nama} (${p.ayat_hafal || "-"})<br>
-        ✏️ ${p.keterangan || ""}
-      </div>
+      <div class="nama"><span class="badge badge-${hafalan.peserta}</div>
+        <div class="tanggal">📅 ${formatTanggalID(hafalan.tanggal)}</div>
+        <div class="surah">📖 ${hafalan.surah_nama} (${
+      hafalan.ayat_hafal || "-"
+    })</div>
+        <div class="keterangan">✏️ ${hafalan.keterangan || ""}</div>
+      
 
       <div class="aksi">
         <button class="btn btn-warning btn-sm"
-          onclick="editHafalan(${p.id})">
+          onclick="editHafalan(${hafalan.id})">
           <i class="fas fa-edit"></i>
         </button>
 
         <button class="btn btn-danger btn-sm"
-          onclick="hapusHafalan(${p.id})">
+          onclick="hapusHafalan(${hafalan.id})">
           <i class="fas fa-trash"></i>
         </button>
       </div>
