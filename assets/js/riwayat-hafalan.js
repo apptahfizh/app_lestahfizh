@@ -136,7 +136,17 @@ $(document).ready(function () {
           return meta.row + meta.settings._iDisplayStart + 1;
         },
       },
-      { data: "tanggal" },
+      {
+        data: "tanggal",
+        render: function (data) {
+          if (!data) return "-";
+
+          const d = new Date(data);
+          return `${String(d.getDate()).padStart(2, "0")}-${String(
+            d.getMonth() + 1
+          ).padStart(2, "0")}-${d.getFullYear()}`;
+        },
+      },
       { data: "peserta" },
       { data: "surah_nama" },
       { data: "ayat_hafal" },
