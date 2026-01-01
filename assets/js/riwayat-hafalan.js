@@ -1,6 +1,5 @@
-checkAuth(["admin", "ustadz"]); // hanya admin / ustadz
-
 $(document).ready(function () {
+  checkAuth(["admin", "ustadz"]); // hanya admin / ustadz
   /* ===============================
      VALIDASI FILTER TANGGAL
   =============================== */
