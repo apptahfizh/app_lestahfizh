@@ -293,26 +293,34 @@ function formatTanggalID(dateString) {
 // ==============================
 // EDIT HAFALAN
 // ==============================
-window.editHafalan = function (id) {
-  const data = window._hafalanCache?.find((h) => h.id === id);
-  console.log("EDIT DATA:", data);
+async function editHafalan(id) {
+  try {
+    AdminLoader.show();
 
-  if (!data) return;
+    // 🔥 AMBIL DATA LENGKAP
+    const data = await apiRequest(`/hafalan/${id}`);
 
-  // isi form
-  $("#peserta_id").val(data.peserta_id);
-  $("#tanggal").val(data.tanggal?.slice(0, 10));
-  $("#surah").val(data.surah_id).trigger("change");
+    console.log("EDIT DETAIL:", data);
 
-  $("#mulai_setor_ayat").val(data.mulai_setor_ayat);
-  $("#selesai_setor_ayat").val(data.selesai_setor_ayat);
-  $("#ayat_hafal").val(data.ayat_hafal);
-  $("#ayat_setor").val(data.ayat_setor);
-  $("#keterangan").val(data.keterangan || "");
+    // ISI FORM
+    $("#peserta_id").val(data.peserta_id);
+    $("#tanggal").val(data.tanggal?.slice(0, 10));
 
-  // tandai MODE EDIT
-  $("#formHafalan").attr("data-edit-id", id);
+    $("#surah").val(data.surah_id).trigger("change");
 
-  // buka modal
-  $("#modalHafalan").modal("show");
-};
+    $("#mulai_setor_ayat").val(data.mulai_setor_ayat ?? "");
+    $("#selesai_setor_ayat").val(data.selesai_setor_ayat ?? "");
+
+    $("#ayat_hafal").val(data.ayat_hafal ?? "");
+    $("#ayat_setor").val(data.ayat_setor ?? "");
+
+    $("#keterangan").val(data.keterangan ?? "");
+
+    $("#modalHafalan").modal("show");
+  } catch (err) {
+    console.error("Gagal load detail hafalan:", err);
+    Swal.fire("Error", "Gagal memuat data hafalan", "error");
+  } finally {
+    AdminLoader.hide();
+  }
+}
