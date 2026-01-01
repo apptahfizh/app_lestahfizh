@@ -77,7 +77,7 @@ function renderMobileCards(data) {
         </div>
 
         <div class="row-item">
-          <span class="label">Peserta</span>
+          <span class="label">Surah</span>
           <span class="value">${row.surah_nama}</span>
         </div>
 
