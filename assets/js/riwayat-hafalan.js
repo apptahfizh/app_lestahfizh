@@ -169,3 +169,16 @@ $(document).ready(function () {
     table.ajax.reload();
   });
 });
+
+// MATIKAN loader khusus filter peserta
+let pesertaTimer = null;
+$("#filterPeserta").on("input", function () {
+  clearTimeout(pesertaTimer);
+  pesertaTimer = setTimeout(() => {
+    if (!validateFilterTanggal()) return;
+
+    suppressLoader = true; // 🔥 MATIKAN loader
+    table.ajax.reload();
+    suppressLoader = false; // 🔥 AKTIFKAN lagi
+  }, 350);
+});
