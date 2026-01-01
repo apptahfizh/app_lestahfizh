@@ -147,21 +147,6 @@ async function simpanHafalan() {
       body: JSON.stringify(data),
     });
 
-    const editId = $("#formHafalan").attr("data-edit-id");
-
-    if (editId) {
-      await apiRequest(`/hafalan/${editId}`, {
-        method: "PUT",
-        body: JSON.stringify(data),
-      });
-      $("#formHafalan").removeAttr("data-edit-id");
-    } else {
-      await apiRequest("/hafalan", {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
-    }
-
     Swal.fire({
       icon: "success",
       title: "Berhasil",
@@ -184,7 +169,7 @@ async function simpanHafalan() {
 async function loadTabelHafalan() {
   try {
     const data = await apiRequest("/hafalan/table");
-    window._hafalanCache = data;
+
     // MOBILE → CARD LIST
     if (window.innerWidth < 768) {
       renderHafalanCards(data);
@@ -288,39 +273,4 @@ function formatTanggalID(dateString) {
     month: "2-digit",
     year: "numeric",
   });
-}
-
-// ==============================
-// EDIT HAFALAN
-// ==============================
-async function editHafalan(id) {
-  try {
-    AdminLoader.show();
-
-    // 🔥 AMBIL DATA LENGKAP
-    const data = await apiRequest(`/hafalan/${id}`);
-
-    console.log("EDIT DETAIL:", data);
-
-    // ISI FORM
-    $("#peserta_id").val(data.peserta_id);
-    $("#tanggal").val(data.tanggal?.slice(0, 10));
-
-    $("#surah").val(data.surah_id).trigger("change");
-
-    $("#mulai_setor_ayat").val(data.mulai_setor_ayat ?? "");
-    $("#selesai_setor_ayat").val(data.selesai_setor_ayat ?? "");
-
-    $("#ayat_hafal").val(data.ayat_hafal ?? "");
-    $("#ayat_setor").val(data.ayat_setor ?? "");
-
-    $("#keterangan").val(data.keterangan ?? "");
-
-    $("#modalHafalan").modal("show");
-  } catch (err) {
-    console.error("Gagal load detail hafalan:", err);
-    Swal.fire("Error", "Gagal memuat data hafalan", "error");
-  } finally {
-    AdminLoader.hide();
-  }
 }
