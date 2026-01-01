@@ -255,7 +255,7 @@ function renderHafalanCards(data) {
       <div class="aksi">
         <button class="btn btn-warning btn-sm"
           onclick="editHafalan(${hafalan.id})">
-          <i class="fas fa-edit"> Edit</i>
+          <i class="fas fa-edit"></i>
         </button>
     `;
 
