@@ -222,12 +222,13 @@
 
 .riwayat-card .row-item {
   display: flex;
+  color: #111827;
   justify-content: space-between;
   margin-bottom: 6px;
 }
 
 .riwayat-card .label {
-  color: #6c757d;
+  color: #111827;
   font-size: 12px;
 }
 
