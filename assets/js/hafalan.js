@@ -293,6 +293,8 @@ function formatTanggalID(dateString) {
 // ==============================
 // EDIT HAFALAN
 // ==============================
+console.log("EDIT DATA:", data);
+
 window.editHafalan = function (id) {
   const data = window._hafalanCache?.find((h) => h.id === id);
   if (!data) return;
