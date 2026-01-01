@@ -142,6 +142,11 @@ async function simpanHafalan() {
   }
 
   try {
+    await apiRequest("/hafalan", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
     const editId = $("#formHafalan").attr("data-edit-id");
 
     if (editId) {
@@ -156,6 +161,17 @@ async function simpanHafalan() {
         body: JSON.stringify(data),
       });
     }
+
+    Swal.fire({
+      icon: "success",
+      title: "Berhasil",
+      text: "Hafalan berhasil disimpan",
+      timer: 1200,
+      showConfirmButton: false,
+    }).then(() => {
+      resetModalHafalan(); // 🔥 TUTUP & RESET MODAL
+      loadTabelHafalan(); // 🔁 REFRESH TABEL
+    });
   } catch (err) {
     console.error("Gagal simpan hafalan:", err);
     Swal.fire("Error", "Gagal menyimpan hafalan", "error");
