@@ -1,3 +1,14 @@
+// =========================
+// LOADER WRAPPER (PAGE LEVEL)
+// =========================
+function withLoader(promise) {
+  if (window.AdminLoader) AdminLoader.show();
+
+  return promise.finally(() => {
+    if (window.AdminLoader) AdminLoader.hide();
+  });
+}
+
 $(document).ready(function () {
   checkAuth(["admin", "ustadz"]); // hanya admin / ustadz
   /* ===============================
