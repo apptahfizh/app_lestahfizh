@@ -177,7 +177,7 @@ router.get("/last", auth(["admin", "ustadz", "ortu"]), async (req, res) => {
   try {
     let result;
 
-    if (req.user.role === "ortu") {
+    if ((req.user.role === "admin", "ustadz", "ortu")) {
       result = await db.query(
         `
         SELECT 
