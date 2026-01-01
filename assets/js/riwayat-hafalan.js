@@ -106,6 +106,28 @@ function renderMobileCards(data) {
   });
 }
 
+function relocatePaginationToBottom() {
+  if (window.innerWidth > 768) return;
+
+  const wrapper = $("#riwayatHafalanTable").closest(".dataTables_wrapper");
+  const info = wrapper.find(".dataTables_info");
+  const paginate = wrapper.find(".dataTables_paginate");
+  const cardList = $("#riwayatCardList");
+
+  if (!cardList.length) return;
+
+  // Buat container footer jika belum ada
+  if (!$("#riwayatTableFooter").length) {
+    cardList.after(`
+      <div id="riwayatTableFooter" class="mt-2 text-center"></div>
+    `);
+  }
+
+  const footer = $("#riwayatTableFooter");
+
+  footer.empty().append(info).append(paginate);
+}
+
 $(document).ready(function () {
   // =========================
   // AUTH
