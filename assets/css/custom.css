@@ -167,11 +167,30 @@
 }
 
 .hafalan-card .nama {
-  background: #2563eb;
   font-weight: 600;
   font-size: 0.95rem;
   color: #111827;
-
+  word-break: break-word;
+  white-space: normal;
+}
+.hafalan-card .tanggal {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
+  word-break: break-word;
+  white-space: normal;
+}
+.hafalan-card .surah {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
+  word-break: break-word;
+  white-space: normal;
+}
+.hafalan-card .keterangan {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
   word-break: break-word;
   white-space: normal;
 }
