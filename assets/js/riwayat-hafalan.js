@@ -121,7 +121,7 @@ $(document).ready(function () {
     searching: false, // ❌ matikan search kanan atas
 
     // 🔥 PINDAHKAN INFO & PAGINATION KE BAWAH
-    dom: "rt<'row mt-3'<'col-12 col-md-5'i><'col-12 col-md-7'p>>",
+    dom: "rt<'row mt-3'<'col-12'p>><'row'<'col-12 text-center'i>>",
 
     ajax: function (dt, callback) {
       const tanggalMulai = $("#filterTanggalMulai").val();

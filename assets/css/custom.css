@@ -247,6 +247,18 @@
   color: #0c41e2;
 }
 
+@media (max-width: 768px) {
+  .dataTables_info {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .dataTables_paginate {
+    justify-content: center !important;
+    display: flex;
+  }
+}
+
 /* ===============================
    HIDE TOPBAR WHEN SIDEBAR OPEN (MOBILE)
 =============================== */
