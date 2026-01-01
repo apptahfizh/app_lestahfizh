@@ -3,16 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RiwayatHafalan</title>
+    <title>Riwayat Hafalan - App Lestahfizh</title>
 
+    <!-- SB Admin 2 CSS -->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet" />
+    <link href="assets/css/loader-admin.css" rel="stylesheet" />
     <link href="assets/css/custom.css" rel="stylesheet" />
-    <link
-      href="assets/vendor/datatables/dataTables.bootstrap4.min.css"
-      rel="stylesheet"
-    />
+    <!-- Select2 CSS -->
+    <link href="assets/vendor/select2/select2.min.css" rel="stylesheet" />
+    <!-- FontAwesome -->
     <link
       href="assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- DataTables -->
+    <link
+      href="assets/vendor/datatables/dataTables.bootstrap4.min.css"
       rel="stylesheet"
     />
   </head>
@@ -122,107 +128,142 @@
         </li>
       </ul>
       <!-- ================= END SIDEBAR ================= -->
+      <div id="sidebarBackdrop"></div>
 
       <!-- ================= CONTENT WRAPPER ================= -->
       <div id="content-wrapper" class="d-flex flex-column">
-        <!-- ================= TOPBAR ================= -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar shadow">
-          <div class="d-flex align-items-center">
-            <h1 id="pageTitle" class="topbar-title">
-              <i class="fas fa-fw fa-history"></i>
-              <span class="topbar-name">Riwayat Hafalan</span>
-            </h1>
-          </div>
-        </nav>
-        <!-- ================= END TOPBAR ================= -->
-
-        <!-- ================= MAIN SCROLL AREA ================= -->
-        <div class="main-scroll">
-          <div id="content">
-            <nav
-              class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+        <!-- ===== MAIN CONTENT WRAPPER (FADE TARGET) ===== -->
+        <div id="mainContent" class="fade-content">
+          <!-- ================= TOPBAR ================= -->
+          <nav
+            class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+          >
+            <!-- Toggle Sidebar (Mobile) -->
+            <button
+              id="sidebarToggleTop"
+              class="btn btn-link d-md-none rounded-circle mr-3"
             >
-              <span class="mr-3">Riwayat Hafalan</span>
-            </nav>
+              <i class="fa fa-bars"></i>
+            </button>
 
-            <div class="container-fluid">
-              <!-- FILTERS: letakkan di atas card tabel -->
-              <div class="row mb-3" id="riwayatFilters">
-                <div class="col-md-3">
-                  <label>Dari Tanggal:</label>
-                  <input
-                    type="date"
-                    id="filterTanggalMulai"
-                    class="form-control"
-                  />
+            <h1 class="h5 mb-0 text-gray-800">Input Hafalan</h1>
+
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle">
+                  <span
+                    class="mr-2 d-none d-lg-inline text-gray-600 small"
+                    id="displayName"
+                  ></span>
+                  <i class="fas fa-user-circle fa-lg"></i>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <!-- ================= END TOPBAR ================= -->
+
+          <!-- ================= MAIN CONTENT (scroll area)================= -->
+          <div class="main-scroll">
+            <div id="content">
+              <nav
+                class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+              >
+                <span class="mr-3">Riwayat Hafalan</span>
+              </nav>
+
+              <div class="container-fluid">
+                <!-- FILTERS: letakkan di atas card tabel -->
+                <div class="row mb-3" id="riwayatFilters">
+                  <div class="col-md-3">
+                    <label>Dari Tanggal:</label>
+                    <input
+                      type="date"
+                      id="filterTanggalMulai"
+                      class="form-control"
+                    />
+                  </div>
+
+                  <div class="col-md-3">
+                    <label>Sampai Tanggal:</label>
+                    <input
+                      type="date"
+                      id="filterTanggalSelesai"
+                      class="form-control"
+                    />
+                  </div>
+
+                  <div class="col-md-3">
+                    <label>Nama Peserta:</label>
+                    <input
+                      type="text"
+                      id="filterPeserta"
+                      class="form-control"
+                      placeholder="Cari peserta ..."
+                    />
+                  </div>
+
+                  <div class="col-md-3 d-flex align-items-end">
+                    <button class="btn btn-secondary w-100" id="resetFilter">
+                      Reset
+                    </button>
+                  </div>
                 </div>
 
-                <div class="col-md-3">
-                  <label>Sampai Tanggal:</label>
-                  <input
-                    type="date"
-                    id="filterTanggalSelesai"
-                    class="form-control"
-                  />
-                </div>
+                <div class="card shadow">
+                  <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                      Semua Riwayat Hafalan
+                    </h6>
+                  </div>
 
-                <div class="col-md-3">
-                  <label>Nama Peserta:</label>
-                  <input
-                    type="text"
-                    id="filterPeserta"
-                    class="form-control"
-                    placeholder="Cari peserta ..."
-                  />
-                </div>
-
-                <div class="col-md-3 d-flex align-items-end">
-                  <button class="btn btn-secondary w-100" id="resetFilter">
-                    Reset
-                  </button>
-                </div>
-              </div>
-
-              <div class="card shadow">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">
-                    Semua Riwayat Hafalan
-                  </h6>
-                </div>
-
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table
-                      id="riwayatHafalanTable"
-                      class="table table-bordered"
-                    >
-                      <thead>
-                        <tr>
-                          <th>No</th>
-                          <th>Tanggal</th>
-                          <th>Nama</th>
-                          <th>Surah</th>
-                          <th>Ayat Hafal</th>
-                          <th>Total Ayat</th>
-                          <th>Keterangan</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <!-- Data akan dimuat via JS -->
-                      </tbody>
-                    </table>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table
+                        id="riwayatHafalanTable"
+                        class="table table-bordered"
+                      >
+                        <thead>
+                          <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Nama</th>
+                            <th>Surah</th>
+                            <th>Ayat Hafal</th>
+                            <th>Total Ayat</th>
+                            <th>Keterangan</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <!-- Data akan dimuat via JS -->
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <!-- ============== END MAIN CONTENT (scroll area)================ -->
+
+          <!-- ================= FOOTER ================= -->
+          <footer class="footer">
+            <span>© 2026 Les Tahfizh — Dzah Fitriani</span>
+          </footer>
+          <!-- ================= END FOOTER ================= -->
         </div>
-        <!-- ================= END MAIN SCROLL ================= -->
-        <!-- ================= FOOTER ================= -->
-        <footer class="footer">
-          <span>© 2026 Les Tahfizh — Dzah Fitriani</span>
-        </footer>
-        <!-- ================= END FOOTER ================= -->
+        <!-- END #mainContent -->
+        <!-- ================= END CONTENT WRAPPER ================= -->
+      </div>
+    </div>
+
+    <!-- ================= GLOBAL LOADER ================= -->
+    <div id="adminLoader">
+      <div class="loader-content">
+        <div class="spinner"></div>
+        <div class="loader-text">
+          <div class="arabic basmallah">﷽</div>
+          <div class="latin">Memuat Data…</div>
+        </div>
       </div>
     </div>
 
@@ -231,11 +272,13 @@
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="assets/vendor/sweetalert2/sweetalert2.all.min.js"></script>
     <script src="assets/vendor/axios/axios.min.js"></script>
-    <!-- api.js harus duluan -->
+    <script src="assets/vendor/select2/select2.min.js"></script>
+
     <script src="assets/js/api.js"></script>
-    <!-- auth.js harus sebelum JS halaman -->
     <script src="assets/js/auth.js"></script>
+    <script src="assets/js/admin-thema.js"></script>
     <script src="assets/js/riwayat-hafalan.js"></script>
   </body>
 </html>
