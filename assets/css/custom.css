@@ -209,6 +209,41 @@
 }
 
 /* ===============================
+   RIWAYAT HAFALAN CARD LIST (MOBILE)
+=============================== */
+.riwayat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  font-size: 14px;
+}
+
+.riwayat-card .row-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.riwayat-card .label {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.riwayat-card .value {
+  font-weight: 600;
+  text-align: right;
+}
+
+.riwayat-card .surah {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #4e73df;
+}
+
+/* ===============================
    HIDE TOPBAR WHEN SIDEBAR OPEN (MOBILE)
 =============================== */
 @media (max-width: 768px) {
