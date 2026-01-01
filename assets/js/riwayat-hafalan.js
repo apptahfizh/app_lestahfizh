@@ -43,34 +43,49 @@ $(document).ready(function () {
     searching: true,
 
     ajax: function (data, callback) {
-      const params = { ...data };
+      const tanggalMulai = $("#filterTanggalMulai").val();
+      const tanggalSelesai = $("#filterTanggalSelesai").val();
+      const peserta = $("#filterPeserta").val();
 
-      const mulai = $("#filterTanggalMulai").val();
-      const selesai = $("#filterTanggalSelesai").val();
-      const peserta = $("#filterPeserta").val().trim();
+      // VALIDASI FRONTEND (khusus DataTables)
+      if (
+        (tanggalMulai && !tanggalSelesai) ||
+        (!tanggalMulai && tanggalSelesai)
+      ) {
+        Swal.fire({
+          icon: "warning",
+          title: "Filter Tanggal Tidak Lengkap",
+          text: "Pilih tanggal mulai dan tanggal selesai",
+        });
 
-      // Kirim tanggal HANYA jika dua-duanya ada
-      if (mulai && selesai) {
-        params.tanggal_mulai = mulai;
-        params.tanggal_selesai = selesai;
+        // 🔴 INI PENTING → HENTIKAN PROCESSING
+        callback({
+          draw: data.draw,
+          recordsTotal: 0,
+          recordsFiltered: 0,
+          data: [],
+        });
+        return;
       }
 
-      // Peserta boleh berdiri sendiri
-      if (peserta) {
-        params.peserta = peserta;
-      }
+      const params = {
+        ...data,
+        tanggal_mulai: tanggalMulai,
+        tanggal_selesai: tanggalSelesai,
+        peserta,
+      };
 
-      apiRequest("/hafalan/all?mode=datatable", "GET", params)
+      apiRequest("/hafalan/all", "GET", params)
         .then((res) => {
           callback({
-            draw: res.draw,
-            recordsTotal: res.recordsTotal,
-            recordsFiltered: res.recordsFiltered,
-            data: res.data,
+            draw: res.draw ?? data.draw,
+            recordsTotal: res.recordsTotal ?? 0,
+            recordsFiltered: res.recordsFiltered ?? 0,
+            data: res.data ?? [],
           });
         })
         .catch((err) => {
-          console.error("Gagal load riwayat hafalan:", err);
+          console.error(err);
           callback({
             draw: data.draw,
             recordsTotal: 0,
