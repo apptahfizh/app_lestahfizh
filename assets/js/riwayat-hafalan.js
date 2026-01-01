@@ -77,6 +77,11 @@ function renderMobileCards(data) {
         </div>
 
         <div class="row-item">
+          <span class="label">Setor Ayat</span>
+          <span class="value">${row.ayat_setor}</span>
+        </div>
+
+        <div class="row-item">
           <span class="label">Surah</span>
           <span class="value">${row.surah_nama}</span>
         </div>
@@ -84,11 +89,6 @@ function renderMobileCards(data) {
         <div class="row-item">
           <span class="label">Ayat Hafal</span>
           <span class="value">${row.ayat_hafal}</span>
-        </div>
-
-        <div class="row-item">
-          <span class="label">Setor Ayat</span>
-          <span class="value">${row.ayat_setor}</span>
         </div>
 
         ${
