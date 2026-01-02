@@ -276,7 +276,7 @@ $(document).ready(function () {
 // GLOBAL VAR
 // =========================
 let table = null;
-let suppressLoader = false;
+
 let selectedPdfPeserta = "";
 let selectedPdfBulan = "";
 
