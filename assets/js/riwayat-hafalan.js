@@ -437,8 +437,8 @@ async function generatePdfRiwayat(peserta, bulan) {
   doc.text("Hafalan Peserta", 14, 15);
 
   doc.setFontSize(11);
-  doc.text(`Nama  : ${peserta}`, 14, 24);
-  doc.text(`Bulan : ${bulanLabel}`, 14, 30);
+  doc.text(`Nama: ${peserta}`, 14, 24);
+  doc.text(`Bulan: ${bulanLabel}`, 14, 30);
 
   // 🔥 TANGGAL & WAKTU CETAK PDF
   doc.setFontSize(9);
