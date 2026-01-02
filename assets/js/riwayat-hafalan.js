@@ -374,6 +374,20 @@ $("#pdfBulan").on("change", function () {
   $("#savePdfModal").modal("hide");
 });
 
+// helper format tanggal & waktu (GLOBAL)
+function formatTanggalWaktuID(date = new Date()) {
+  const d = new Date(date);
+
+  const tanggal = String(d.getDate()).padStart(2, "0");
+  const bulan = String(d.getMonth() + 1).padStart(2, "0");
+  const tahun = d.getFullYear();
+
+  const jam = String(d.getHours()).padStart(2, "0");
+  const menit = String(d.getMinutes()).padStart(2, "0");
+
+  return `${tanggal}-${bulan}-${tahun} ${jam}:${menit} WIB`;
+}
+
 // ===============================
 // GENERATE PDF (jsPDF + autoTable)
 // ===============================
@@ -420,21 +434,28 @@ async function generatePdfRiwayat(peserta, bulan) {
   });
 
   doc.setFontSize(14);
-  doc.text("Riwayat Hafalan", 14, 15);
+  doc.text("Hafalan Peserta", 14, 15);
 
   doc.setFontSize(11);
   doc.text(`Nama  : ${peserta}`, 14, 24);
   doc.text(`Bulan : ${bulanLabel}`, 14, 30);
 
+  // 🔥 TANGGAL & WAKTU CETAK PDF
+  doc.setFontSize(9);
+  doc.setTextColor(120);
+  doc.text(`Diunduh pada: ${formatTanggalWaktuID()}`, 14, 36);
+
+  doc.setTextColor(0); // reset warna teks
+
   // ===============================
   // TABLE PDF
   // ===============================
   doc.autoTable({
-    startY: 36,
+    startY: 42,
     head: [["Tanggal", "Setor Ayat", "Surah", "Ayat Hafal", "Catatan"]],
     body: rows,
     styles: { fontSize: 9 },
-    headStyles: { fillColor: [220, 53, 69] },
+    headStyles: { fillColor: [22, 163, 74] },
   });
 
   doc.save(`Riwayat-Hafalan-${peserta}-${bulan}.pdf`);
