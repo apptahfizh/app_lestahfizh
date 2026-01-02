@@ -217,10 +217,16 @@
                 </div>
 
                 <div class="card shadow">
-                  <div class="card-header py-3">
+                  <div
+                    class="card-header py-3 d-flex justify-content-between align-items-center"
+                  >
                     <h6 class="m-0 font-weight-bold text-primary">
                       Semua Riwayat Hafalan
                     </h6>
+
+                    <button class="btn btn-sm btn-danger" id="btnSavePdf">
+                      <i class="fas fa-file-pdf"></i> Save PDF
+                    </button>
                   </div>
 
                   <div class="card-body">
@@ -267,6 +273,45 @@
       </div>
     </div>
 
+    <!-- ================= SAVE PDF MODAL ================= -->
+    <div class="modal fade" id="savePdfModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Download Riwayat Hafalan</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <!-- PESERTA -->
+            <div class="form-group">
+              <label>Peserta</label>
+              <input
+                type="text"
+                id="pdfPeserta"
+                class="form-control"
+                placeholder="Cari peserta..."
+              />
+            </div>
+
+            <!-- BULAN -->
+            <div class="form-group">
+              <label>Bulan</label>
+              <input type="month" id="pdfBulan" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-dismiss="modal">
+              Batal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ================= GLOBAL LOADER ================= -->
     <div id="adminLoader">
       <div class="loader-content">
@@ -290,6 +335,8 @@
     <script src="assets/js/api.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/admin-thema.js"></script>
+    <script src="assets/vendor/jspdf/jspdf.umd.min.js"></script>
+    <script src="assets/vendor/jspdf/jspdf.plugin.autotable.min.js"></script>
     <script src="assets/js/riwayat-hafalan.js"></script>
   </body>
 </html>

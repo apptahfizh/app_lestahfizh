@@ -271,3 +271,98 @@ $(document).ready(function () {
     table.ajax.reload();
   });
 });
+
+let selectedPdfPeserta = "";
+let selectedPdfBulan = "";
+
+// ===============================
+// OPEN MODAL SAVE PDF
+// ===============================
+$("#btnSavePdf").on("click", function () {
+  $("#pdfPeserta").val("");
+  $("#pdfBulan").val("").prop("disabled", true);
+  selectedPdfPeserta = "";
+  selectedPdfBulan = "";
+
+  $("#savePdfModal").modal("show");
+});
+
+// PESERTA AUTOCOMPLETE (Modal save pdf)
+$("#pdfPeserta").on("input", function () {
+  const val = $(this).val().trim();
+
+  if (val.length < 2) {
+    $("#pdfBulan").prop("disabled", true);
+    return;
+  }
+
+  selectedPdfPeserta = val;
+  $("#pdfBulan").prop("disabled", false);
+});
+
+// BULAN CLICK VALIDATION modal save pdf
+$("#pdfBulan").on("focus", function () {
+  if (!selectedPdfPeserta) {
+    Swal.fire({
+      icon: "warning",
+      title: "Peserta belum dipilih",
+      text: "Silakan pilih peserta terlebih dahulu",
+    });
+    $(this).blur();
+  }
+});
+
+// BULAN CHANGE → AUTO GENERATE PDF
+$("#pdfBulan").on("change", function () {
+  if (!selectedPdfPeserta) return;
+
+  selectedPdfBulan = $(this).val();
+
+  generatePdfRiwayat(selectedPdfPeserta, selectedPdfBulan);
+  $("#savePdfModal").modal("hide");
+});
+
+// ===============================
+// GENERATE PDF (jsPDF + autoTable)
+// ===============================
+function generatePdfRiwayat(peserta, bulan) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
+
+  const bulanLabel = new Date(bulan + "-01").toLocaleDateString("id-ID", {
+    month: "long",
+    year: "numeric",
+  });
+
+  doc.setFontSize(14);
+  doc.text("Riwayat Hafalan Peserta", 14, 15);
+
+  doc.setFontSize(11);
+  doc.text(`Nama  : ${peserta}`, 14, 24);
+  doc.text(`Bulan : ${bulanLabel}`, 14, 30);
+
+  // FILTER DATA DARI TABLE SAAT INI
+  const rows = [];
+  table.rows().every(function () {
+    const d = this.data();
+    if (d.peserta === peserta && d.tanggal.startsWith(bulan)) {
+      rows.push([
+        d.tanggal,
+        d.surah_nama,
+        d.ayat_hafal,
+        d.ayat_setor,
+        d.keterangan || "-",
+      ]);
+    }
+  });
+
+  doc.autoTable({
+    startY: 36,
+    head: [["Tanggal", "Surah", "Ayat Hafal", "Total Ayat", "Catatan"]],
+    body: rows,
+    styles: { fontSize: 9 },
+    headStyles: { fillColor: [220, 53, 69] },
+  });
+
+  doc.save(`Riwayat-Hafalan-${peserta}-${bulan}.pdf`);
+}
