@@ -273,6 +273,54 @@ $(".modal").on("hidden.bs.modal", function () {
 });
 
 // ===================================================
+// CREATE USER (SUBMIT TAMBAH USER)
+// ===================================================
+$("#userForm").on("submit", async function (e) {
+  e.preventDefault();
+
+  const username = $("#username").val().trim();
+  const password = $("#password").val();
+  const role = $("#role").val();
+  const peserta_id = role === "ortu" ? $("#peserta_id").val() || null : null;
+
+  if (!username || !password || !role) {
+    Swal.fire("Error", "Lengkapi semua data", "warning");
+    return;
+  }
+
+  if (role === "ortu" && !peserta_id) {
+    Swal.fire("Error", "Pilih peserta untuk role Ortu", "warning");
+    return;
+  }
+
+  AdminLoader.show();
+  try {
+    await apiRequest("/users", {
+      method: "POST",
+      body: JSON.stringify({
+        username,
+        password,
+        role,
+        peserta_id,
+      }),
+    });
+
+    $("#addUserModal").modal("hide");
+    $("#userForm")[0].reset();
+    $("#formPesertaWrapper").addClass("d-none");
+
+    await loadUsers();
+
+    Swal.fire("Berhasil", "User berhasil ditambahkan", "success");
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", err.message || "Gagal menyimpan user", "error");
+  } finally {
+    AdminLoader.hide();
+  }
+});
+
+// ===================================================
 // INIT
 // ===================================================
 document.addEventListener("DOMContentLoaded", loadUsers);
