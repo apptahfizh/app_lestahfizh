@@ -141,9 +141,12 @@ $(document).ready(function () {
         method: "GET",
       });
 
+      const data = Array.isArray(res) ? res : res.data || [];
       const select = $("#pdfPeserta");
 
-      res.data.forEach((p) => {
+      select.empty().append(`<option value="">-- Pilih Peserta --</option>`);
+
+      data.forEach((p) => {
         select.append(`<option value="${p.nama}">${p.nama}</option>`);
       });
     } catch (err) {
@@ -151,6 +154,7 @@ $(document).ready(function () {
       Swal.fire({
         icon: "error",
         title: "Gagal memuat daftar peserta",
+        text: "Periksa koneksi atau endpoint peserta",
       });
     }
   }
