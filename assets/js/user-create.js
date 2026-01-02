@@ -27,7 +27,6 @@ async function loadUsers() {
     const data = await apiRequest("/users");
     userDataCache = data || [];
     renderTable(userDataCache);
-    renderUserCards(userDataCache);
   } catch (err) {
     console.error(err);
     Swal.fire("Error", "Gagal memuat data user", "error");
