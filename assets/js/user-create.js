@@ -22,7 +22,7 @@ function hideLoader() {
 // LOAD USERS
 // ===================================================
 async function loadUsers() {
-  showLoader();
+  AdminLoader.show();
   try {
     const res = await api.get("/users");
     userDataCache = res.data || [];
@@ -31,7 +31,7 @@ async function loadUsers() {
   } catch (err) {
     Swal.fire("Error", "Gagal memuat data user", "error");
   } finally {
-    hideLoader();
+    AdminLoader.hide();
   }
 }
 
@@ -137,12 +137,12 @@ $(document).on("click", ".btn-reset", async function () {
 
   if (!ok.isConfirmed) return;
 
-  showLoader();
+  AdminLoader.show();
   try {
     await api.put(`/users/reset/${id}`);
     Swal.fire("Berhasil", "Password direset", "success");
   } finally {
-    hideLoader();
+    AdminLoader.hide();
   }
 });
 
@@ -188,7 +188,7 @@ $("#btnSaveEditUser").on("click", async function () {
   const password = $("#editPassword").val();
   const peserta_id = $("#edit_peserta_id").val() || null;
 
-  showLoader();
+  AdminLoader.show();
   try {
     await api.put(`/users/${id}`, { username, role, peserta_id });
 
@@ -199,7 +199,7 @@ $("#btnSaveEditUser").on("click", async function () {
     $("#modalEditUser").modal("hide");
     await loadUsers();
   } finally {
-    hideLoader();
+    AdminLoader.hide();
   }
 });
 
@@ -217,12 +217,12 @@ $(document).on("click", ".btn-delete", async function () {
 
   if (!ok.isConfirmed) return;
 
-  showLoader();
+  AdminLoader.show();
   try {
     await api.delete(`/users/${id}`);
     await loadUsers();
   } finally {
-    hideLoader();
+    AdminLoader.hide();
   }
 });
 
