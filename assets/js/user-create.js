@@ -1,22 +1,11 @@
-// ===================================================
-// USER-CREATE.JS — FINAL FIXED VERSION
-// ===================================================
+// ===============
+// USER-CREATE.JS
+// ===============
 
 checkAuth(["admin", "ustadz"]);
 
 let userTable = null;
 let userDataCache = [];
-
-// ===================================================
-// VIEW MODE CONTROLLER
-// ===================================================
-function setViewMode() {
-  const isMobile = window.innerWidth <= 768;
-  document.body.classList.toggle("mobile-view", isMobile);
-}
-
-window.addEventListener("resize", setViewMode);
-document.addEventListener("DOMContentLoaded", setViewMode);
 
 // ===================================================
 // LOAD USERS
