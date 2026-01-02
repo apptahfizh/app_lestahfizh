@@ -79,51 +79,6 @@ function renderTable(data) {
 }
 
 // ===================================================
-// RENDER CARD (MOBILE)
-// ===================================================
-function renderUserCards(data) {
-  const wrapper = document.getElementById("userCardWrapper");
-  if (!wrapper) return;
-
-  wrapper.innerHTML = "";
-
-  data.forEach((u) => {
-    wrapper.innerHTML += `
-      <div class="user-card">
-        <div class="row">
-          <span class="label">Username</span>
-          <span class="value">${u.username}</span>
-        </div>
-        <div class="row">
-          <span class="label">Role</span>
-          <span class="value">${u.role}</span>
-        </div>
-        <div class="row">
-          <span class="label">Peserta</span>
-          <span class="value">${u.peserta_nama || "-"}</span>
-        </div>
-
-        <div class="actions">
-          <button class="btn btn-sm btn-warning btn-reset" data-id="${u.id}">
-            Reset
-          </button>
-          <button class="btn btn-sm btn-info btn-edit"
-            data-id="${u.id}"
-            data-username="${u.username}"
-            data-role="${u.role}"
-            data-peserta_id="${u.peserta_id || ""}">
-            Edit
-          </button>
-          <button class="btn btn-sm btn-danger btn-delete" data-id="${u.id}">
-            Hapus
-          </button>
-        </div>
-      </div>
-    `;
-  });
-}
-
-// ===================================================
 // RESET PASSWORD
 // ===================================================
 $(document).on("click", ".btn-reset", async function () {
