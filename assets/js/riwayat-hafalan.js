@@ -128,11 +128,31 @@ function relocatePaginationToBottom() {
   footer.empty().append(info).append(paginate);
 }
 
+// helper GLOBAL untuk tombol cari
+function updateSearchButtonState() {
+  const tglMulai = $("#filterTanggalMulai").val();
+  const tglSelesai = $("#filterTanggalSelesai").val();
+  const peserta = $("#filterPeserta").val().trim();
+
+  const isEmpty = !tglMulai && !tglSelesai && !peserta;
+
+  $("#btnSearch").prop("disabled", isEmpty);
+}
+
 $(document).ready(function () {
   // =========================
   // AUTH
   // =========================
   checkAuth(["admin", "ustadz"]);
+
+  updateSearchButtonState();
+
+  $("#filterTanggalMulai, #filterTanggalSelesai, #filterPeserta").on(
+    "change input",
+    function () {
+      updateSearchButtonState();
+    }
+  );
 
   // Fungsi load peserta untuk modal save pdf
   loadAllPesertaForPdf();
@@ -292,6 +312,8 @@ $(document).ready(function () {
     $("#filterTanggalMulai").val("");
     $("#filterTanggalSelesai").val("");
     $("#filterPeserta").val("");
+
+    updateSearchButtonState(); // 🔥 ini penting untuk nonaktifkan cari saat reset
     suppressLoader = false;
     table.ajax.reload();
   });
