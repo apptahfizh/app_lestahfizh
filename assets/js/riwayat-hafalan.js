@@ -356,48 +356,23 @@ $("#pdfBulan").on("change", function () {
 // GENERATE PDF (jsPDF + autoTable)
 // ===============================
 async function generatePdfRiwayat(peserta, bulan) {
-  try {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF("p", "mm", "a4");
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
 
-    const bulanLabel = new Date(bulan + "-01").toLocaleDateString("id-ID", {
-      month: "long",
-      year: "numeric",
-    });
+  // ===============================
+  // AMBIL DATA RIWAYAT DARI API
+  // ===============================
+  const res = await apiRequest(
+    `/hafalan/all?peserta=${encodeURIComponent(peserta)}`,
+    { method: "GET" }
+  );
 
-    // ===============================
-    // AMBIL DATA LANGSUNG DARI API
-    // ===============================
-    const res = await apiRequest(
-      `/hafalan/all?mode=pdf&peserta=${encodeURIComponent(
-        peserta
-      )}&bulan=${bulan}`,
-      { method: "GET" }
-    );
-
-    if (!res.data || res.data.length === 0) {
-      Swal.fire({
-        icon: "info",
-        title: "Data kosong",
-        text: "Tidak ada riwayat hafalan di bulan ini",
-      });
-      return;
-    }
-
-    // ===============================
-    // HEADER PDF
-    // ===============================
-    doc.setFontSize(14);
-    doc.text("Riwayat Hafalan", 14, 15);
-
-    doc.setFontSize(11);
-    doc.text(`Nama  : ${peserta}`, 14, 24);
-    doc.text(`Bulan : ${bulanLabel}`, 14, 30);
-
-    // ===============================
-    // DATA TABEL
-    // ===============================
-    const rows = res.data.map((d) => [
+  // ===============================
+  // FILTER BULAN (YYYY-MM)
+  // ===============================
+  const rows = res.data
+    .filter((d) => d.tanggal.startsWith(bulan))
+    .map((d) => [
       formatTanggalID(d.tanggal),
       d.ayat_setor,
       d.surah_nama,
@@ -405,22 +380,42 @@ async function generatePdfRiwayat(peserta, bulan) {
       d.keterangan || "-",
     ]);
 
-    doc.autoTable({
-      startY: 36,
-      head: [["Tanggal", "Setor Ayat", "Surah", "Ayat Hafal", "Catatan"]],
-      body: rows,
-      styles: { fontSize: 9 },
-      headStyles: { fillColor: [78, 115, 223] },
-    });
-
-    doc.save(`Riwayat-Hafalan-${peserta}-${bulan}.pdf`);
-  } catch (err) {
-    console.error(err);
+  if (rows.length === 0) {
     Swal.fire({
-      icon: "error",
-      title: "Gagal membuat PDF",
+      icon: "warning",
+      title: "Data tidak ditemukan",
+      text: "Tidak ada riwayat hafalan pada bulan yang dipilih",
     });
+    return;
   }
+
+  // ===============================
+  // HEADER PDF
+  // ===============================
+  const bulanLabel = new Date(bulan + "-01").toLocaleDateString("id-ID", {
+    month: "long",
+    year: "numeric",
+  });
+
+  doc.setFontSize(14);
+  doc.text("Riwayat Hafalan", 14, 15);
+
+  doc.setFontSize(11);
+  doc.text(`Nama  : ${peserta}`, 14, 24);
+  doc.text(`Bulan : ${bulanLabel}`, 14, 30);
+
+  // ===============================
+  // TABLE PDF
+  // ===============================
+  doc.autoTable({
+    startY: 36,
+    head: [["Tanggal", "Setor Ayat", "Surah", "Ayat Hafal", "Catatan"]],
+    body: rows,
+    styles: { fontSize: 9 },
+    headStyles: { fillColor: [220, 53, 69] },
+  });
+
+  doc.save(`Riwayat-Hafalan-${peserta}-${bulan}.pdf`);
 }
 
 // Helper format tanggal untuk hasil generate pdf
