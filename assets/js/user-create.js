@@ -222,39 +222,43 @@ $(document).on("click", "#toggleEditPassword", function () {
 });
 
 // ===================================================
-// SAVE EDIT USER
+// DELETE USER
 // ===================================================
-$("#btnSaveEditUser").on("click", async function () {
-  const id = $("#editUserId").val();
-  const username = $("#editUsername").val();
-  const role = $("#editRole").val();
-  const password = $("#editPassword").val();
-  const peserta_id = $("#edit_peserta_id").val() || null;
+$(document).on("click", ".btn-delete", async function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation(); // 🔥 PENTING
+
+  const id = $(this).data("id");
+  console.log("DELETE CLICKED ID:", id); // 🔎 DEBUG
+
+  const ok = await Swal.fire({
+    title: "Hapus User?",
+    text: "Data tidak bisa dikembalikan",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Ya, hapus",
+    cancelButtonText: "Batal",
+  });
+
+  if (!ok.isConfirmed) return;
 
   AdminLoader.show();
   try {
     await apiRequest(`/users/${id}`, {
-      method: "PUT",
-      body: JSON.stringify({ username, role, peserta_id }),
+      method: "DELETE",
     });
 
-    if (password) {
-      await apiRequest(`/users/update-password/${id}`, {
-        method: "PUT",
-        body: JSON.stringify({ password }),
-      });
-    }
-
-    $("#modalEditUser").modal("hide");
+    Swal.fire("Berhasil", "User berhasil dihapus", "success");
     await loadUsers();
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", err.message || "Gagal menghapus user", "error");
   } finally {
     AdminLoader.hide();
   }
 });
 
-// ===================================================
-// DELETE USER
-// ===================================================
 // ===================================================
 // SAVE EDIT USER (FIXED)
 // ===================================================
