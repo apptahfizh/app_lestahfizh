@@ -134,6 +134,7 @@ $(document).ready(function () {
   // =========================
   checkAuth(["admin", "ustadz"]);
 
+  // Fungsi load peserta untuk modal save pdf
   loadAllPesertaForPdf();
   async function loadAllPesertaForPdf() {
     try {
@@ -364,7 +365,7 @@ function generatePdfRiwayat(peserta, bulan) {
   });
 
   doc.setFontSize(14);
-  doc.text("Riwayat Hafalan Peserta", 14, 15);
+  doc.text("Rekap Hafalan", 14, 15);
 
   doc.setFontSize(11);
   doc.text(`Nama  : ${peserta}`, 14, 24);
@@ -376,7 +377,7 @@ function generatePdfRiwayat(peserta, bulan) {
     const d = this.data();
     if (d.peserta === peserta && d.tanggal.startsWith(bulan)) {
       rows.push([
-        d.tanggal,
+        formatTanggalID(d.tanggal),
         d.surah_nama,
         d.ayat_hafal,
         d.ayat_setor,
@@ -396,12 +397,13 @@ function generatePdfRiwayat(peserta, bulan) {
   doc.save(`Riwayat-Hafalan-${peserta}-${bulan}.pdf`);
 }
 
-function fillPesertaDropdown(data) {
-  const select = $("#pdfPeserta");
+// Helper format tanggal untuk hasil generate pdf
+function formatTanggalID(dateString) {
+  if (!dateString) return "-";
 
-  data.forEach((row) => {
-    if (!select.find(`option[value="${row.peserta}"]`).length) {
-      select.append(`<option value="${row.peserta}">${row.peserta}</option>`);
-    }
-  });
+  const d = new Date(dateString);
+
+  return `${String(d.getDate()).padStart(2, "0")}-${String(
+    d.getMonth() + 1
+  ).padStart(2, "0")}-${d.getFullYear()}`;
 }
