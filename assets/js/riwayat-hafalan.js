@@ -370,3 +370,13 @@ function generatePdfRiwayat(peserta, bulan) {
 
   doc.save(`Riwayat-Hafalan-${peserta}-${bulan}.pdf`);
 }
+
+function fillPesertaDropdown(data) {
+  const select = $("#pdfPeserta");
+
+  data.forEach((row) => {
+    if (!select.find(`option[value="${row.peserta}"]`).length) {
+      select.append(`<option value="${row.peserta}">${row.peserta}</option>`);
+    }
+  });
+}
