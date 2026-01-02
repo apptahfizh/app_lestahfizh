@@ -554,7 +554,7 @@ async function generatePdfRiwayatBulanan(monthYear) {
 
     // ===== HEADER =====
     doc.setFontSize(14);
-    doc.text("Laporan Riwayat Hafalan", 14, 15);
+    doc.text("Riwayat Hafalan", 14, 15);
 
     doc.setFontSize(10);
     doc.text(`Nama: ${user.username || "-"}`, 14, 22);
@@ -603,8 +603,8 @@ async function generatePdfRiwayatBulanan(monthYear) {
       return [
         i + 1,
         formatTanggalIndo(r.tanggal),
-        `QS ${r.surah_nama}`,
         r.ayat_setor || "-",
+        `QS ${r.surah_nama}`,
         ayat,
         `${persen}%`,
         r.keterangan || "-",
@@ -617,8 +617,8 @@ async function generatePdfRiwayatBulanan(monthYear) {
         [
           "No",
           "Tanggal",
-          "Surah",
           "Ayat Setor",
+          "Surah",
           "Ayat Hafal",
           "Progress",
           "Keterangan",
