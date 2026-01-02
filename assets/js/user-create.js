@@ -7,10 +7,22 @@ checkAuth(["admin", "ustadz"]);
 let userTable = null;
 let userDataCache = [];
 
+// ==========================
+// LOADER CONTROL
+// ==========================
+function showLoader() {
+  $("#adminLoader").addClass("show");
+}
+
+function hideLoader() {
+  $("#adminLoader").removeClass("show");
+}
+
 // ===================================================
 // LOAD USERS
 // ===================================================
 async function loadUsers() {
+  showLoader();
   try {
     const res = await api.get("/users");
     userDataCache = res.data || [];
@@ -18,6 +30,8 @@ async function loadUsers() {
     renderUserCards(userDataCache);
   } catch (err) {
     Swal.fire("Error", "Gagal memuat data user", "error");
+  } finally {
+    hideLoader();
   }
 }
 
@@ -123,8 +137,13 @@ $(document).on("click", ".btn-reset", async function () {
 
   if (!ok.isConfirmed) return;
 
-  await api.put(`/users/reset/${id}`);
-  Swal.fire("Berhasil", "Password direset", "success");
+  showLoader();
+  try {
+    await api.put(`/users/reset/${id}`);
+    Swal.fire("Berhasil", "Password direset", "success");
+  } finally {
+    hideLoader();
+  }
 });
 
 // ===================================================
@@ -169,14 +188,19 @@ $("#btnSaveEditUser").on("click", async function () {
   const password = $("#editPassword").val();
   const peserta_id = $("#edit_peserta_id").val() || null;
 
-  await api.put(`/users/${id}`, { username, role, peserta_id });
+  showLoader();
+  try {
+    await api.put(`/users/${id}`, { username, role, peserta_id });
 
-  if (password) {
-    await api.put(`/users/update-password/${id}`, { password });
+    if (password) {
+      await api.put(`/users/update-password/${id}`, { password });
+    }
+
+    $("#modalEditUser").modal("hide");
+    await loadUsers();
+  } finally {
+    hideLoader();
   }
-
-  $("#modalEditUser").modal("hide");
-  loadUsers();
 });
 
 // ===================================================
@@ -193,8 +217,13 @@ $(document).on("click", ".btn-delete", async function () {
 
   if (!ok.isConfirmed) return;
 
-  await api.delete(`/users/${id}`);
-  loadUsers();
+  showLoader();
+  try {
+    await api.delete(`/users/${id}`);
+    await loadUsers();
+  } finally {
+    hideLoader();
+  }
 });
 
 // ===================================================
