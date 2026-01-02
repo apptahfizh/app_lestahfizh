@@ -331,6 +331,9 @@ $("#btnSaveEditUser").on("click", async function () {
 // ===================================================
 // FIX ARIA WARNING
 // ===================================================
+$(".modal").on("hidden.bs.modal", function () {
+  document.activeElement?.blur();
+});
 
 // ===================================================
 // CREATE USER (SUBMIT TAMBAH USER)
