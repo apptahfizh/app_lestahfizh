@@ -123,24 +123,33 @@ function renderTable(data) {
       {
         data: null,
         orderable: false,
-        render: (row) => `
-          <button class="btn btn-sm btn-warning btn-reset" data-id="${row.id}">
-            Reset
-          </button>
-          <button class="btn btn-sm btn-info btn-edit"
-            data-id="${row.id}"
-            data-username="${row.username}"
-            data-role="${row.role}"
-            data-peserta_id="${row.peserta_id || ""}">
-            Edit
-          </button>
-          <button
-    type="button"
-    class="btn btn-sm btn-danger btn-delete"
-    data-id="${row.id}">
-    Hapus
-  </button>
-        `,
+        render: (row) => {
+          return `
+      <button
+        type="button"
+        class="btn btn-sm btn-warning btn-reset"
+        data-id="${row.id}">
+        Reset
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-sm btn-info btn-edit"
+        data-id="${row.id}"
+        data-username="${row.username}"
+        data-role="${row.role}"
+        data-peserta_id="${row.peserta_id || ""}">
+        Edit
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-sm btn-danger btn-delete"
+        data-id="${row.id}">
+        Hapus
+      </button>
+    `;
+        },
       },
     ],
   });
