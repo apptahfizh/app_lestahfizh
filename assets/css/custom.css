@@ -251,31 +251,10 @@
 /* ===============================
    HIDE TOPBAR WHEN SIDEBAR OPEN (MOBILE)
 =============================== */
-@media (max-width: 768px) {
-  body:not(.sidebar-toggled) .topbar {
-    display: none;
-  }
-}
 
 @media (max-width: 768px) {
   .sidebar {
     padding-top: 0 !important;
-  }
-}
-
-/* ===============================
-   LOCK FOOTER ketika SIDEBAR OPEN (MOBILE)
-
-@media (max-width: 768px) {
-  body:not(.sidebar-toggled) {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-  }
-}=============================== */
-
-@media (max-width: 768px) {
-  .sidebar {
     top: 0;
     left: 0;
     height: 100dvh;
@@ -295,6 +274,9 @@
   body:not(.sidebar-toggled) footer,
   body:not(.sidebar-toggled) .footer {
     display: none !important;
+  }
+  body:not(.sidebar-toggled) .topbar {
+    display: none;
   }
 }
 
