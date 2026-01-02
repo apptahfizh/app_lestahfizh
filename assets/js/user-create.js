@@ -102,6 +102,24 @@ $(document).on("change", "#editRole", async function () {
 });
 
 // ===================================================
+// HELPER FORMAT TANGGAL (WIB)
+// ===================================================
+function formatTanggalWIB(iso) {
+  if (!iso) return "-";
+
+  const d = new Date(iso);
+
+  return d.toLocaleString("id-ID", {
+    timeZone: "Asia/Jakarta",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+// ===================================================
 // RENDER TABLE (DESKTOP)
 // ===================================================
 function renderTable(data) {
@@ -119,7 +137,10 @@ function renderTable(data) {
       { data: "username" },
       { data: "role" },
       { data: "peserta_nama", render: (d) => d || "-" },
-      { data: "created_at" },
+      {
+        data: "created_at",
+        render: (d) => formatTanggalWIB(d),
+      },
       {
         data: null,
         orderable: false,
