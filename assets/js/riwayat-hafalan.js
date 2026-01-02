@@ -137,7 +137,7 @@ $(document).ready(function () {
   // ===============================
   // DATATABLES INIT
   // ===============================
-  const table = $("#riwayatHafalanTable").DataTable({
+  table = $("#riwayatHafalanTable").DataTable({
     processing: true,
     serverSide: true,
     searching: false,
@@ -266,7 +266,6 @@ $(document).ready(function () {
     $("#filterTanggalMulai").val("");
     $("#filterTanggalSelesai").val("");
     $("#filterPeserta").val("");
-
     suppressLoader = false;
     table.ajax.reload();
   });
@@ -276,7 +275,7 @@ $(document).ready(function () {
 // GLOBAL VAR
 // =========================
 let table = null;
-
+suppressLoader = false;
 let selectedPdfPeserta = "";
 let selectedPdfBulan = "";
 
