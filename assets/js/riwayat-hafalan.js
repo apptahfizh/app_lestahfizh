@@ -134,6 +134,27 @@ $(document).ready(function () {
   // =========================
   checkAuth(["admin", "ustadz"]);
 
+  loadAllPesertaForPdf();
+  async function loadAllPesertaForPdf() {
+    try {
+      const res = await apiRequest("/peserta/all", {
+        method: "GET",
+      });
+
+      const select = $("#pdfPeserta");
+
+      res.data.forEach((p) => {
+        select.append(`<option value="${p.nama}">${p.nama}</option>`);
+      });
+    } catch (err) {
+      console.error("Gagal load peserta:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal memuat daftar peserta",
+      });
+    }
+  }
+
   // ===============================
   // DATATABLES INIT
   // ===============================
@@ -183,17 +204,19 @@ $(document).ready(function () {
       const request = apiRequest(`/hafalan/all?${query}`, { method: "GET" });
       const wrapped = suppressLoader ? request : withLoader(request);
 
-      wrapped.then((res) => {
-        callback({
-          draw: res.draw,
-          recordsTotal: res.recordsTotal,
-          recordsFiltered: res.recordsFiltered,
-          data: res.data,
-        });
-
-        fillPesertaDropdown(res.data);
-        renderMobileCards(res.data);
-      });
+      wrapped
+        .then((res) => {
+          callback(res);
+          renderMobileCards(res.data);
+        })
+        .catch(() =>
+          callback({
+            draw: dt.draw,
+            recordsTotal: 0,
+            recordsFiltered: 0,
+            data: [],
+          })
+        );
     },
 
     columns: [
