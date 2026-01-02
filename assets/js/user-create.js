@@ -243,23 +243,49 @@ $("#btnSaveEditUser").on("click", async function () {
 // ===================================================
 // DELETE USER
 // ===================================================
-$(document).on("click", ".btn-delete", async function () {
-  const id = $(this).data("id");
+// ===================================================
+// SAVE EDIT USER (FIXED)
+// ===================================================
+$("#btnSaveEditUser").on("click", async function () {
+  const id = $("#editUserId").val();
+  const username = $("#editUsername").val().trim();
+  const role = $("#editRole").val();
+  const password = $("#editPassword").val();
+  const peserta_id =
+    role === "ortu" ? $("#edit_peserta_id").val() || null : null;
 
-  const ok = await Swal.fire({
-    title: "Hapus User?",
-    icon: "warning",
-    showCancelButton: true,
-  });
+  if (!username || !role) {
+    Swal.fire("Error", "Username dan role wajib diisi", "warning");
+    return;
+  }
 
-  if (!ok.isConfirmed) return;
+  if (role === "ortu" && !peserta_id) {
+    Swal.fire("Error", "Pilih peserta untuk role Ortu", "warning");
+    return;
+  }
 
   AdminLoader.show();
   try {
     await apiRequest(`/users/${id}`, {
-      method: "DELETE",
+      method: "PUT",
+      body: JSON.stringify({ username, role, peserta_id }),
     });
+
+    if (password) {
+      await apiRequest(`/users/update-password/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({ password }),
+      });
+    }
+
+    $("#modalEditUser").modal("hide");
+
+    Swal.fire("Berhasil", "Data user berhasil diperbarui", "success");
+
     await loadUsers();
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", err.message || "Gagal mengedit user", "error");
   } finally {
     AdminLoader.hide();
   }
