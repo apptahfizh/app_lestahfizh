@@ -134,9 +134,12 @@ function renderTable(data) {
             data-peserta_id="${row.peserta_id || ""}">
             Edit
           </button>
-          <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}">
-            Hapus
-          </button>
+          <button
+    type="button"
+    class="btn btn-sm btn-danger btn-delete"
+    data-id="${row.id}">
+    Hapus
+  </button>
         `,
       },
     ],
