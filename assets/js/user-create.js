@@ -24,11 +24,12 @@ function hideLoader() {
 async function loadUsers() {
   AdminLoader.show();
   try {
-    const res = await api.get("/users");
-    userDataCache = res.data || [];
+    const data = await apiRequest("/users");
+    userDataCache = data || [];
     renderTable(userDataCache);
     renderUserCards(userDataCache);
   } catch (err) {
+    console.error(err);
     Swal.fire("Error", "Gagal memuat data user", "error");
   } finally {
     AdminLoader.hide();
@@ -139,7 +140,7 @@ $(document).on("click", ".btn-reset", async function () {
 
   AdminLoader.show();
   try {
-    await api.put(`/users/reset/${id}`);
+    await apiRequest(`/users/reset/${id}`, { method: "PUT" });
     Swal.fire("Berhasil", "Password direset", "success");
   } finally {
     AdminLoader.hide();
@@ -190,10 +191,16 @@ $("#btnSaveEditUser").on("click", async function () {
 
   AdminLoader.show();
   try {
-    await api.put(`/users/${id}`, { username, role, peserta_id });
+    await apiRequest(`/users/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ username, role, peserta_id }),
+    });
 
     if (password) {
-      await api.put(`/users/update-password/${id}`, { password });
+      await apiRequest(`/users/update-password/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({ password }),
+      });
     }
 
     $("#modalEditUser").modal("hide");
@@ -219,7 +226,9 @@ $(document).on("click", ".btn-delete", async function () {
 
   AdminLoader.show();
   try {
-    await api.delete(`/users/${id}`);
+    await apiRequest(`/users/${id}`, {
+      method: "DELETE",
+    });
     await loadUsers();
   } finally {
     AdminLoader.hide();
