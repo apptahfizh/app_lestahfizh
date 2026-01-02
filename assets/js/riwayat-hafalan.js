@@ -137,7 +137,7 @@ $(document).ready(function () {
   loadAllPesertaForPdf();
   async function loadAllPesertaForPdf() {
     try {
-      const res = await apiRequest("/peserta", {
+      const res = await apiRequest("/peserta/simple", {
         method: "GET",
       });
 
