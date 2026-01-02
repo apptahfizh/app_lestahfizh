@@ -18,6 +18,20 @@ function hideLoader() {
   $("#adminLoader").removeClass("show");
 }
 
+// ==========================
+// TOGGLE PESERTA FORM
+// ==========================
+function togglePesertaForm(role, wrapperSelector) {
+  const wrapper = document.querySelector(wrapperSelector);
+  if (!wrapper) return;
+
+  if (role === "ortu") {
+    wrapper.classList.remove("d-none");
+  } else {
+    wrapper.classList.add("d-none");
+  }
+}
+
 // ===================================================
 // LOAD USERS
 // ===================================================
@@ -34,6 +48,58 @@ async function loadUsers() {
     AdminLoader.hide();
   }
 }
+
+// ==========================
+// LOAD PESERTA OPTIONS
+// ==========================
+async function loadPesertaOptions(selectId) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+
+  select.innerHTML = `<option value="">-- Pilih Peserta --</option>`;
+
+  try {
+    const data = await apiRequest("/peserta");
+
+    data.forEach((p) => {
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = p.nama;
+      select.appendChild(opt);
+    });
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "Gagal memuat data peserta", "error");
+  }
+}
+// ==========================
+// ROLE CHANGE (ADD USER)
+// ==========================
+$(document).on("change", "#role", async function () {
+  const role = this.value;
+
+  togglePesertaForm(role, "#formPesertaWrapper");
+
+  if (role === "ortu") {
+    await loadPesertaOptions("peserta_id");
+  } else {
+    $("#peserta_id").val("");
+  }
+});
+// ==========================
+// ROLE CHANGE (EDIT USER)
+// ==========================
+$(document).on("change", "#editRole", async function () {
+  const role = this.value;
+
+  togglePesertaForm(role, "#editFormPesertaWrapper");
+
+  if (role === "ortu") {
+    await loadPesertaOptions("edit_peserta_id");
+  } else {
+    $("#edit_peserta_id").val("");
+  }
+});
 
 // ===================================================
 // RENDER TABLE (DESKTOP)
@@ -104,12 +170,22 @@ $(document).on("click", ".btn-reset", async function () {
 // ===================================================
 // OPEN EDIT MODAL
 // ===================================================
-$(document).on("click", ".btn-edit", function () {
+$(document).on("click", ".btn-edit", async function () {
+  const role = this.dataset.role;
+
   $("#editUserId").val(this.dataset.id);
   $("#editUsername").val(this.dataset.username);
-  $("#editRole").val(this.dataset.role);
+  $("#editRole").val(role);
   $("#editPassword").val("");
-  $("#edit_peserta_id").val(this.dataset.peserta_id || "");
+
+  togglePesertaForm(role, "#editFormPesertaWrapper");
+
+  if (role === "ortu") {
+    await loadPesertaOptions("edit_peserta_id");
+    $("#edit_peserta_id").val(this.dataset.peserta_id || "");
+  } else {
+    $("#edit_peserta_id").val("");
+  }
 
   $("#modalEditUser").modal("show");
 });
