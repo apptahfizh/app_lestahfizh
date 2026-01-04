@@ -124,13 +124,14 @@
 /* ===============================
    PESERTA CARD LIST (MOBILE)
 =============================== */
-.peserta-card {
+.riwayat-card {
   background: #fff;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 12px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 6px rgba(55, 168, 3, 0.959);
+  font-size: 14px;
 }
 
 .peserta-card .nama {
@@ -246,6 +247,27 @@
   font-weight: 700;
   margin-bottom: 6px;
   color: #0c41e2;
+}
+
+/* ===============================
+   USER CREATE CARD LIST (MOBILE)
+=============================== */
+.usercreate-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 6px rgba(55, 168, 3, 0.959);
+}
+
+.usercreate-card .nama {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #0c41e2;
+  word-break: break-word;
+  white-space: normal;
+  bottom: 2px;
 }
 
 /* ===============================
@@ -377,6 +399,7 @@
 =============================== */
 @media (max-width: 768px) {
   /* Paksa tabel desktop benar-benar hilang */
+  #desktopUserTable,
   #tableUsers {
     display: none !important;
   }
@@ -393,29 +416,6 @@
   }
 
   #tableUsers_wrapper {
-    display: none !important;
-  }
-}
-/* ===============================
-   USER CREATE — FINAL MOBILE FIX
-=============================== */
-@media (max-width: 768px) {
-  /* SEMBUNYIKAN SEMUA DATATABLE */
-  #desktopUserTable,
-  #tableUsers_wrapper {
-    display: none !important;
-  }
-
-  /* TAMPILKAN CARD LIST */
-  #userMobileList {
-    display: block !important;
-    width: 100%;
-  }
-}
-
-@media (min-width: 769px) {
-  /* DESKTOP */
-  #userMobileList {
     display: none !important;
   }
 }

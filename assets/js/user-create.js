@@ -412,7 +412,7 @@ function renderUserMobile(data) {
 
   data.forEach((u) => {
     const div = document.createElement("div");
-    div.className = "peserta-card";
+    div.className = "usercreate-card";
 
     div.innerHTML = `
       <div class="nama">${u.username}</div>
