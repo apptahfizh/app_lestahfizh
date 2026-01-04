@@ -40,7 +40,9 @@ async function loadUsers() {
   try {
     const data = await apiRequest("/users");
     userDataCache = data || [];
+
     renderTable(userDataCache);
+    renderMobileUsers(userDataCache);
   } catch (err) {
     console.error(err);
     Swal.fire("Error", "Gagal memuat data user", "error");
@@ -387,3 +389,62 @@ $("#userForm").on("submit", async function (e) {
 // INIT
 // ===================================================
 document.addEventListener("DOMContentLoaded", loadUsers);
+
+// ===================================================
+// RENDER MOBILE CARD
+// ===================================================
+
+function renderMobileUsers(data) {
+  const container = $("#userMobileList");
+  container.empty();
+
+  if (!data.length) {
+    container.html("<p class='text-center'>Tidak ada data</p>");
+    return;
+  }
+
+  data.forEach((u) => {
+    container.append(`
+      <div class="card mb-2 shadow-sm">
+        <div class="card-body p-2">
+          <h6 class="mb-1"><strong>${u.username}</strong></h6>
+          <small class="text-muted">
+            Role: ${u.role}
+          </small>
+          <br />
+          <small>
+            Peserta: ${u.peserta_nama || "-"}
+          </small>
+          <br />
+          <small class="text-muted">
+            Dibuat: ${formatTanggalWIB(u.created_at)}
+          </small>
+
+          <div class="mt-2 d-flex gap-1">
+            <button
+              type="button"
+              class="btn btn-sm btn-warning btn-reset"
+              data-id="${u.id}">
+              Reset
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm btn-info btn-edit"
+              data-id="${u.id}"
+              data-username="${u.username}"
+              data-role="${u.role}"
+              data-peserta_id="${u.peserta_id || ""}">
+              Edit
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm btn-danger btn-delete"
+              data-id="${u.id}">
+              Hapus
+            </button>
+          </div>
+        </div>
+      </div>
+    `);
+  });
+}
