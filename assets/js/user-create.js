@@ -420,7 +420,7 @@ function renderUserMobile(data) {
         Role: <strong>${u.role}</strong>
       </div>
       <div class="small mb-2">
-        Peserta: ${u.peserta_nama || "-"}
+        peserta: ${u.peserta_nama || "-"}
       </div>
       <div class="aksi">
         <button class="btn btn-sm btn-info btn-edit"
