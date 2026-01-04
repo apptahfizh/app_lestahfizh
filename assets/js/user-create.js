@@ -416,11 +416,11 @@ function renderUserMobile(data) {
 
     div.innerHTML = `
       <div class="nama">${u.username}</div>
-      <div class="small text-muted mb-1">
+      <div class="role">
         Role: <strong>${u.role}</strong>
       </div>
-      <div class="small mb-2">
-        peserta: ${u.peserta_nama || "-"}
+      <div class="peserta">
+        Peserta: ${u.peserta_nama || "-"}
       </div>
       <div class="aksi">
         <button class="btn btn-sm btn-info btn-edit"
