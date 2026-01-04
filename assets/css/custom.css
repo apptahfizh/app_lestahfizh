@@ -249,6 +249,27 @@
 }
 
 /* ===============================
+   USER CREATE - MOBILE CARD FIX
+=============================== */
+@media (max-width: 768px) {
+  /* Paksa tabel desktop benar-benar hilang */
+  #tableUsers {
+    display: none !important;
+  }
+
+  /* Paksa card list tampil */
+  #userMobileList {
+    display: block !important;
+    width: 100%;
+  }
+
+  /* Hindari efek table-responsive mengunci tinggi */
+  .user-table-card .table-responsive {
+    overflow: visible !important;
+  }
+}
+
+/* ===============================
    HIDE TOPBAR WHEN SIDEBAR OPEN (MOBILE)
 =============================== */
 
