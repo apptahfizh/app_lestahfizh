@@ -396,3 +396,26 @@
     display: none !important;
   }
 }
+/* ===============================
+   USER CREATE — FINAL MOBILE FIX
+=============================== */
+@media (max-width: 768px) {
+  /* SEMBUNYIKAN SEMUA DATATABLE */
+  #desktopUserTable,
+  #tableUsers_wrapper {
+    display: none !important;
+  }
+
+  /* TAMPILKAN CARD LIST */
+  #userMobileList {
+    display: block !important;
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  /* DESKTOP */
+  #userMobileList {
+    display: none !important;
+  }
+}
