@@ -36,6 +36,8 @@ function togglePesertaForm(role, wrapperSelector) {
 // LOAD USERS
 // ===================================================
 async function loadUsers() {
+  console.log("RENDER MOBILE USERS", data);
+
   AdminLoader.show();
   try {
     const data = await apiRequest("/users");
