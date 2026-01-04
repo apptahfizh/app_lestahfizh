@@ -42,7 +42,7 @@ async function loadUsers() {
     userDataCache = data || [];
 
     renderTable(userDataCache);
-    renderMobileUsers(userDataCache);
+    renderUserMobile(userDataCache); // ✅ FIX DI SINI
   } catch (err) {
     console.error(err);
     Swal.fire("Error", "Gagal memuat data user", "error");
