@@ -394,57 +394,44 @@ document.addEventListener("DOMContentLoaded", loadUsers);
 // RENDER MOBILE CARD
 // ===================================================
 
-function renderMobileUsers(data) {
-  const container = $("#userMobileList");
-  container.empty();
+function renderUserMobile(data) {
+  const container = document.getElementById("userMobileList");
+  if (!container) return;
+
+  container.innerHTML = "";
 
   if (!data.length) {
-    container.html("<p class='text-center'>Tidak ada data</p>");
+    container.innerHTML =
+      "<div class='text-center text-muted'>Tidak ada data</div>";
     return;
   }
 
   data.forEach((u) => {
-    container.append(`
-      <div class="card mb-2 shadow-sm">
-        <div class="card-body p-2">
-          <h6 class="mb-1"><strong>${u.username}</strong></h6>
-          <small class="text-muted">
-            Role: ${u.role}
-          </small>
-          <br />
-          <small>
-            Peserta: ${u.peserta_nama || "-"}
-          </small>
-          <br />
-          <small class="text-muted">
-            Dibuat: ${formatTanggalWIB(u.created_at)}
-          </small>
+    const div = document.createElement("div");
+    div.className = "peserta-card";
 
-          <div class="mt-2 d-flex gap-1">
-            <button
-              type="button"
-              class="btn btn-sm btn-warning btn-reset"
-              data-id="${u.id}">
-              Reset
-            </button>
-            <button
-              type="button"
-              class="btn btn-sm btn-info btn-edit"
-              data-id="${u.id}"
-              data-username="${u.username}"
-              data-role="${u.role}"
-              data-peserta_id="${u.peserta_id || ""}">
-              Edit
-            </button>
-            <button
-              type="button"
-              class="btn btn-sm btn-danger btn-delete"
-              data-id="${u.id}">
-              Hapus
-            </button>
-          </div>
-        </div>
+    div.innerHTML = `
+      <div class="nama">${u.username}</div>
+      <div class="small text-muted mb-1">
+        Role: <strong>${u.role}</strong>
       </div>
-    `);
+      <div class="small mb-2">
+        Peserta: ${u.peserta_nama || "-"}
+      </div>
+      <div class="aksi">
+        <button class="btn btn-sm btn-info btn-edit"
+          data-id="${u.id}"
+          data-username="${u.username}"
+          data-role="${u.role}"
+          data-peserta_id="${u.peserta_id || ""}">
+          Edit
+        </button>
+        <button class="btn btn-sm btn-danger btn-delete" data-id="${u.id}">
+          Hapus
+        </button>
+      </div>
+    `;
+
+    container.appendChild(div);
   });
 }
