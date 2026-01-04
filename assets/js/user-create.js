@@ -36,15 +36,15 @@ function togglePesertaForm(role, wrapperSelector) {
 // LOAD USERS
 // ===================================================
 async function loadUsers() {
-  console.log("RENDER MOBILE USERS", data);
-
   AdminLoader.show();
   try {
     const data = await apiRequest("/users");
     userDataCache = data || [];
 
+    console.log("RENDER MOBILE USERS", userDataCache); // ✅ BENAR
+
     renderTable(userDataCache);
-    renderUserMobile(userDataCache); // ✅ FIX DI SINI
+    renderUserMobile(userDataCache);
   } catch (err) {
     console.error(err);
     Swal.fire("Error", "Gagal memuat data user", "error");
@@ -397,7 +397,9 @@ document.addEventListener("DOMContentLoaded", loadUsers);
 // ===================================================
 
 function renderUserMobile(data) {
+  console.log("renderUserMobile CALLED", data);
   const container = document.getElementById("userMobileList");
+  console.log("container:", container);
   if (!container) return;
 
   container.innerHTML = "";
