@@ -391,4 +391,8 @@
   .user-table-card .table-responsive {
     overflow: visible !important;
   }
+
+  #tableUsers_wrapper {
+    display: none !important;
+  }
 }
