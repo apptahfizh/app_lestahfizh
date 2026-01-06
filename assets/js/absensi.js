@@ -18,6 +18,8 @@ async function loadAbsensi() {
     return;
   }
 
+  AdminLoader.show(); // 🔥 START LOADER
+
   try {
     const data = await apiRequest(`/absensi?tanggal=${tanggal}`);
 
@@ -53,7 +55,7 @@ async function loadAbsensi() {
             }>Sakit</option>
             <option value="tidak hadir" ${
               p.status === "tidak hadir" ? "selected" : ""
-            }>tidak hadir</option>
+            }>Tidak Hadir</option>
           </select>
         </td>
         <td>
@@ -72,6 +74,8 @@ async function loadAbsensi() {
   } catch (err) {
     console.error("Load absensi error:", err);
     Swal.fire("Error", "Gagal load data absensi", "error");
+  } finally {
+    AdminLoader.hide(); // 🔥 STOP LOADER (WAJIB)
   }
 }
 
@@ -87,6 +91,8 @@ async function simpanAbsensi() {
 
   const statusEls = document.querySelectorAll(".status");
   let total = 0;
+
+  AdminLoader.show(); // 🔥
 
   try {
     for (const el of statusEls) {
@@ -108,11 +114,12 @@ async function simpanAbsensi() {
     }
 
     Swal.fire("Berhasil", `Absensi tersimpan (${total} peserta)`, "success");
-
     loadAbsensi();
   } catch (err) {
     console.error("Simpan absensi error:", err);
     Swal.fire("Error", "Gagal menyimpan absensi", "error");
+  } finally {
+    AdminLoader.hide(); // 🔥
   }
 }
 
