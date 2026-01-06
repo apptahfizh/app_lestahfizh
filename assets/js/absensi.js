@@ -19,11 +19,8 @@ async function loadAbsensi() {
   }
 
   try {
-    const res = await api.get("/absensi", {
-      params: { tanggal },
-    });
+    const data = await apiRequest("/absensi", "GET", null, { tanggal });
 
-    const data = res.data;
     tabel.innerHTML = "";
 
     if (data.length === 0) {
@@ -100,7 +97,7 @@ async function simpanAbsensi() {
         `.keterangan[data-id="${peserta_id}"]`
       ).value;
 
-      await api.post("/absensi", {
+      await apiRequest("/absensi", "POST", {
         peserta_id,
         tanggal,
         status: el.value,
