@@ -33,7 +33,7 @@ router.get("/", async (req, res) => {
       FROM peserta_didik p
       LEFT JOIN absensi a
         ON a.peserta_id = p.id
-        AND a.tanggal = $1
+        AND a.tanggal = $1::date
       ORDER BY p.nama ASC
       `,
       [tanggal]
