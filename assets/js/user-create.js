@@ -470,17 +470,3 @@ function renderUserMobile(data) {
 
   container.innerHTML = html;
 }
-
-// ===================================================
-// HANDLE ROTATE / RESIZE Kalau (user rotate HP ↔ landscape)
-// ===================================================
-let lastMode = isMobile() ? "mobile" : "desktop";
-
-window.addEventListener("resize", () => {
-  const currentMode = isMobile() ? "mobile" : "desktop";
-
-  if (currentMode !== lastMode) {
-    lastMode = currentMode;
-    loadUsers(); // render ulang sesuai mode
-  }
-});
