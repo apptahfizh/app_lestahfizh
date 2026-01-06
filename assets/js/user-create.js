@@ -1,11 +1,37 @@
-// ===============
 // USER-CREATE.JS
-// ===============
 
 checkAuth(["admin", "ustadz"]);
 
 let userTable = null;
 let userDataCache = [];
+
+// ==========================
+// Helper: deteksi mobile
+// ==========================
+function isMobile() {
+  return window.innerWidth <= 768;
+}
+
+// ==========================
+// Helper: HANCURKAN DATATABLE SAAT MOBILE
+// ==========================
+function destroyUserTable() {
+  if (userTable) {
+    userTable.destroy();
+    userTable = null;
+  }
+
+  const wrapper = document.getElementById("tableUsers_wrapper");
+  if (wrapper) wrapper.remove();
+}
+
+// ==========================
+// Helper: BERSIHKAN MOBILE CARD SAAT DESKTOP
+// ==========================
+function clearMobileUsers() {
+  const container = document.getElementById("userMobileList");
+  if (container) container.innerHTML = "";
+}
 
 // ==========================
 // LOADER CONTROL
@@ -41,10 +67,13 @@ async function loadUsers() {
     const data = await apiRequest("/users");
     userDataCache = data || [];
 
-    console.log("RENDER MOBILE USERS", userDataCache); // ✅ BENAR
-
-    renderTable(userDataCache);
-    renderUserMobile(userDataCache);
+    if (isMobile()) {
+      destroyUserTable(); // ❌ pastikan DataTable mati
+      renderUserMobile(userDataCache); // ✅ card only
+    } else {
+      clearMobileUsers(); // ❌ pastikan card kosong
+      renderTable(userDataCache); // ✅ DataTable only
+    }
   } catch (err) {
     console.error(err);
     Swal.fire("Error", "Gagal memuat data user", "error");
@@ -397,12 +426,8 @@ document.addEventListener("DOMContentLoaded", loadUsers);
 // ===================================================
 
 function renderUserMobile(data) {
-  console.log("renderUserMobile CALLED", data);
   const container = document.getElementById("userMobileList");
-  console.log("container:", container);
   if (!container) return;
-
-  container.innerHTML = "";
 
   if (!data.length) {
     container.innerHTML =
@@ -410,32 +435,52 @@ function renderUserMobile(data) {
     return;
   }
 
-  data.forEach((u) => {
-    const div = document.createElement("div");
-    div.className = "usercreate-card";
+  let html = "";
 
-    div.innerHTML = `
-      <div class="nama">${u.username}</div>
-      <div class="role">
-        Role: <strong>${u.role}</strong>
-      </div>
-      <div class="peserta">
-        Peserta: ${u.peserta_nama || "-"}
-      </div>
-      <div class="aksi">
-        <button class="btn btn-sm btn-info btn-edit"
-          data-id="${u.id}"
-          data-username="${u.username}"
-          data-role="${u.role}"
-          data-peserta_id="${u.peserta_id || ""}">
-          Edit
-        </button>
-        <button class="btn btn-sm btn-danger btn-delete" data-id="${u.id}">
-          Hapus
-        </button>
+  data.forEach((u) => {
+    html += `
+      <div class="peserta-card">
+        <div class="nama">${u.username}</div>
+
+        <div class="small text-muted mb-1">
+          Role: <strong>${u.role}</strong>
+        </div>
+
+        <div class="small mb-2">
+          Peserta: ${u.peserta_nama || "-"}
+        </div>
+
+        <div class="aksi">
+          <button class="btn btn-sm btn-info btn-edit"
+            data-id="${u.id}"
+            data-username="${u.username}"
+            data-role="${u.role}"
+            data-peserta_id="${u.peserta_id || ""}">
+            Edit
+          </button>
+
+          <button class="btn btn-sm btn-danger btn-delete"
+            data-id="${u.id}">
+            Hapus
+          </button>
+        </div>
       </div>
     `;
-
-    container.appendChild(div);
   });
+
+  container.innerHTML = html;
 }
+
+// ===================================================
+// HANDLE ROTATE / RESIZE Kalau (user rotate HP ↔ landscape)
+// ===================================================
+let lastMode = isMobile() ? "mobile" : "desktop";
+
+window.addEventListener("resize", () => {
+  const currentMode = isMobile() ? "mobile" : "desktop";
+
+  if (currentMode !== lastMode) {
+    lastMode = currentMode;
+    loadUsers(); // render ulang sesuai mode
+  }
+});
