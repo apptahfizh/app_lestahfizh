@@ -19,7 +19,7 @@ async function loadAbsensi() {
   }
 
   try {
-    const data = await apiRequest("/absensi", "GET", null, { tanggal });
+    const data = await apiRequest(`/absensi?tanggal=${tanggal}`);
 
     tabel.innerHTML = "";
 
