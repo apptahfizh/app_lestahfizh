@@ -1,16 +1,11 @@
 // src/routes/absensiRoutes.js
-// ===========================
-// ABSENSI ROUTES (POSTGRESQL)
-// ===========================
-
 const express = require("express");
 const router = express.Router();
 
-// ===========================
-// DATABASE (PostgreSQL)
-// ===========================
-const pool = require("../config/db");
-
+// 🔥 WAJIB: destructuring dari db.js
+const { db: pool } = require("../config/db");
+// 🔍 CEK SEKALI SAJA (hapus setelah OK)
+console.log("typeof pool.query:", typeof pool.query);
 // ======================================================
 // GET absensi per tanggal
 // ======================================================
