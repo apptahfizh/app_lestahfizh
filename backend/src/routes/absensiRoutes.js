@@ -4,8 +4,7 @@ const router = express.Router();
 
 // 🔥 WAJIB: destructuring dari db.js
 const { db: pool } = require("../config/db");
-// 🔍 CEK SEKALI SAJA (hapus setelah OK)
-console.log("typeof pool.query:", typeof pool.query);
+
 // ======================================================
 // GET absensi per tanggal
 // ======================================================
