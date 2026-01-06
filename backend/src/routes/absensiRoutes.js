@@ -6,10 +6,6 @@
 const express = require("express");
 const router = express.Router();
 
-if (isNaN(Date.parse(tanggal))) {
-  return res.status(400).json({ message: "Format tanggal tidak valid" });
-}
-
 // ===========================
 // DATABASE (PostgreSQL)
 // ===========================
@@ -25,8 +21,11 @@ router.get("/", async (req, res) => {
     return res.status(400).json({ message: "Tanggal wajib diisi" });
   }
 
+  if (isNaN(Date.parse(tanggal))) {
+    return res.status(400).json({ message: "Format tanggal tidak valid" });
+  }
+
   try {
-    // LEFT JOIN agar semua peserta tetap muncul
     const result = await pool.query(
       `
       SELECT
