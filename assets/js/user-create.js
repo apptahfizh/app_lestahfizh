@@ -426,8 +426,12 @@ document.addEventListener("DOMContentLoaded", loadUsers);
 // ===================================================
 
 function renderUserMobile(data) {
+  console.log("renderUserMobile CALLED", data);
   const container = document.getElementById("userMobileList");
+  console.log("container:", container);
   if (!container) return;
+
+  container.innerHTML = "";
 
   if (!data.length) {
     container.innerHTML =
@@ -435,38 +439,32 @@ function renderUserMobile(data) {
     return;
   }
 
-  let html = "";
-
   data.forEach((u) => {
-    html += `
-      <div class="peserta-card">
-        <div class="nama">${u.username}</div>
+    const div = document.createElement("div");
+    div.className = "usercreate-card";
 
-        <div class="small text-muted mb-1">
-          Role: <strong>${u.role}</strong>
-        </div>
-
-        <div class="small mb-2">
-          Peserta: ${u.peserta_nama || "-"}
-        </div>
-
-        <div class="aksi">
-          <button class="btn btn-sm btn-info btn-edit"
-            data-id="${u.id}"
-            data-username="${u.username}"
-            data-role="${u.role}"
-            data-peserta_id="${u.peserta_id || ""}">
-            Edit
-          </button>
-
-          <button class="btn btn-sm btn-danger btn-delete"
-            data-id="${u.id}">
-            Hapus
-          </button>
-        </div>
+    div.innerHTML = `
+      <div class="nama">${u.username}</div>
+      <div class="role">
+        Role: <strong>${u.role}</strong>
+      </div>
+      <div class="peserta">
+        Peserta: ${u.peserta_nama || "-"}
+      </div>
+      <div class="aksi">
+        <button class="btn btn-sm btn-info btn-edit"
+          data-id="${u.id}"
+          data-username="${u.username}"
+          data-role="${u.role}"
+          data-peserta_id="${u.peserta_id || ""}">
+          Edit
+        </button>
+        <button class="btn btn-sm btn-danger btn-delete" data-id="${u.id}">
+          Hapus
+        </button>
       </div>
     `;
-  });
 
-  container.innerHTML = html;
+    container.appendChild(div);
+  });
 }
