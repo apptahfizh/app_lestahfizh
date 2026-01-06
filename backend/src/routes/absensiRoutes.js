@@ -37,7 +37,7 @@ router.get("/", async (req, res) => {
       FROM peserta_didik p
       LEFT JOIN absensi a
         ON a.peserta_id = p.id
-        AND a.tanggal = $1::date
+        AND a.tanggal = $1
       ORDER BY p.nama ASC
       `,
       [tanggal]
@@ -45,8 +45,11 @@ router.get("/", async (req, res) => {
 
     res.json(result.rows);
   } catch (err) {
-    console.error("GET /api/absensi error:", err.message);
-    res.status(500).json({ message: "Gagal load absensi" });
+    console.error("GET /api/absensi ERROR FULL:", err);
+    res.status(500).json({
+      message: "Gagal load absensi",
+      error: err.message,
+    });
   }
 });
 
