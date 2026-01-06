@@ -6,6 +6,10 @@
 const express = require("express");
 const router = express.Router();
 
+if (isNaN(Date.parse(tanggal))) {
+  return res.status(400).json({ message: "Format tanggal tidak valid" });
+}
+
 // ===========================
 // DATABASE (PostgreSQL)
 // ===========================
