@@ -103,11 +103,14 @@ async function simpanAbsensi() {
         `.keterangan[data-id="${peserta_id}"]`
       ).value;
 
-      await apiRequest("/absensi", "POST", {
-        peserta_id,
-        tanggal,
-        status: el.value,
-        keterangan,
+      await apiRequest("/absensi", {
+        method: "POST",
+        body: JSON.stringify({
+          peserta_id,
+          tanggal,
+          status: el.value,
+          keterangan,
+        }),
       });
 
       total++;
