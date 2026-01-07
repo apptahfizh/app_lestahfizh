@@ -455,3 +455,12 @@
     display: none !important;
   }
 }
+
+/* ===============================
+   FIX COLLAPSE SIDEBAR MOBILE
+   =============================== */
+@media (max-width: 768px) {
+  .sidebar.toggled .collapse.show {
+    display: block !important;
+  }
+}
