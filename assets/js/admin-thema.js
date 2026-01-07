@@ -66,23 +66,20 @@
   /* ===============================
      MENU CLICK (MOBILE)
   =============================== */
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
-      link.addEventListener("click", (e) => {
-        if (!isMobile()) return;
+  document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      if (!isMobile()) return;
 
-        // ❌ JANGAN tutup sidebar kalau ini menu collapse
-        if (
-          link.hasAttribute("data-toggle") &&
-          link.getAttribute("data-toggle") === "collapse"
-        ) {
-          e.preventDefault(); // biarkan accordion bekerja
-          return;
-        }
+      // 🟡 JIKA MENU COLLAPSE (Absensi)
+      if (link.dataset.toggle === "collapse") {
+        // ❌ JANGAN tutup sidebar
+        // ❌ JANGAN preventDefault
+        // ✅ BIARKAN Bootstrap collapse bekerja
+        return;
+      }
 
-        // ✅ Menu biasa → tutup sidebar
-        collapseSidebar();
-      });
+      // 🟢 MENU BIASA → TUTUP SIDEBAR
+      collapseSidebar();
     });
   });
 
