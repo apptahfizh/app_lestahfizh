@@ -278,6 +278,26 @@
 }
 
 /* ===============================
+   USER CREATE CARD LIST (MOBILE)
+=============================== */
+.absensi-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.absensi-card .nama {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.absensi-card .field {
+  margin-bottom: 8px;
+}
+
+/* ===============================
    HIDE TOPBAR WHEN SIDEBAR OPEN (MOBILE)
 =============================== */
 
