@@ -70,15 +70,30 @@
     link.addEventListener("click", (e) => {
       if (!isMobile()) return;
 
-      // 🟡 JIKA MENU COLLAPSE (Absensi)
-      if (link.dataset.toggle === "collapse") {
-        // ❌ JANGAN tutup sidebar
-        // ❌ JANGAN preventDefault
-        // ✅ BIARKAN Bootstrap collapse bekerja
-        return;
+      const targetId = link.dataset.target;
+
+      // ==========================
+      // MENU COLLAPSE (Absensi)
+      // ==========================
+      if (link.dataset.toggle === "collapse" && targetId) {
+        e.preventDefault(); // ⛔ cegah pindah halaman "#"
+
+        const target = document.querySelector(targetId);
+        if (!target) return;
+
+        // toggle manual
+        target.classList.toggle("show");
+
+        // aria fix
+        const expanded = target.classList.contains("show");
+        link.setAttribute("aria-expanded", expanded);
+
+        return; // ❗ JANGAN tutup sidebar
       }
 
-      // 🟢 MENU BIASA → TUTUP SIDEBAR
+      // ==========================
+      // MENU BIASA
+      // ==========================
       collapseSidebar();
     });
   });
