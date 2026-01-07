@@ -272,6 +272,3 @@ function renderStatusOptions(selected) {
 // ===============================
 btnLoad.addEventListener("click", loadAbsensi);
 btnSimpan.addEventListener("click", simpanAbsensi);
-
-// auto load saat buka halaman
-loadAbsensi();
