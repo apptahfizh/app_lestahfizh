@@ -1,5 +1,16 @@
 checkAuth(["admin", "ustadz"]); // hanya admin / ustadz
 
+// State Lokal Absensi
+let absensiDraft = {};
+
+function updateAbsensiLocal(peserta_id, status, keterangan) {
+  absensiDraft[peserta_id] = {
+    peserta_id,
+    status,
+    keterangan,
+  };
+}
+
 const tanggalInput = document.getElementById("tanggal");
 const tabel = document.getElementById("tabelAbsensi");
 const btnLoad = document.getElementById("btnLoad");
@@ -79,6 +90,11 @@ async function loadAbsensi() {
   }
 }
 
+renderAbsensiMobile(data);
+if (window.innerWidth < 768) {
+  renderAbsensiMobile(data);
+}
+
 // ===============================
 // SIMPAN ABSENSI
 // ===============================
@@ -124,6 +140,68 @@ async function simpanAbsensi() {
   } finally {
     AdminLoader.hide(); // 🔥
   }
+}
+
+// ===============================
+// RENDER MOBILE CARD
+// ===============================
+function renderAbsensiMobile(data) {
+  const container = document.getElementById("absensiMobileList");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (!data.length) {
+    container.innerHTML = `<div class="text-muted text-center">Tidak ada data</div>`;
+    return;
+  }
+
+  data.forEach((item) => {
+    const card = document.createElement("div");
+    card.className = "absensi-card";
+
+    card.innerHTML = `
+      <h6>${item.nama}</h6>
+
+      <select class="form-select mb-2 status-select">
+        ${renderStatusOptions(item.status)}
+      </select>
+
+      <textarea
+        class="form-control keterangan-input"
+        rows="2"
+        placeholder="Keterangan..."
+      >${item.keterangan || ""}</textarea>
+    `;
+
+    // bind event
+    const statusEl = card.querySelector(".status-select");
+    const ketEl = card.querySelector(".keterangan-input");
+
+    statusEl.addEventListener("change", () => {
+      updateAbsensiLocal(item.peserta_id, statusEl.value, ketEl.value);
+    });
+
+    ketEl.addEventListener("input", () => {
+      updateAbsensiLocal(item.peserta_id, statusEl.value, ketEl.value);
+    });
+
+    container.appendChild(card);
+  });
+}
+
+// ===============================
+// Helper Render Status
+// ===============================
+function renderStatusOptions(selected) {
+  const statuses = ["hadir", "izin", "sakit", "tidak hadir"];
+
+  return statuses
+    .map(
+      (s) =>
+        `<option value="${s}" ${s === selected ? "selected" : ""}>${s}</option>`
+    )
+    .join("");
 }
 
 // ===============================
