@@ -35,6 +35,12 @@ async function loadAbsensi() {
     const data = await apiRequest(`/absensi?tanggal=${tanggal}`);
 
     tabel.innerHTML = "";
+    // ===============================
+    // RENDER MOBILE ONLY
+    // ===============================
+    if (window.innerWidth < 768) {
+      renderAbsensiMobile(data);
+    }
 
     if (data.length === 0) {
       tabel.innerHTML = `
@@ -88,11 +94,6 @@ async function loadAbsensi() {
   } finally {
     AdminLoader.hide(); // 🔥 STOP LOADER (WAJIB)
   }
-}
-
-renderAbsensiMobile(data);
-if (window.innerWidth < 768) {
-  renderAbsensiMobile(data);
 }
 
 // ===============================
