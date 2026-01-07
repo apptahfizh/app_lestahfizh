@@ -29,19 +29,24 @@ async function loadAbsensi() {
     return;
   }
 
-  AdminLoader.show(); // 🔥 START LOADER
+  AdminLoader.show();
 
   try {
     const data = await apiRequest(`/absensi?tanggal=${tanggal}`);
 
     tabel.innerHTML = "";
+
     // ===============================
-    // RENDER MOBILE ONLY
+    // MODE MOBILE → CARD ONLY
     // ===============================
     if (window.innerWidth < 768) {
       renderAbsensiMobile(data);
+      return; // 🔥 PENTING: STOP DI SINI
     }
 
+    // ===============================
+    // MODE DESKTOP → TABLE ONLY
+    // ===============================
     if (data.length === 0) {
       tabel.innerHTML = `
         <tr>
@@ -80,7 +85,6 @@ async function loadAbsensi() {
             type="text"
             class="form-control keterangan"
             data-id="${p.peserta_id}"
-            placeholder="Opsional"
             value="${p.keterangan || ""}"
           />
         </td>
@@ -92,7 +96,7 @@ async function loadAbsensi() {
     console.error("Load absensi error:", err);
     Swal.fire("Error", "Gagal load data absensi", "error");
   } finally {
-    AdminLoader.hide(); // 🔥 STOP LOADER (WAJIB)
+    AdminLoader.hide();
   }
 }
 
