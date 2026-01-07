@@ -278,23 +278,25 @@
 }
 
 /* ===============================
-   USER CREATE CARD LIST (MOBILE)
+   ABSENSI CARD LIST (MOBILE)
 =============================== */
 .absensi-card {
   background: #fff;
   border-radius: 12px;
   padding: 14px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(55, 168, 3, 0.959);
 }
 
 .absensi-card .nama {
+  color: #0c41e2;
   font-weight: 600;
   margin-bottom: 8px;
 }
 
 .absensi-card .field {
   margin-bottom: 8px;
+  color: #111827;
 }
 
 /* ===============================
