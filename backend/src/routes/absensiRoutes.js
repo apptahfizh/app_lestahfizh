@@ -47,32 +47,40 @@ router.get("/", async (req, res) => {
 });
 
 // ======================================================
-// SIMPAN / UPDATE absensi (UPSERT)
+// SIMPAN / UPDATE absensi (BATCH UPSERT)
 // ======================================================
 router.post("/", async (req, res) => {
-  const { peserta_id, tanggal, status, keterangan } = req.body;
+  const { tanggal, data } = req.body;
 
-  if (!peserta_id || !tanggal || !status) {
+  // ===============================
+  // VALIDASI
+  // ===============================
+  if (!tanggal || !Array.isArray(data) || data.length === 0) {
     return res.status(400).json({ message: "Data tidak lengkap" });
   }
 
   try {
-    // ON CONFLICT di PostgreSQL
-    await pool.query(
-      `
-      INSERT INTO absensi (peserta_id, tanggal, status, keterangan)
-      VALUES ($1, $2, $3, $4)
-      ON CONFLICT (peserta_id, tanggal)
-      DO UPDATE SET
-        status = EXCLUDED.status,
-        keterangan = EXCLUDED.keterangan
-      `,
-      [peserta_id, tanggal, status, keterangan || null]
-    );
+    for (const item of data) {
+      const { peserta_id, status, keterangan } = item;
+
+      if (!peserta_id || !status) continue;
+
+      await pool.query(
+        `
+        INSERT INTO absensi (peserta_id, tanggal, status, keterangan)
+        VALUES ($1, $2, $3, $4)
+        ON CONFLICT (peserta_id, tanggal)
+        DO UPDATE SET
+          status = EXCLUDED.status,
+          keterangan = EXCLUDED.keterangan
+        `,
+        [peserta_id, tanggal, status, keterangan || ""]
+      );
+    }
 
     res.json({ message: "Absensi berhasil disimpan" });
   } catch (err) {
-    console.error("POST /api/absensi error:", err.message);
+    console.error("POST /api/absensi error:", err);
     res.status(500).json({ message: "Gagal simpan absensi" });
   }
 });
