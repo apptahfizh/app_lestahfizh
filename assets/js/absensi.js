@@ -244,6 +244,22 @@ function renderAbsensiCards(data) {
   });
 }
 
+function renderStatusOptions(selected) {
+  const statuses = ["hadir", "izin", "sakit", "tidak hadir"];
+
+  return `
+    <option value="">-- pilih status --</option>
+    ${statuses
+      .map(
+        (s) =>
+          `<option value="${s}" ${
+            s === selected ? "selected" : ""
+          }>${s}</option>`
+      )
+      .join("")}
+  `;
+}
+
 // ===============================
 // Helper Render Status
 // ===============================
