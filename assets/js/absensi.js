@@ -96,7 +96,7 @@ if (window.innerWidth < 768) {
 }
 
 // ===============================
-// SIMPAN ABSENSI
+// SIMPAN ABSENSI (DESKTOP + MOBILE)
 // ===============================
 async function simpanAbsensi() {
   const tanggal = tanggalInput.value;
@@ -105,40 +105,76 @@ async function simpanAbsensi() {
     return;
   }
 
-  const statusEls = document.querySelectorAll(".status");
-  let total = 0;
-
-  AdminLoader.show(); // 🔥
+  AdminLoader.show();
 
   try {
-    for (const el of statusEls) {
-      if (!el.value) continue;
+    let payloadData = [];
 
-      const peserta_id = el.dataset.id;
-      const keterangan = document.querySelector(
-        `.keterangan[data-id="${peserta_id}"]`
-      ).value;
+    // ===============================
+    // MODE MOBILE (pakai absensiDraft)
+    // ===============================
+    if (window.innerWidth < 768) {
+      payloadData = Object.values(absensiDraft);
 
-      await apiRequest("/absensi", {
-        method: "POST",
-        body: JSON.stringify({
-          peserta_id,
-          tanggal,
-          status: el.value,
-          keterangan,
-        }),
-      });
-
-      total++;
+      if (!payloadData.length) {
+        Swal.fire("Info", "Belum ada absensi diisi", "info");
+        return;
+      }
     }
 
-    Swal.fire("Berhasil", `Absensi tersimpan (${total} peserta)`, "success");
+    // ===============================
+    // MODE DESKTOP (ambil dari table)
+    // ===============================
+    else {
+      const statusEls = document.querySelectorAll(".status");
+
+      statusEls.forEach((el) => {
+        if (!el.value) return;
+
+        const peserta_id = el.dataset.id;
+        const keterangan = document.querySelector(
+          `.keterangan[data-id="${peserta_id}"]`
+        ).value;
+
+        payloadData.push({
+          peserta_id,
+          status: el.value,
+          keterangan,
+        });
+      });
+
+      if (!payloadData.length) {
+        Swal.fire("Info", "Belum ada absensi diisi", "info");
+        return;
+      }
+    }
+
+    // ===============================
+    // KIRIM SEKALI (ANTI DUPLICATE)
+    // ===============================
+    const payload = {
+      tanggal,
+      data: payloadData,
+    };
+
+    await apiRequest("/absensi", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+
+    Swal.fire(
+      "Berhasil",
+      `Absensi tersimpan (${payloadData.length} peserta)`,
+      "success"
+    );
+
+    absensiDraft = {}; // reset draft mobile
     loadAbsensi();
   } catch (err) {
     console.error("Simpan absensi error:", err);
     Swal.fire("Error", "Gagal menyimpan absensi", "error");
   } finally {
-    AdminLoader.hide(); // 🔥
+    AdminLoader.hide();
   }
 }
 
