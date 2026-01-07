@@ -259,5 +259,29 @@ function renderStatusOptions(selected) {
 btnLoad.addEventListener("click", loadAbsensi);
 btnSimpan.addEventListener("click", simpanAbsensi);
 
+/* MOBILE STICKY SAVE BAR */
+const btnSimpanMobile = document.getElementById("btnSimpanMobile");
+
+if (btnSimpanMobile) {
+  btnSimpanMobile.addEventListener("click", simpanAbsensi);
+}
+/* Disable tombol kalau belum ada input */
+function updateMobileSaveState() {
+  if (!btnSimpanMobile) return;
+
+  btnSimpanMobile.disabled = Object.keys(absensiDraft).length === 0;
+}
+function updateAbsensiLocal(peserta_id, status, keterangan) {
+  absensiDraft[peserta_id] = {
+    peserta_id,
+    status,
+    keterangan,
+  };
+
+  updateMobileSaveState();
+}
+absensiDraft = {};
+updateMobileSaveState();
+
 // auto load saat buka halaman
 loadAbsensi();

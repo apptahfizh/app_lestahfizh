@@ -298,6 +298,25 @@
   margin-bottom: 8px;
   color: #111827;
 }
+/* MOBILE STICKY SAVE BAR */
+#mobileSaveBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  z-index: 1050;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* biar konten tidak ketutup tombol */
+@media (max-width: 767px) {
+  .main-scroll {
+    padding-bottom: 80px;
+  }
+}
 
 /* ===============================
    HIDE TOPBAR WHEN SIDEBAR OPEN (MOBILE)
