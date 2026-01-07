@@ -40,7 +40,7 @@ async function loadAbsensi() {
     // MODE MOBILE → CARD ONLY
     // ===============================
     if (window.innerWidth < 768) {
-      renderAbsensiMobile(data);
+      renderAbsensiCards(data);
       return; // 🔥 PENTING: STOP DI SINI
     }
 
@@ -183,17 +183,21 @@ async function simpanAbsensi() {
   }
 }
 
-// ===============================
-// RENDER MOBILE CARD
-// ===============================
-function renderAbsensiMobile(data) {
+// ==============================
+// RENDER ABSENSI CARD LIST (MOBILE)
+// ==============================
+function renderAbsensiCards(data) {
   const container = document.getElementById("absensiMobileList");
   if (!container) return;
 
   container.innerHTML = "";
 
   if (!data.length) {
-    container.innerHTML = `<div class="text-muted text-center">Tidak ada data</div>`;
+    container.innerHTML = `
+      <div class="text-muted text-center mt-3">
+        Tidak ada data peserta
+      </div>
+    `;
     return;
   }
 
@@ -202,23 +206,27 @@ function renderAbsensiMobile(data) {
     card.className = "absensi-card";
 
     card.innerHTML = `
-      <h6>${item.nama}</h6>
+      <div class="nama">👤 ${item.nama}</div>
 
-      <select class="form-select mb-2 status-select">
-        ${renderStatusOptions(item.status)}
-      </select>
+      <div class="field">
+        <select class="form-select status-select">
+          ${renderStatusOptions(item.status)}
+        </select>
+      </div>
 
-      <textarea
-        class="form-control keterangan-input"
-        rows="2"
-        placeholder="Keterangan..."
-      >${item.keterangan || ""}</textarea>
+      <div class="field">
+        <textarea
+          class="form-control keterangan-input"
+          rows="2"
+          placeholder="Keterangan..."
+        >${item.keterangan || ""}</textarea>
+      </div>
     `;
 
-    // bind event
     const statusEl = card.querySelector(".status-select");
     const ketEl = card.querySelector(".keterangan-input");
 
+    // simpan ke state lokal (mirip edit hafalan)
     statusEl.addEventListener("change", () => {
       updateAbsensiLocal(item.peserta_id, statusEl.value, ketEl.value);
     });
