@@ -68,8 +68,20 @@
   =============================== */
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
-      link.addEventListener("click", () => {
-        if (isMobile()) collapseSidebar();
+      link.addEventListener("click", (e) => {
+        if (!isMobile()) return;
+
+        // ❌ JANGAN tutup sidebar kalau ini menu collapse
+        if (
+          link.hasAttribute("data-toggle") &&
+          link.getAttribute("data-toggle") === "collapse"
+        ) {
+          e.preventDefault(); // biarkan accordion bekerja
+          return;
+        }
+
+        // ✅ Menu biasa → tutup sidebar
+        collapseSidebar();
       });
     });
   });
