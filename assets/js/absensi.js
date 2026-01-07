@@ -4,10 +4,15 @@ checkAuth(["admin", "ustadz"]); // hanya admin / ustadz
 let absensiDraft = {};
 
 function updateAbsensiLocal(peserta_id, status, keterangan) {
+  if (!status) {
+    delete absensiDraft[peserta_id]; // 🔥 penting
+    return;
+  }
+
   absensiDraft[peserta_id] = {
     peserta_id,
     status,
-    keterangan,
+    keterangan: keterangan || "",
   };
 }
 
