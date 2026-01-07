@@ -41,32 +41,24 @@ async function loadAbsensi() {
 
     tabel.innerHTML = "";
 
-    // ===============================
-    // MODE MOBILE → CARD ONLY
-    // ===============================
     if (window.innerWidth < 768) {
       renderAbsensiCards(data);
-      return; // 🔥 PENTING: STOP DI SINI
-    }
-
-    // ===============================
-    // MODE DESKTOP → TABLE ONLY
-    // ===============================
-    if (data.length === 0) {
-      tabel.innerHTML = `
-        <tr>
-          <td colspan="3" class="text-center text-muted">
-            Tidak ada data peserta
-          </td>
-        </tr>
-      `;
-      return;
-    }
-
-    data.forEach((p) => {
-      const tr = document.createElement("tr");
-
-      tr.innerHTML = `
+    } else {
+      // ===============================
+      // MODE DESKTOP → TABLE ONLY
+      // ===============================
+      if (data.length === 0) {
+        tabel.innerHTML = `
+      <tr>
+        <td colspan="3" class="text-center text-muted">
+          Tidak ada data peserta
+        </td>
+      </tr>
+    `;
+      } else {
+        data.forEach((p) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
         <td>${p.nama}</td>
         <td>
           <select class="form-control status" data-id="${p.peserta_id}">
@@ -94,9 +86,10 @@ async function loadAbsensi() {
           />
         </td>
       `;
-
-      tabel.appendChild(tr);
-    });
+          tabel.appendChild(tr);
+        });
+      }
+    }
   } catch (err) {
     console.error("Load absensi error:", err);
     Swal.fire("Error", "Gagal load data absensi", "error");
@@ -272,3 +265,6 @@ function renderStatusOptions(selected) {
 // ===============================
 btnLoad.addEventListener("click", loadAbsensi);
 btnSimpan.addEventListener("click", simpanAbsensi);
+
+// auto load saat buka halaman
+loadAbsensi();
