@@ -550,3 +550,14 @@
     right: 0 !important;
   }
 }
+/* =====================================
+   FINAL FIX POSISI SUBMENU MOBILE
+   ===================================== */
+@media (max-width: 768px) {
+  .sidebar.toggled .collapse-inner {
+    position: static !important; /* 🔥 INI KUNCINYA */
+    width: 100% !important;
+    margin: 0 !important;
+    padding-left: 1rem;
+  }
+}
