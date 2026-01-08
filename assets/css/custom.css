@@ -473,3 +473,24 @@
     height: auto !important;
   }
 }
+
+.sidebar.toggled .collapse-inner {
+  background: #ffffff !important;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .sidebar.toggled {
+    min-height: 100vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar.toggled {
+    z-index: 1050;
+  }
+
+  .sidebarBackdrop {
+    z-index: 1040;
+  }
+}
