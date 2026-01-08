@@ -473,23 +473,3 @@
     height: auto !important;
   }
 }
-/* ===============================
-   MOBILE LANDSCAPE FIX
-   =============================== */
-@media (max-width: 1024px) {
-  body.mobile-landscape .sidebar {
-    position: fixed;
-    z-index: 1050;
-  }
-
-  body.mobile-landscape #content-wrapper,
-  body.mobile-landscape #mainContent {
-    margin-left: 220px; /* lebar sidebar */
-    transition: margin 0.3s ease;
-  }
-
-  body.mobile-landscape.sidebar-toggled #content-wrapper,
-  body.mobile-landscape.sidebar-toggled #mainContent {
-    margin-left: 0;
-  }
-}
