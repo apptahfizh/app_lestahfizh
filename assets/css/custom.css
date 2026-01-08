@@ -594,3 +594,33 @@
     padding-left: 1rem;
   }
 }
+/* =====================================
+   FIX SUBMENU TERPOTONG (FINAL - WAJIB)
+===================================== */
+@media (max-width: 768px) {
+  /* IZINKAN SIDEBAR & NAV MEMANJANG */
+  .sidebar,
+  .sidebar .nav,
+  .sidebar .navbar-nav {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  /* PASTIKAN ITEM TIDAK DIPOTONG */
+  .sidebar .nav-item {
+    overflow: visible !important;
+  }
+
+  /* COLLAPSE FULL HEIGHT */
+  .sidebar .collapse,
+  .sidebar .collapse.show {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* SUBMENU INNER */
+  .sidebar .collapse-inner {
+    overflow: visible !important;
+  }
+}
