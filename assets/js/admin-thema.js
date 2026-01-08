@@ -154,17 +154,3 @@
 document.getElementById("sidebarToggleTop")?.addEventListener("click", () => {
   console.log("☰ toggle clicked");
 });
-
-/* ===============================
-   CLASS KHUSUS LANDSCAPE
-=============================== */
-function handleOrientation() {
-  const isLandscape =
-    window.innerWidth > window.innerHeight && window.innerWidth <= 1024;
-
-  document.body.classList.toggle("mobile-landscape", isLandscape);
-}
-
-window.addEventListener("resize", handleOrientation);
-window.addEventListener("orientationchange", handleOrientation);
-document.addEventListener("DOMContentLoaded", handleOrientation);
