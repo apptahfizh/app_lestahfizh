@@ -473,3 +473,22 @@
     height: auto !important;
   }
 }
+
+/* ===============================
+   FIX SIDEBAR OVERLAY MOBILE
+   =============================== */
+.sidebar {
+  z-index: 1050;
+}
+
+/* backdrop jika ada */
+#sidebarBackdrop {
+  z-index: 1040;
+}
+
+/* content tetap di bawah sidebar */
+#content-wrapper,
+#mainContent {
+  position: relative;
+  z-index: 1;
+}
