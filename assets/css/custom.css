@@ -1,17 +1,3 @@
-/* =====================================
-   FINAL OVERRIDE SB-ADMIN COLLAPSE MOBILE
-   ===================================== */
-@media (max-width: 768px) {
-  /* 🔥 MATIKAN aturan SB Admin */
-  .sidebar.toggled .nav-item .collapse {
-    display: block !important;
-  }
-
-  .sidebar.toggled .nav-item .collapse:not(.show) {
-    display: none !important;
-  }
-}
-
 /* ===============================
    GLOBAL LOCK SCROLL
 =============================== */
@@ -469,22 +455,22 @@
     display: none !important;
   }
 }
-
 /* =====================================
-   FIX FINAL: COLLAPSE SUBMENU MOBILE
+   FIX FINAL SUBMENU SIDEBAR MOBILE
    ===================================== */
 @media (max-width: 768px) {
-  /* JANGAN CLIP SUBMENU */
-  .sidebar.toggled {
+  /* JANGAN POTONG SUBMENU */
+  body.sidebar-toggled .sidebar {
     overflow-y: visible !important;
   }
 
-  /* pastikan collapse ikut mengalir */
-  .sidebar .collapse {
+  /* collapse harus ikut aliran layout */
+  body.sidebar-toggled .sidebar .collapse {
     position: relative;
   }
 
-  .sidebar .collapse.show {
+  body.sidebar-toggled .sidebar .collapse.show {
     display: block !important;
+    height: auto !important;
   }
 }
