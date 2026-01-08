@@ -512,3 +512,31 @@
     color: #666666 !important;
   }
 }
+
+/* =====================================
+   FIX ABSENSI SUBMENU MOBILE (FINAL FIX)
+   ===================================== */
+@media (max-width: 768px) {
+  /* 1️⃣ Jangan absolute */
+  .sidebar.toggled .collapse-inner {
+    position: static !important;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  /* 2️⃣ Pastikan sidebar boleh scroll */
+  .sidebar.toggled {
+    overflow-y: auto !important;
+  }
+
+  /* 3️⃣ Pastikan collapse tidak terpotong */
+  .sidebar.toggled .collapse {
+    overflow: visible !important;
+  }
+
+  /* 4️⃣ Item spacing biar jelas */
+  .sidebar.toggled .collapse-item {
+    padding: 0.5rem 1rem;
+    border-radius: 0.35rem;
+  }
+}
