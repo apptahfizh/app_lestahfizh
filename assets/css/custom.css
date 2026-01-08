@@ -492,3 +492,11 @@
   position: relative;
   z-index: 1;
 }
+@media (max-width: 768px) {
+  .sidebar.toggled ~ #content-wrapper,
+  .sidebar.toggled ~ #mainContent {
+    position: relative;
+    margin-left: 0 !important;
+    transform: translateX(14rem); /* 🔥 geser content */
+  }
+}
