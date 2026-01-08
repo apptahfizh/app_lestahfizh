@@ -540,3 +540,13 @@
     border-radius: 0.35rem;
   }
 }
+/* =====================================
+   FINAL FIX WIDTH SUBMENU SIDEBAR MOBILE
+   ===================================== */
+@media (max-width: 768px) {
+  .sidebar.toggled .collapse-inner {
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+}
