@@ -457,10 +457,19 @@
 }
 
 /* ===============================
-   FIX COLLAPSE SIDEBAR MOBILE
+   FIX SUBMENU COLLAPSE MOBILE
    =============================== */
 @media (max-width: 768px) {
+  .sidebar.toggled {
+    overflow-y: auto !important;
+  }
+
+  .sidebar.toggled .collapse {
+    position: relative;
+  }
+
   .sidebar.toggled .collapse.show {
     display: block !important;
+    height: auto !important;
   }
 }
