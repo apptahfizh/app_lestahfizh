@@ -456,40 +456,33 @@
   }
 }
 /* =====================================
-   FIX SUBMENU SIDEBAR MOBILE (FINAL)
+   FIX FINAL SIDEBAR MOBILE (PORTRAIT + LANDSCAPE)
    ===================================== */
+
+/* MOBILE MODE */
 @media (max-width: 768px) {
-  /* SAAT SIDEBAR TERBUKA */
-  body:not(.sidebar-toggled) .sidebar {
-    overflow-y: visible !important;
-  }
-
-  body:not(.sidebar-toggled) .sidebar .collapse {
-    position: relative;
-  }
-
-  body:not(.sidebar-toggled) .sidebar .collapse.show {
-    display: block !important;
-    height: auto !important;
-  }
-}
-/* ===============================
-   MOBILE LANDSCAPE FIX
-   =============================== */
-@media (max-width: 1024px) {
-  body.mobile-landscape .sidebar {
+  .sidebar {
     position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto; /* ⬅️ KUNCI UTAMA */
     z-index: 1050;
   }
 
-  body.mobile-landscape #content-wrapper,
-  body.mobile-landscape #mainContent {
-    margin-left: 220px; /* lebar sidebar */
-    transition: margin 0.3s ease;
+  /* submenu */
+  .sidebar .collapse {
+    position: static;
+    overflow: visible;
   }
 
-  body.mobile-landscape.sidebar-toggled #content-wrapper,
-  body.mobile-landscape.sidebar-toggled #mainContent {
-    margin-left: 0;
+  .sidebar .collapse.show {
+    display: block;
+  }
+
+  /* content jangan ketiban */
+  #content-wrapper,
+  #mainContent {
+    margin-left: 0 !important;
   }
 }
