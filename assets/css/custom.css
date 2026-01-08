@@ -494,3 +494,21 @@
     z-index: 1040;
   }
 }
+
+/* ===============================
+   FIX SUBMENU ABSENSI MOBILE (FINAL)
+   =============================== */
+@media (max-width: 768px) {
+  .sidebar.toggled .collapse-inner {
+    background: #ffffff !important;
+  }
+
+  .sidebar.toggled .collapse-inner .collapse-item {
+    color: #333333 !important;
+    font-weight: 500;
+  }
+
+  .sidebar.toggled .collapse-inner .collapse-header {
+    color: #666666 !important;
+  }
+}
