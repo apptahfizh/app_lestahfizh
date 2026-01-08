@@ -456,20 +456,19 @@
   }
 }
 /* =====================================
-   FIX FINAL SUBMENU SIDEBAR MOBILE
+   FIX SUBMENU SIDEBAR MOBILE (FINAL)
    ===================================== */
 @media (max-width: 768px) {
-  /* JANGAN POTONG SUBMENU */
-  body.sidebar-toggled .sidebar {
+  /* SAAT SIDEBAR TERBUKA */
+  body:not(.sidebar-toggled) .sidebar {
     overflow-y: visible !important;
   }
 
-  /* collapse harus ikut aliran layout */
-  body.sidebar-toggled .sidebar .collapse {
+  body:not(.sidebar-toggled) .sidebar .collapse {
     position: relative;
   }
 
-  body.sidebar-toggled .sidebar .collapse.show {
+  body:not(.sidebar-toggled) .sidebar .collapse.show {
     display: block !important;
     height: auto !important;
   }
