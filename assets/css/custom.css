@@ -665,3 +665,59 @@
     display: block;
   }
 }
+/* =====================================
+   FINAL FIX: FULLSCREEN SIDEBAR MOBILE
+===================================== */
+@media (max-width: 768px) {
+  /* === SIDEBAR SEBAGAI FULLSCREEN OVERLAY === */
+  body:not(.sidebar-toggled) .sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-width: 100vw !important;
+
+    height: 100vh !important;
+
+    z-index: 2000;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    transform: translateX(0) !important;
+  }
+
+  /* === SEMUA ISI SIDEBAR IKUT FULL WIDTH === */
+  .sidebar,
+  .sidebar .navbar-nav,
+  .sidebar .nav,
+  .sidebar .nav-item,
+  .sidebar .collapse,
+  .sidebar .collapse-inner,
+  .sidebar .collapse-item {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* === SAAT SIDEBAR DITUTUP === */
+  body.sidebar-toggled .sidebar {
+    transform: translateX(-100%) !important;
+  }
+
+  /* === CONTENT TETAP DI BAWAH, TIDAK GESER === */
+  #content-wrapper,
+  #mainContent {
+    position: relative;
+    z-index: 1;
+    margin-left: 0 !important;
+    transform: none !important;
+  }
+
+  /* === SEMBUNYIKAN TOPBAR & FOOTER SAAT SIDEBAR TERBUKA === */
+  body:not(.sidebar-toggled) .topbar,
+  body:not(.sidebar-toggled) footer {
+    display: none !important;
+  }
+}
