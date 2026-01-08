@@ -470,159 +470,21 @@
   }
 }
 
-/* ===============================
-   FIX SUBMENU COLLAPSE MOBILE
-   =============================== */
-@media (max-width: 768px) {
-  .sidebar.toggled {
-    overflow-y: auto !important;
-  }
-
-  .sidebar.toggled .collapse {
-    position: relative;
-  }
-
-  .sidebar.toggled .collapse.show {
-    display: block !important;
-    height: auto !important;
-  }
-}
-
-.sidebar.toggled .collapse-inner {
-  background: #ffffff !important;
-  color: #333;
-}
-
-@media (max-width: 768px) {
-  .sidebar.toggled {
-    min-height: 100vh;
-  }
-}
-
-@media (max-width: 768px) {
-  .sidebar.toggled {
-    z-index: 1050;
-  }
-
-  .sidebarBackdrop {
-    z-index: 1040;
-  }
-}
-
-/* ===============================
-   FIX SUBMENU ABSENSI MOBILE (FINAL)
-   =============================== */
-@media (max-width: 768px) {
-  .sidebar.toggled .collapse-inner {
-    background: #ffffff !important;
-  }
-
-  .sidebar.toggled .collapse-inner .collapse-item {
-    color: #333333 !important;
-    font-weight: 500;
-  }
-
-  .sidebar.toggled .collapse-inner .collapse-header {
-    color: #666666 !important;
-  }
-}
-
 /* =====================================
-   FIX ABSENSI SUBMENU MOBILE (FINAL FIX)
+   FIX FINAL: COLLAPSE SUBMENU MOBILE
    ===================================== */
 @media (max-width: 768px) {
-  /* 1️⃣ Jangan absolute */
-  .sidebar.toggled .collapse-inner {
-    position: static !important;
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
-
-  /* 2️⃣ Pastikan sidebar boleh scroll */
+  /* JANGAN CLIP SUBMENU */
   .sidebar.toggled {
-    overflow-y: auto !important;
+    overflow-y: visible !important;
   }
 
-  /* 3️⃣ Pastikan collapse tidak terpotong */
-  .sidebar.toggled .collapse {
-    overflow: visible !important;
-  }
-
-  /* 4️⃣ Item spacing biar jelas */
-  .sidebar.toggled .collapse-item {
-    padding: 0.5rem 1rem;
-    border-radius: 0.35rem;
-  }
-}
-/* =====================================
-   FINAL FIX WIDTH SUBMENU SIDEBAR MOBILE
-   ===================================== */
-@media (max-width: 768px) {
-  .sidebar.toggled .collapse-inner {
-    width: 100% !important;
-    left: 0 !important;
-    right: 0 !important;
-  }
-}
-/* =====================================
-   FINAL FIX POSISI SUBMENU MOBILE
-   ===================================== */
-@media (max-width: 768px) {
-  .sidebar.toggled .collapse-inner {
-    position: static !important; /* 🔥 INI KUNCINYA */
-    width: 100% !important;
-    margin: 0 !important;
-    padding-left: 1rem;
-  }
-}
-
-/* =====================================
-   FINAL FIX COLLAPSE SIDEBAR MOBILE
-   ===================================== */
-@media (max-width: 768px) {
-  /* Sidebar mobile scrollable */
-  .sidebar.toggled {
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-  }
-
-  /* 🔥 PENTING: collapse JANGAN absolute */
-  .sidebar.toggled .collapse {
-    position: static !important;
-    width: 100% !important;
-  }
-
-  /* 🔥 inner ikut alur sidebar */
-  .sidebar.toggled .collapse-inner {
-    position: static !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding-left: 1rem;
-    box-shadow: none !important;
-  }
-
-  /* pastikan terlihat */
-  .sidebar.toggled .collapse.show {
-    display: block !important;
-    height: auto !important;
-  }
-}
-/* =====================================
-   FIX: SUBMENU KETUTUP SIDEBAR BACKDROP
-   ===================================== */
-@media (max-width: 768px) {
-  /* backdrop hanya untuk konten, BUKAN sidebar */
-  #sidebarBackdrop {
-    z-index: 1030;
-  }
-
-  .sidebar {
-    z-index: 1040;
-  }
-
-  /* submenu harus di atas backdrop */
+  /* pastikan collapse ikut mengalir */
   .sidebar .collapse {
     position: relative;
-    z-index: 1050;
+  }
+
+  .sidebar .collapse.show {
+    display: block !important;
   }
 }
