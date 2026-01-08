@@ -68,7 +68,11 @@
   =============================== */
   document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
     link.addEventListener("click", (e) => {
-      if (!isMobile()) return;
+      const sidebar = document.querySelector(".sidebar");
+      const isSidebarMobile = sidebar.classList.contains("toggled");
+
+      // hanya mode mobile sidebar
+      if (!isSidebarMobile) return;
 
       const targetId = link.dataset.target;
 
@@ -76,19 +80,19 @@
       // MENU COLLAPSE (Absensi)
       // ==========================
       if (link.dataset.toggle === "collapse" && targetId) {
-        e.preventDefault(); // ⛔ cegah pindah halaman "#"
+        e.preventDefault();
 
         const target = document.querySelector(targetId);
         if (!target) return;
 
-        // toggle manual
         target.classList.toggle("show");
 
-        // aria fix
+        // sync aria + class
         const expanded = target.classList.contains("show");
         link.setAttribute("aria-expanded", expanded);
+        link.classList.toggle("collapsed", !expanded);
 
-        return; // ❗ JANGAN tutup sidebar
+        return; // ❗ sidebar tetap terbuka
       }
 
       // ==========================
