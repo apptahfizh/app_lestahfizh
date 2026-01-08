@@ -573,3 +573,24 @@
     overflow: hidden;
   }
 }
+/* ===============================
+   FIX SUBMENU SIDEBAR MOBILE (FINAL)
+=============================== */
+@media (max-width: 768px) {
+  /* collapse di dalam sidebar */
+  .sidebar .collapse {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* SAAT SUBMENU TERBUKA */
+  .sidebar .collapse.show {
+    display: block !important;
+  }
+
+  /* JAGA JARAK ITEM SUBMENU */
+  .sidebar .collapse .collapse-inner {
+    padding-left: 1rem;
+  }
+}
