@@ -561,3 +561,35 @@
     padding-left: 1rem;
   }
 }
+
+/* =====================================
+   FINAL FIX COLLAPSE SIDEBAR MOBILE
+   ===================================== */
+@media (max-width: 768px) {
+  /* Sidebar mobile scrollable */
+  .sidebar.toggled {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  /* 🔥 PENTING: collapse JANGAN absolute */
+  .sidebar.toggled .collapse {
+    position: static !important;
+    width: 100% !important;
+  }
+
+  /* 🔥 inner ikut alur sidebar */
+  .sidebar.toggled .collapse-inner {
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding-left: 1rem;
+    box-shadow: none !important;
+  }
+
+  /* pastikan terlihat */
+  .sidebar.toggled .collapse.show {
+    display: block !important;
+    height: auto !important;
+  }
+}
