@@ -59,21 +59,6 @@
 }
 
 /* ===============================
-   MOBILE SIDEBAR OVERLAY
-=============================== */
-@media (max-width: 768px) {
-  body.sidebar-toggled .sidebar {
-    width: 0;
-    min-width: 0;
-  }
-
-  body:not(.sidebar-toggled) .sidebar {
-    width: 100px; /* atau 150px */
-    min-width: 100px;
-  }
-}
-
-/* ===============================
    SIDEBAR TOGGLE BUTTON
    =============================== */
 @media (max-width: 768px) {
@@ -307,44 +292,6 @@
 }
 
 /* ===============================
-   HIDE TOPBAR WHEN SIDEBAR OPEN (MOBILE)
-=============================== */
-
-@media (max-width: 768px) {
-  .sidebar {
-    padding-top: 0 !important;
-    top: 0;
-    left: 0;
-    height: 100dvh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    z-index: 1050;
-    transition: transform 0.25s ease;
-  }
-
-  body.sidebar-toggled .sidebar {
-    transform: translateX(-100%);
-  }
-}
-
-@media (max-width: 768px) {
-  body:not(.sidebar-toggled) footer,
-  body:not(.sidebar-toggled) .footer {
-    display: none !important;
-  }
-  body:not(.sidebar-toggled) .topbar {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  :root {
-    --sidebar-mobile-width: 240px;
-  }
-}
-
-/* ===============================
    PADDING CONTENT KHUSUS MOBILE
 =============================== */
 @media (max-width: 768px) {
@@ -455,24 +402,6 @@
     display: none !important;
   }
 }
-/* =====================================
-   FIX SUBMENU SIDEBAR MOBILE (FINAL)
-   ===================================== */
-@media (max-width: 768px) {
-  /* SAAT SIDEBAR TERBUKA */
-  body:not(.sidebar-toggled) .sidebar {
-    overflow-y: visible !important;
-  }
-
-  body:not(.sidebar-toggled) .sidebar .collapse {
-    position: relative;
-  }
-
-  body:not(.sidebar-toggled) .sidebar .collapse.show {
-    display: block !important;
-    height: auto !important;
-  }
-}
 
 /* ===============================
    FIX SIDEBAR OVERLAY MOBILE
@@ -499,7 +428,6 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  overflow: visible;
 }
 
 /* area scroll sebenarnya */
@@ -516,7 +444,7 @@
     width: 240px;
     height: 100dvh;
     z-index: 1050;
-    transform: translateX(-100%);
+
     transition: transform 0.25s ease;
   }
 
@@ -538,36 +466,7 @@
     padding-bottom: 1rem;
   }
 }
-/* ===============================
-   SIDEBAR MOBILE SCROLL (FINAL)
-=============================== */
-@media (max-width: 768px) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 240px;
-    height: 100dvh;
 
-    overflow-y: auto; /* 🔑 INI KUNCI */
-    overflow-x: hidden;
-
-    -webkit-overflow-scrolling: touch;
-
-    z-index: 1050;
-
-    transform: translateX(-100%);
-    transition: transform 0.25s ease;
-  }
-
-  body:not(.sidebar-toggled) .sidebar {
-    transform: translateX(0);
-  }
-}
-#content-wrapper,
-#mainContent {
-  overflow: visible;
-}
 @media (max-width: 768px) {
   body:not(.sidebar-toggled) {
     overflow: hidden;
@@ -581,7 +480,7 @@
   .sidebar .collapse {
     position: static !important;
     height: auto !important;
-    overflow: visible !important;
+    
   }
 
   /* SAAT SUBMENU TERBUKA */
@@ -606,24 +505,17 @@
     overflow-x: hidden !important;
   }
 
-  /* PASTIKAN ITEM TIDAK DIPOTONG */
-  .sidebar .nav-item {
-    overflow: visible !important;
-  }
+
 
   /* COLLAPSE FULL HEIGHT */
   .sidebar .collapse,
   .sidebar .collapse.show {
     height: auto !important;
     max-height: none !important;
-    overflow: visible !important;
+    
   }
 
-  /* SUBMENU INNER */
-  .sidebar .collapse-inner {
-    overflow: visible !important;
-  }
-}
+
 /* =====================================
    FIX LEBAR SUBMENU SIDEBAR (FINAL)
 ===================================== */
@@ -663,138 +555,5 @@
   body:not(.sidebar-toggled) .sidebar .collapse-item {
     width: 100% !important;
     display: block;
-  }
-}
-/* =====================================
-   FINAL FIX: FULLSCREEN SIDEBAR MOBILE
-===================================== */
-@media (max-width: 768px) {
-  /* === SIDEBAR SEBAGAI FULLSCREEN OVERLAY === */
-  body:not(.sidebar-toggled) .sidebar {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-
-    width: 100vw !important;
-    max-width: 100vw !important;
-    min-width: 100vw !important;
-
-    height: 100vh !important;
-
-    z-index: 2000;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-
-    transform: translateX(0) !important;
-  }
-
-  /* === SEMUA ISI SIDEBAR IKUT FULL WIDTH === */
-  .sidebar,
-  .sidebar .navbar-nav,
-  .sidebar .nav,
-  .sidebar .nav-item,
-  .sidebar .collapse,
-  .sidebar .collapse-inner,
-  .sidebar .collapse-item {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box;
-  }
-
-  /* === SAAT SIDEBAR DITUTUP === */
-  body.sidebar-toggled .sidebar {
-    transform: translateX(-100%) !important;
-  }
-
-  /* === CONTENT TETAP DI BAWAH, TIDAK GESER === */
-  #content-wrapper,
-  #mainContent {
-    position: relative;
-    z-index: 1;
-    margin-left: 0 !important;
-    transform: none !important;
-  }
-
-  /* === SEMBUNYIKAN TOPBAR & FOOTER SAAT SIDEBAR TERBUKA === */
-  body:not(.sidebar-toggled) .topbar,
-  body:not(.sidebar-toggled) footer {
-    display: none !important;
-  }
-}
-/* =====================================
-   FINAL FIX — ONE VERTICAL AXIS
-===================================== */
-@media (max-width: 768px) {
-  /* SIDEBAR FULLSCREEN */
-  .sidebar {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100dvh;
-    z-index: 2000;
-    overflow-y: auto;
-  }
-
-  /* SAMAKAN SEMUA ITEM KE GRID YANG SAMA */
-  .sidebar > * {
-    width: 100%;
-  }
-
-  /* BRAND — IKUT GRID MENU */
-  .sidebar-brand {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px 0;
-    margin: 0;
-  }
-
-  /* NAV ITEM */
-  .sidebar .nav-item {
-    width: 100%;
-  }
-
-  /* NAV LINK — GRID TENGAH */
-  .sidebar .nav-link {
-    display: grid;
-    grid-template-rows: auto auto;
-    place-items: center;
-
-    padding: 14px 0 !important;
-    margin: 0 !important;
-    text-align: center;
-  }
-
-  /* ICON */
-  .sidebar .nav-link i {
-    margin: 0 !important;
-    font-size: 20px;
-  }
-
-  /* TEXT */
-  .sidebar .nav-link span {
-    margin-top: 6px;
-    font-size: 13px;
-    line-height: 1.2;
-  }
-
-  /* SUBMENU */
-  .sidebar .collapse {
-    width: 100%;
-  }
-
-  .sidebar .collapse-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 !important;
-  }
-
-  .sidebar .collapse-item {
-    width: 100%;
-    text-align: center;
-    padding: 10px 0;
   }
 }
