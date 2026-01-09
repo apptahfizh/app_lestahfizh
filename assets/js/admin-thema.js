@@ -151,23 +151,21 @@
   };
 })();
 
-document.getElementById("sidebarToggleTop")?.addEventListener("click", () => {
-  console.log("☰ toggle clicked");
-});
-
 // ===============================
-// CLOSE SIDEBAR (MOBILE)
+// CLOSE SIDEBAR (MOBILE) — FINAL FIX
 // ===============================
 document.addEventListener("DOMContentLoaded", function () {
   const closeBtn = document.getElementById("sidebarClose");
+  const sidebar = document.querySelector(".sidebar");
 
-  if (closeBtn) {
-    closeBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
+  if (!closeBtn || !sidebar) return;
 
-      // TUTUP SIDEBAR
-      document.body.classList.add("sidebar-toggled");
-    });
-  }
+  closeBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // ⛔ TUTUP SIDEBAR (HARUS KEDUANYA)
+    document.body.classList.add("sidebar-toggled");
+    sidebar.classList.add("toggled");
+  });
 });
