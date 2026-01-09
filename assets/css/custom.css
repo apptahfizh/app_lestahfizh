@@ -722,62 +722,48 @@
   }
 }
 /* =====================================
-   SIDEBAR MOBILE — CENTER FIX FINAL
+   FINAL FIX — ONE VERTICAL AXIS
 ===================================== */
 @media (max-width: 768px) {
   /* SIDEBAR FULLSCREEN */
   .sidebar {
     position: fixed;
     inset: 0;
-    width: 100vw !important;
+    width: 100vw;
     height: 100dvh;
     z-index: 2000;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
     overflow-y: auto;
   }
 
-  /* BRAND */
-  .sidebar .sidebar-brand {
+  /* SAMAKAN SEMUA ITEM KE GRID YANG SAMA */
+  .sidebar > * {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 24px 0;
   }
 
-  /* UL RESET */
-  .sidebar .navbar-nav {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-
+  /* BRAND — IKUT GRID MENU */
+  .sidebar-brand {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+
+    padding: 20px 0;
+    margin: 0;
   }
 
-  /* LI */
+  /* NAV ITEM */
   .sidebar .nav-item {
     width: 100%;
-    text-align: center;
   }
 
-  /* LINK — INI KUNCI UTAMA */
+  /* NAV LINK — GRID TENGAH */
   .sidebar .nav-link {
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-rows: auto auto;
+    place-items: center;
 
     padding: 14px 0 !important;
     margin: 0 !important;
-
     text-align: center;
   }
 
@@ -794,22 +780,18 @@
     line-height: 1.2;
   }
 
-  /* SUBMENU WRAPPER */
+  /* SUBMENU */
   .sidebar .collapse {
     width: 100%;
   }
 
-  /* SUBMENU INNER */
   .sidebar .collapse-inner {
-    width: 100%;
-    padding: 0 !important;
-
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0 !important;
   }
 
-  /* SUBMENU ITEM */
   .sidebar .collapse-item {
     width: 100%;
     text-align: center;
