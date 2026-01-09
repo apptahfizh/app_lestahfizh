@@ -430,7 +430,7 @@
 }
 @media (max-width: 768px) {
   .sidebar {
-    position: fixed;
+    /* position: fixed; */
     top: 0;
     left: 0;
     /* width: 240px; */
@@ -619,7 +619,7 @@
 @media (max-width: 768px) {
   /* Lebar sidebar konsisten & penuh */
   body:not(.sidebar-toggled) .sidebar {
-    width: 100vw; /* TUTUP FULL LAYAR */
+    /* width: 100vw;  TUTUP FULL LAYAR */
     max-width: 100vw;
   }
 
@@ -738,6 +738,65 @@
     width: 100%;
     text-align: center;
     padding: 0;
+  }
+
+  .sidebar .collapse-item {
+    padding: 10px 0;
+  }
+}
+/* =====================================================
+   FIX FINAL SEJAJAR MENU & LOGO
+   SB ADMIN 2 — MOBILE SAFE
+===================================================== */
+@media (max-width: 768px) {
+  /* 🔑 FIX UTAMA: SAMAKAN AXIS */
+  #accordionSidebar {
+    align-items: center;
+  }
+
+  /* BRAND */
+  .sidebar-brand {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .sidebar-brand-text {
+    margin-top: 6px;
+  }
+
+  /* NAV ITEM FULL WIDTH TAPI CONTENT CENTER */
+  .sidebar .nav-item {
+    width: 100%;
+  }
+
+  .sidebar .nav-link {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 14px 0;
+  }
+
+  .sidebar .nav-link i {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .sidebar .nav-link span {
+    margin-top: 6px;
+    font-size: 13px;
+  }
+
+  /* HEADING */
+  .sidebar-heading {
+    text-align: center;
+  }
+
+  /* SUBMENU CENTER */
+  .sidebar .collapse-inner {
+    text-align: center;
   }
 
   .sidebar .collapse-item {
