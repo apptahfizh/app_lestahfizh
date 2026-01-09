@@ -692,3 +692,24 @@
 .sidebar-close:focus {
   outline: none;
 }
+/* Wrapper brand */
+.sidebar-brand-wrapper {
+  position: relative;
+}
+
+/* Close button */
+.sidebar-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1;
+
+  cursor: pointer;
+  z-index: 3000;
+}
