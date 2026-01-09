@@ -736,8 +736,27 @@
     text-align: center;
   }
 }
+
+/* =====================================
+   WARNA DIVIDER SIDEBAR MOBILE
+===================================== */
+@media (max-width: 768px) {
+  .sidebar .sidebar-divider {
+    display: block !important; /* 🔥 KUNCI UTAMA */
+    border: none !important;
+    height: 1px;
+    margin: 1rem 0;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    );
+  }
+}
+
 /* ===============================
-   WARNA DIVIDER SIDEBAR
+   WARNA DIVIDER SIDEBAR dekstop
 =============================== */
 .sidebar .sidebar-divider {
   border: none;
