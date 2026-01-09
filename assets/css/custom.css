@@ -670,30 +670,38 @@
     overflow: hidden;
   }
 }
-/* ================================
-   SIDEBAR CLOSE BUTTON
-================================ */
-/* Close button */
-.sidebar-close {
-  position: absolute;
-  top: 12px;
-  right: 14px;
+/* =========================================
+   SIDEBAR CLOSE BUTTON — FINAL POSITION
+========================================= */
+@media (max-width: 768px) {
+  .sidebar-brand-wrapper {
+    position: relative; /* ANCHOR */
+  }
 
-  background: transparent;
-  border: none;
-  color: #ffffff;
-  font-size: 26px;
-  font-weight: 600;
-  line-height: 1;
+  .sidebar-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
 
-  cursor: pointer;
-  z-index: 3000;
-}
+    width: 36px;
+    height: 36px;
 
-.sidebar-close:focus {
-  outline: none;
-}
-/* Wrapper brand */
-.sidebar-brand-wrapper {
-  position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    color: #fff;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    z-index: 2000;
+  }
+
+  .sidebar-close:active {
+    transform: scale(0.95);
+  }
 }
