@@ -1,45 +1,567 @@
-/* =====================================================
-   GLOBAL WRAPPER
-===================================================== */
+/* ===============================
+   GLOBAL LOCK SCROLL
+=============================== */
 #content-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
-.main-scroll {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  background: #f9fafb;
-}
-
-/* =====================================================
+/* ===============================
    TOPBAR
-===================================================== */
+=============================== */
 .topbar {
+  flex-shrink: 0;
   height: 70px;
-  background: #fff;
+  position: relative;
+  z-index: 2000;
+  background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
-  z-index: 3000;
 }
 
 .topbar i {
   color: #2563eb;
 }
 
-/* =====================================================
-   SIDEBAR — DESKTOP (DEFAULT)
-===================================================== */
-.sidebar {
-  background: linear-gradient(180deg, #1f2937 0%, #272511 100%);
+/* ===============================
+   MAIN SCROLL AREA
+=============================== */
+.main-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  background: #f9fafb;
 }
 
-/* =====================================================
-   SIDEBAR — MOBILE FINAL
-===================================================== */
+#mainContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ===============================
+   SIDEBAR
+=============================== */
+.sidebar {
+  background: linear-gradient(180deg, #1f2937 0%, #272511 100%) !important;
+}
+
+.sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.sidebar .nav-item.active .nav-link {
+  background: rgba(37, 99, 235, 0.15);
+  color: #ffffff;
+  border-left: 4px solid #2563eb;
+}
+
+/* ===============================
+   SIDEBAR TOGGLE BUTTON
+   =============================== */
 @media (max-width: 768px) {
-  /* === SIDEBAR FULLSCREEN OVERLAY === */
+  #sidebarToggleTop {
+    display: inline-flex;
+  }
+}
+
+/* ===============================
+   DATATABLE MOBILE FIX
+=============================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  table.dataTable {
+    width: 100% !important;
+    min-width: 600px; /* paksa scroll, bukan lompat */
+  }
+
+  .card-body {
+    padding: 0.75rem;
+  }
+}
+/* ===============================
+   DATATABLE TEXT WRAP FIX
+=============================== */
+
+/* Kolom Nama Peserta */
+#tabelPeserta td:nth-child(2),
+#tabelPeserta th:nth-child(2) {
+  white-space: normal !important; /* BOLEH TURUN BARIS */
+  word-break: break-word;
+  max-width: 220px; /* BATAS AMAN MOBILE */
+}
+
+/* Desktop boleh lebih lebar */
+@media (min-width: 769px) {
+  #tabelPeserta td:nth-child(2),
+  #tabelPeserta th:nth-child(2) {
+    max-width: 400px;
+  }
+}
+
+/* ===============================
+   PESERTA CARD LIST (MOBILE)
+=============================== */
+.peserta-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(55, 168, 3, 0.959);
+  font-size: 14px;
+}
+
+.peserta-card .nama {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
+
+  word-break: break-word;
+  white-space: normal;
+}
+
+.peserta-card .aksi {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+/* Sembunyikan tabel peserta saat mobile */
+@media (max-width: 768px) {
+  #tabelPeserta {
+    display: none;
+  }
+}
+
+/* ===============================
+   HAFALAN CARD LIST (MOBILE)
+=============================== */
+.hafalan-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 6px rgba(55, 168, 3, 0.959);
+}
+
+.hafalan-card .nama {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #0c41e2;
+  word-break: break-word;
+  white-space: normal;
+  bottom: 2px;
+}
+.hafalan-card .tanggal {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
+  word-break: break-word;
+  white-space: normal;
+}
+.hafalan-card .surah {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
+  word-break: break-word;
+  white-space: normal;
+}
+.hafalan-card .keterangan {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.hafalan-card .aksi {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+/* Sembunyikan tabel hafalan saat mobile */
+@media (max-width: 768px) {
+  #tabelHafalan {
+    display: none !important;
+  }
+}
+
+/* ===============================
+   RIWAYAT HAFALAN CARD LIST (MOBILE)
+=============================== */
+.riwayat-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(55, 168, 3, 0.959);
+  font-size: 14px;
+}
+
+.riwayat-card .row-item {
+  display: flex;
+  color: #111827;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.riwayat-card .label {
+  color: #111827;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.riwayat-card .value {
+  font-weight: 600;
+  font-size: 15px;
+  color: #111827;
+  text-align: right;
+}
+
+.riwayat-card .peserta {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #0c41e2;
+}
+
+/* ===============================
+   USER CREATE CARD LIST (MOBILE)
+=============================== */
+.usercreate-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 6px rgba(55, 168, 3, 0.959);
+}
+
+.usercreate-card .nama {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #0c41e2;
+  word-break: break-word;
+  white-space: normal;
+  bottom: 2px;
+}
+.usercreate-card .peserta {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* ===============================
+   ABSENSI CARD LIST (MOBILE)
+=============================== */
+.absensi-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(55, 168, 3, 0.959);
+}
+
+.absensi-card .nama {
+  color: #0c41e2;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.absensi-card .field {
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+/* biar konten tidak ketutup tombol */
+@media (max-width: 767px) {
+  .main-scroll {
+    padding-bottom: 80px;
+  }
+}
+
+/* ===============================
+   PADDING CONTENT KHUSUS MOBILE
+=============================== */
+@media (max-width: 768px) {
+  #content .container-fluid {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-body {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #content-wrapper {
+    width: 100%;
+    min-width: 0;
+  }
+}
+/* FIX TOGGLE HAFALAN */
+#sidebarToggleTop {
+  position: relative;
+  z-index: 3000;
+  pointer-events: auto;
+}
+
+/* ===============================
+   DATATABLES MOBILE FIX (CARD UI)
+================================ */
+@media (max-width: 768px) {
+  /* HILANGKAN "Show X entries" */
+  .dataTables_length {
+    display: none;
+  }
+
+  /* INFO TEXT */
+  .dataTables_info {
+    text-align: center;
+    font-size: 13px;
+    color: #6c757d;
+    margin-bottom: 8px;
+  }
+
+  /* WRAPPER PAGINATION */
+  .dataTables_paginate {
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+  }
+
+  /* PAGINATION UL */
+  .dataTables_paginate ul.pagination {
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+  }
+
+  /* TOMBOL PAGINATION */
+  .dataTables_paginate .page-item .page-link {
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  /* ACTIVE PAGE */
+  .dataTables_paginate .page-item.active .page-link {
+    background-color: #4e73df;
+    border-color: #4e73df;
+    color: #fff;
+  }
+
+  /* PREV / NEXT */
+  .dataTables_paginate .page-item.previous .page-link,
+  .dataTables_paginate .page-item.next .page-link {
+    font-weight: 600;
+  }
+}
+
+#mobileTableFooter {
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+}
+
+/* ===============================
+   USER CREATE - MOBILE CARD FIX
+=============================== */
+@media (max-width: 768px) {
+  /* Paksa tabel desktop benar-benar hilang */
+  #desktopUserTable,
+  #tableUsers {
+    display: none !important;
+  }
+
+  /* Paksa card list tampil */
+  #userMobileList {
+    display: block !important;
+    width: 100%;
+  }
+
+  /* Hindari efek table-responsive mengunci tinggi */
+  .user-table-card .table-responsive {
+    overflow: visible !important;
+  }
+
+  #tableUsers_wrapper {
+    display: none !important;
+  }
+}
+
+/* ===============================
+   FIX SIDEBAR OVERLAY MOBILE
+   =============================== */
+.sidebar {
+  z-index: 1050;
+}
+
+/* backdrop jika ada */
+#sidebarBackdrop {
+  z-index: 1040;
+}
+
+/* content tetap di bawah sidebar */
+#content-wrapper,
+#mainContent {
+  position: relative;
+  z-index: 1;
+}
+/* ===============================
+   CONTENT WRAPPER FIX (FINAL)
+=============================== */
+#content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+/* area scroll sebenarnya */
+.main-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100dvh;
+    z-index: 1050;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  body:not(.sidebar-toggled) .sidebar {
+    transform: translateX(0);
+  }
+}
+#content-wrapper,
+#mainContent {
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 768px) and (orientation: landscape) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .main-scroll {
+    padding-bottom: 1rem;
+  }
+}
+
+#content-wrapper,
+#mainContent {
+  overflow: visible;
+}
+@media (max-width: 768px) {
+  body:not(.sidebar-toggled) {
+    overflow: hidden;
+  }
+}
+/* ===============================
+   FIX SUBMENU SIDEBAR MOBILE (FINAL)
+=============================== */
+@media (max-width: 768px) {
+  /* collapse di dalam sidebar */
+  .sidebar .collapse {
+    position: static !important;
+    height: auto !important;
+  }
+
+  /* SAAT SUBMENU TERBUKA */
+  .sidebar .collapse.show {
+    display: block !important;
+  }
+
+  /* JAGA JARAK ITEM SUBMENU */
+  .sidebar .collapse .collapse-inner {
+    padding-left: 1rem;
+  }
+}
+/* =====================================
+   FIX SUBMENU TERPOTONG (FINAL - WAJIB)
+===================================== */
+@media (max-width: 768px) {
+  /* IZINKAN SIDEBAR & NAV MEMANJANG */
+  .sidebar,
+  .sidebar .nav,
+  .sidebar .navbar-nav {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  /* COLLAPSE FULL HEIGHT */
+  .sidebar .collapse,
+  .sidebar .collapse.show {
+    height: auto !important;
+    max-height: none !important;
+  }
+}
+/* =====================================
+   FIX LEBAR SUBMENU SIDEBAR (FINAL)
+===================================== */
+@media (max-width: 768px) {
+  /* SIDEBAR MOBILE TERBUKA */
+  body:not(.sidebar-toggled) .sidebar {
+    width: 240px !important;
+    min-width: 240px !important;
+    max-width: 240px !important;
+  }
+
+  /* NAV HARUS IKUT LEBAR SIDEBAR */
+  body:not(.sidebar-toggled) .sidebar .navbar-nav,
+  body:not(.sidebar-toggled) .sidebar .nav {
+    width: 100% !important;
+  }
+
+  /* ITEM NAV */
+  body:not(.sidebar-toggled) .sidebar .nav-item {
+    width: 100% !important;
+  }
+
+  /* COLLAPSE AREA */
+  body:not(.sidebar-toggled) .sidebar .collapse {
+    width: 100% !important;
+  }
+
+  /* 🔥 INI KUNCI UTAMA */
+  body:not(.sidebar-toggled) .sidebar .collapse-inner {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* LINK DALAM SUBMENU */
+  body:not(.sidebar-toggled) .sidebar .collapse-item {
+    width: 100% !important;
+    display: block;
+  }
+}
+/* =================================================
+   FINAL SIDEBAR MOBILE — CLEAN & CONSISTENT
+================================================= */
+@media (max-width: 768px) {
+  /* === SIDEBAR FULLSCREEN === */
   .sidebar {
     position: fixed;
     inset: 0;
@@ -47,9 +569,9 @@
     height: 100dvh;
     z-index: 2000;
 
+    background: linear-gradient(180deg, #1f2937 0%, #272511 100%);
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
 
     transform: translateX(-100%);
     transition: transform 0.25s ease;
@@ -59,62 +581,44 @@
     transform: translateX(0);
   }
 
-  body.sidebar-toggled {
-    overflow: hidden;
-  }
-
-  /* =================================================
-     SATU SUMBU VERTIKAL (LOGO + MENU)
-  ================================================= */
+  /* === SEMUA ISI FULL WIDTH === */
   .sidebar,
-  .sidebar .navbar-nav {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .sidebar .navbar-nav,
+  .sidebar .nav,
+  .sidebar .nav-item,
+  .sidebar .nav-link,
+  .sidebar .collapse,
+  .sidebar .collapse-inner,
+  .sidebar .collapse-item {
+    width: 100%;
+    box-sizing: border-box;
   }
 
-  /* =================================================
-     BRAND / LOGO
-  ================================================= */
+  /* === BRAND === */
   .sidebar-brand {
-    width: 100%;
-    padding: 20px 0;
-    margin: 0;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    padding: 24px 0;
+    margin: 0;
   }
 
-  .sidebar-brand-text {
-    margin-top: 8px;
-    font-size: 14px;
-    text-align: center;
-  }
-
-  /* =================================================
-     NAV ITEM
-  ================================================= */
-  .sidebar .nav-item {
-    width: 100%;
-  }
-
+  /* === MENU ITEM (SATU GARIS VERTIKAL) === */
   .sidebar .nav-link {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    padding: 14px 0;
-    margin: 0;
-
+    padding: 16px 0;
     text-align: center;
   }
 
   .sidebar .nav-link i {
-    font-size: 20px;
     margin: 0;
+    font-size: 20px;
   }
 
   .sidebar .nav-link span {
@@ -123,52 +627,35 @@
     line-height: 1.2;
   }
 
-  /* =================================================
-     SUBMENU (ABSENSI, DLL)
-  ================================================= */
-  .sidebar .collapse {
-    width: 100%;
+  /* === SUBMENU === */
+  .sidebar .collapse.show {
+    display: block;
   }
 
   .sidebar .collapse-inner {
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-
     padding: 0;
   }
 
   .sidebar .collapse-item {
-    width: 100%;
-    text-align: center;
     padding: 10px 0;
+    text-align: center;
   }
 
-  /* =================================================
-     SEMBUNYIKAN TOPBAR & FOOTER SAAT SIDEBAR TERBUKA
-  ================================================= */
+  /* === CONTENT DI BAWAH === */
+  #content-wrapper,
+  #mainContent {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    transform: none;
+  }
+
+  /* === SEMBUNYIKAN TOPBAR & FOOTER === */
   body:not(.sidebar-toggled) .topbar,
   body:not(.sidebar-toggled) footer {
-    display: none !important;
-  }
-}
-
-/* =====================================================
-   DATATABLE & CARD MOBILE (AMAN)
-===================================================== */
-@media (max-width: 768px) {
-  .dataTables_length {
     display: none;
-  }
-
-  .dataTables_paginate {
-    display: flex;
-    justify-content: center;
-  }
-
-  .dataTables_info {
-    text-align: center;
-    font-size: 13px;
   }
 }
