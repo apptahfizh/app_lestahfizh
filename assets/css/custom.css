@@ -705,3 +705,28 @@
     transform: scale(0.95);
   }
 }
+/* =====================================================
+   FIX: TAMPILKAN BRAND TEXT DI MOBILE (FULL SIDEBAR)
+===================================================== */
+@media (max-width: 768px) {
+  /* Paksa teks brand selalu tampil */
+  .sidebar .sidebar-brand-text {
+    display: block !important;
+    opacity: 1 !important;
+    white-space: nowrap;
+  }
+
+  /* Rapikan layout logo + teks */
+  .sidebar .sidebar-brand {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar .sidebar-brand-text {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+  }
+}
