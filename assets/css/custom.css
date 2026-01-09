@@ -433,7 +433,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 240px;
+    /* width: 240px; */
     height: 100dvh;
     z-index: 1050;
     transform: translateX(-100%);
@@ -611,5 +611,136 @@
   body:not(.sidebar-toggled) .topbar,
   body:not(.sidebar-toggled) footer {
     display: none;
+  }
+}
+/* =====================================================
+   FINAL FIX: ALIGN SIDEBAR MENU = LOGO (MOBILE ONLY)
+===================================================== */
+@media (max-width: 768px) {
+  /* Lebar sidebar konsisten & penuh */
+  body:not(.sidebar-toggled) .sidebar {
+    width: 100vw; /* TUTUP FULL LAYAR */
+    max-width: 100vw;
+  }
+
+  /* BRAND (LOGO) */
+  .sidebar .sidebar-brand {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .sidebar .sidebar-brand-text {
+    margin: 6px 0 0 0;
+  }
+
+  /* SEMUA NAV LINK */
+  .sidebar .nav-link {
+    flex-direction: column; /* IKUT LOGO */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 14px 0;
+  }
+
+  .sidebar .nav-link i {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .sidebar .nav-link span {
+    margin-top: 6px;
+    font-size: 13px;
+    display: block;
+  }
+
+  /* HEADING */
+  .sidebar-heading {
+    text-align: center;
+    padding: 12px 0;
+  }
+
+  /* SUBMENU */
+  .sidebar .collapse-inner {
+    width: 100%;
+    text-align: center;
+    padding: 0;
+  }
+
+  .sidebar .collapse-header {
+    text-align: center;
+  }
+
+  .sidebar .collapse-item {
+    padding: 10px 0;
+    text-align: center;
+  }
+}
+/* =====================================================
+   FIX FINAL — MENU SEJAJAR LOGO (MOBILE ONLY)
+   TANPA MERUSAK SCROLL & CONTENT
+===================================================== */
+@media (max-width: 768px) {
+  /* SIDEBAR TETAP NORMAL (JANGAN DIUTAK-ATIK LEBARNYA) */
+  .sidebar {
+    overflow-y: auto;
+  }
+
+  /* 🔑 KUNCI UTAMA: SAMAKAN SUMBU */
+  .sidebar .navbar-nav {
+    align-items: center;
+  }
+
+  /* BRAND */
+  .sidebar .sidebar-brand {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .sidebar .sidebar-brand-text {
+    margin-top: 6px;
+  }
+
+  /* MENU ITEM */
+  .sidebar .nav-item {
+    width: 100%;
+  }
+
+  .sidebar .nav-link {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    padding: 14px 0;
+  }
+
+  .sidebar .nav-link i {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .sidebar .nav-link span {
+    margin-top: 6px;
+    font-size: 13px;
+  }
+
+  /* HEADING */
+  .sidebar-heading {
+    text-align: center;
+  }
+
+  /* SUBMENU */
+  .sidebar .collapse-inner {
+    width: 100%;
+    text-align: center;
+    padding: 0;
+  }
+
+  .sidebar .collapse-item {
+    padding: 10px 0;
   }
 }
