@@ -735,9 +735,17 @@
     color: #4e73df;
     text-align: center;
   }
-
-  .sidebar .sidebar-divider {
-    margin-top: 6px;
-    color: #4e73df;
-  }
+}
+/* ===============================
+   WARNA DIVIDER SIDEBAR
+=============================== */
+.sidebar .sidebar-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
 }
