@@ -158,11 +158,15 @@ document.getElementById("sidebarToggleTop")?.addEventListener("click", () => {
 // ===============================
 // CLOSE SIDEBAR (MOBILE)
 // ===============================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
   const closeBtn = document.getElementById("sidebarClose");
 
   if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
+    closeBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // TUTUP SIDEBAR
       document.body.classList.add("sidebar-toggled");
     });
   }
