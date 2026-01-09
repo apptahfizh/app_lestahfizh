@@ -673,14 +673,6 @@
 /* ================================
    SIDEBAR CLOSE BUTTON
 ================================ */
-
-.sidebar-close:focus {
-  outline: none;
-}
-/* Wrapper brand */
-.sidebar-brand-wrapper {
-  position: relative;
-}
 /* Close button */
 .sidebar-close {
   position: absolute;
@@ -696,4 +688,12 @@
 
   cursor: pointer;
   z-index: 3000;
+}
+
+.sidebar-close:focus {
+  outline: none;
+}
+/* Wrapper brand */
+.sidebar-brand-wrapper {
+  position: relative;
 }
