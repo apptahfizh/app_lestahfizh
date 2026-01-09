@@ -754,16 +754,27 @@
    WARNA DIVIDER SIDEBAR MOBILE
 ===================================== */
 @media (max-width: 768px) {
-  .sidebar .sidebar-divider {
-    display: block !important; /* 🔥 KUNCI UTAMA */
+  .sidebar hr.sidebar-divider {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    height: 1px !important;
+    min-height: 1px;
+
+    margin: 12px 0 !important;
+    padding: 0 !important;
+
     border: none !important;
-    height: 1px;
-    margin: 1rem 0;
+    width: 100%;
+
     background: linear-gradient(
       to right,
       transparent,
       rgba(255, 255, 255, 0.6),
       transparent
     );
+
+    flex-shrink: 0; /* 🔥 PENTING: lawan flex parent */
   }
 }
