@@ -729,4 +729,10 @@
     font-weight: 600;
     text-align: center;
   }
+
+  .sidebar .sidebar-heading {
+    margin-top: 6px;
+    color: #1709df;
+    text-align: center;
+  }
 }
