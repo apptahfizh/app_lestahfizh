@@ -721,3 +721,69 @@
     display: none !important;
   }
 }
+/* =====================================
+   RAPikan MENU SIDEBAR MOBILE (CENTER)
+===================================== */
+@media (max-width: 768px) {
+  /* BRAND / LOGO */
+  .sidebar .sidebar-brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem 0;
+  }
+
+  /* LIST MENU */
+  .sidebar .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 🔥 KUNCI GARIS TENGAH */
+    width: 100%;
+  }
+
+  /* ITEM MENU */
+  .sidebar .nav-item {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* LINK MENU */
+  .sidebar .nav-link {
+    display: flex;
+    flex-direction: column; /* ICON ATAS, TEKS BAWAH */
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+    padding: 14px 0;
+
+    width: 100%;
+  }
+
+  /* ICON MENU */
+  .sidebar .nav-link i {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+
+  /* TEKS MENU */
+  .sidebar .nav-link span {
+    font-size: 0.8rem;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  /* SUBMENU (COLLAPSE) */
+  .sidebar .collapse-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 🔥 SUBMENU JUGA TENGAH */
+    width: 100%;
+  }
+
+  .sidebar .collapse-item {
+    text-align: center;
+    width: 100%;
+    padding: 10px 0;
+  }
+}
