@@ -722,68 +722,97 @@
   }
 }
 /* =====================================
-   RAPikan MENU SIDEBAR MOBILE (CENTER)
+   SIDEBAR MOBILE — CENTER FIX FINAL
 ===================================== */
 @media (max-width: 768px) {
-  /* BRAND / LOGO */
+  /* SIDEBAR FULLSCREEN */
+  .sidebar {
+    position: fixed;
+    inset: 0;
+    width: 100vw !important;
+    height: 100dvh;
+    z-index: 2000;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow-y: auto;
+  }
+
+  /* BRAND */
   .sidebar .sidebar-brand {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1.5rem 0;
+    padding: 24px 0;
   }
 
-  /* LIST MENU */
+  /* UL RESET */
   .sidebar .navbar-nav {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
     display: flex;
     flex-direction: column;
-    align-items: center; /* 🔥 KUNCI GARIS TENGAH */
-    width: 100%;
+    align-items: center;
   }
 
-  /* ITEM MENU */
+  /* LI */
   .sidebar .nav-item {
     width: 100%;
     text-align: center;
   }
 
-  /* LINK MENU */
+  /* LINK — INI KUNCI UTAMA */
   .sidebar .nav-link {
+    width: 100%;
+
     display: flex;
-    flex-direction: column; /* ICON ATAS, TEKS BAWAH */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    gap: 6px;
-    padding: 14px 0;
+    padding: 14px 0 !important;
+    margin: 0 !important;
 
+    text-align: center;
+  }
+
+  /* ICON */
+  .sidebar .nav-link i {
+    margin: 0 !important;
+    font-size: 20px;
+  }
+
+  /* TEXT */
+  .sidebar .nav-link span {
+    margin-top: 6px;
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  /* SUBMENU WRAPPER */
+  .sidebar .collapse {
     width: 100%;
   }
 
-  /* ICON MENU */
-  .sidebar .nav-link i {
-    font-size: 1.25rem;
-    margin: 0;
-  }
-
-  /* TEKS MENU */
-  .sidebar .nav-link span {
-    font-size: 0.8rem;
-    line-height: 1.2;
-    white-space: nowrap;
-  }
-
-  /* SUBMENU (COLLAPSE) */
+  /* SUBMENU INNER */
   .sidebar .collapse-inner {
+    width: 100%;
+    padding: 0 !important;
+
     display: flex;
     flex-direction: column;
-    align-items: center; /* 🔥 SUBMENU JUGA TENGAH */
-    width: 100%;
+    align-items: center;
   }
 
+  /* SUBMENU ITEM */
   .sidebar .collapse-item {
-    text-align: center;
     width: 100%;
+    text-align: center;
     padding: 10px 0;
   }
 }
