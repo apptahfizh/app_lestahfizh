@@ -670,3 +670,25 @@
     overflow: hidden;
   }
 }
+/* ================================
+   SIDEBAR CLOSE BUTTON
+================================ */
+.sidebar-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1;
+
+  cursor: pointer;
+  z-index: 3000;
+}
+
+.sidebar-close:focus {
+  outline: none;
+}

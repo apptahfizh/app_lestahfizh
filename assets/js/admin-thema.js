@@ -154,3 +154,16 @@
 document.getElementById("sidebarToggleTop")?.addEventListener("click", () => {
   console.log("☰ toggle clicked");
 });
+
+// ===============================
+// CLOSE SIDEBAR (MOBILE)
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  const closeBtn = document.getElementById("sidebarClose");
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      document.body.classList.add("sidebar-toggled");
+    });
+  }
+});
