@@ -428,6 +428,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow: visible;
 }
 
 /* area scroll sebenarnya */
@@ -444,7 +445,7 @@
     width: 240px;
     height: 100dvh;
     z-index: 1050;
-
+    transform: translateX(-100%);
     transition: transform 0.25s ease;
   }
 
@@ -467,6 +468,10 @@
   }
 }
 
+#content-wrapper,
+#mainContent {
+  overflow: visible;
+}
 @media (max-width: 768px) {
   body:not(.sidebar-toggled) {
     overflow: hidden;
@@ -480,7 +485,6 @@
   .sidebar .collapse {
     position: static !important;
     height: auto !important;
-    
   }
 
   /* SAAT SUBMENU TERBUKA */
@@ -505,17 +509,13 @@
     overflow-x: hidden !important;
   }
 
-
-
   /* COLLAPSE FULL HEIGHT */
   .sidebar .collapse,
   .sidebar .collapse.show {
     height: auto !important;
     max-height: none !important;
-    
   }
-
-
+}
 /* =====================================
    FIX LEBAR SUBMENU SIDEBAR (FINAL)
 ===================================== */
@@ -555,5 +555,107 @@
   body:not(.sidebar-toggled) .sidebar .collapse-item {
     width: 100% !important;
     display: block;
+  }
+}
+/* =================================================
+   FINAL SIDEBAR MOBILE — CLEAN & CONSISTENT
+================================================= */
+@media (max-width: 768px) {
+  /* === SIDEBAR FULLSCREEN === */
+  .sidebar {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: 2000;
+
+    background: linear-gradient(180deg, #1f2937 0%, #272511 100%);
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  body:not(.sidebar-toggled) .sidebar {
+    transform: translateX(0);
+  }
+
+  /* === SEMUA ISI FULL WIDTH === */
+  .sidebar,
+  .sidebar .navbar-nav,
+  .sidebar .nav,
+  .sidebar .nav-item,
+  .sidebar .nav-link,
+  .sidebar .collapse,
+  .sidebar .collapse-inner,
+  .sidebar .collapse-item {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* === BRAND === */
+  .sidebar-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px 0;
+    margin: 0;
+  }
+
+  /* === MENU ITEM (SATU GARIS VERTIKAL) === */
+  .sidebar .nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 16px 0;
+    text-align: center;
+  }
+
+  .sidebar .nav-link i {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .sidebar .nav-link span {
+    margin-top: 6px;
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  /* === SUBMENU === */
+  .sidebar .collapse.show {
+    display: block;
+  }
+
+  .sidebar .collapse-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+  }
+
+  .sidebar .collapse-item {
+    padding: 10px 0;
+    text-align: center;
+  }
+
+  /* === CONTENT DI BAWAH === */
+  #content-wrapper,
+  #mainContent {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    transform: none;
+  }
+
+  /* === SEMBUNYIKAN TOPBAR & FOOTER === */
+  body:not(.sidebar-toggled) .topbar,
+  body:not(.sidebar-toggled) footer {
+    display: none;
   }
 }
