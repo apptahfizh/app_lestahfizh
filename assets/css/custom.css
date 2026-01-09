@@ -725,7 +725,7 @@
 
   .sidebar .sidebar-brand-text {
     margin-top: 6px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     text-align: center;
   }
@@ -734,5 +734,10 @@
     margin-top: 6px;
     color: #4e73df;
     text-align: center;
+  }
+
+  .sidebar .sidebar-divider {
+    margin-top: 6px;
+    color: #4e73df;
   }
 }
