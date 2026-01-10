@@ -468,11 +468,7 @@
 #mainContent {
   overflow: visible;
 }
-@media (max-width: 768px) {
-  body:not(.sidebar-toggled) {
-    overflow: hidden;
-  }
-}
+
 /* ===============================
    FIX SUBMENU SIDEBAR MOBILE (FINAL)
 =============================== */
@@ -564,15 +560,23 @@
     height: 100vh;
     z-index: 1050;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    overscroll-behavior: contain; /* 🔥 PALING PENTING */
+    touch-action: pan-y;
 
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+  body {
+    overscroll-behavior: none;
+  }
 
   /* SEMBUNYIKAN CONTENT SAAT SIDEBAR AKTIF */
   body:not(.sidebar-toggled) #content-wrapper {
-    display: none;
+    pointer-events: none;
+    opacity: 0;
   }
 
   /* BRAND */
@@ -663,16 +667,6 @@
     z-index: 2000;
     overflow-y: auto;
     overflow-x: hidden;
-  }
-
-  /* SEMBUNYIKAN CONTENT TOTAL */
-  body:not(.sidebar-toggled) #content-wrapper {
-    display: none !important;
-  }
-
-  /* AMANKAN WRAPPER */
-  body:not(.sidebar-toggled) #wrapper {
-    overflow: hidden;
   }
 }
 /* =========================================
