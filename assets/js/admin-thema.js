@@ -66,6 +66,29 @@
   /* ===============================
      MENU CLICK (MOBILE)
   =============================== */
+  document.addEventListener("DOMContentLoaded", () => {
+    const sb = document.querySelector(".sidebar");
+    if (!sb) return;
+
+    sb.addEventListener("touchstart", () => {
+      isScrollingSidebar = true;
+    });
+
+    sb.addEventListener("touchmove", () => {
+      isScrollingSidebar = true;
+    });
+
+    sb.addEventListener("touchend", () => {
+      // unlock setelah momentum scroll selesai
+      setTimeout(() => {
+        isScrollingSidebar = false;
+      }, 150);
+    });
+  });
+
+  /* ===============================
+     MENU CLICK (MOBILE)
+  =============================== */
   document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
     link.addEventListener("click", (e) => {
       const sidebar = document.querySelector(".sidebar");
@@ -109,6 +132,7 @@
   document.addEventListener("mousedown", (e) => {
     if (!isMobile()) return;
     if (isToggling) return; // 🔥 KUNCI UTAMA
+    if (isScrollingSidebar) return;
 
     const sb = sidebar();
 
