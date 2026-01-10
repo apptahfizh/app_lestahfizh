@@ -28,36 +28,58 @@
         class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
         id="accordionSidebar"
       >
-        <a
-          class="sidebar-brand d-flex align-items-center justify-content-center"
-          href="index.html"
+        <!-- Sidebar - Brand -->
+        <div class="sidebar-brand-wrapper">
+          <a
+            class="sidebar-brand d-flex align-items-center justify-content-center"
+            href="#"
+          >
+            <hr class="sidebar-divider" />
+            <div class="sidebar-brand-icon">
+              <i class="fas fa-mosque"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Tahfizh App</div>
+          </a>
+        </div>
+        <!-- SIDEBAR CLOSE BUTTON (MOBILE ONLY) -->
+        <button
+          id="sidebarClose"
+          type="button"
+          class="sidebar-close d-md-none"
+          aria-label="Close sidebar"
         >
-          <div class="sidebar-brand-icon"><i class="fas fa-mosque"></i></div>
-          <div class="sidebar-brand-text mx-3">Tahfizh App</div>
-        </a>
+          ✕
+        </button>
+
         <hr class="sidebar-divider my-0" />
-        <li class="nav-item">
-          <a class="nav-link" href="index.html"
-            ><i class="fas fa-fw fa-home"></i><span>Dashboard</span></a
-          >
-        </li>
-        <hr class="sidebar-divider" />
         <div class="sidebar-heading">Menu Utama</div>
+
         <li class="nav-item">
-          <a class="nav-link" href="peserta.html"
-            ><i class="fas fa-fw fa-users"></i><span>Data Peserta</span></a
-          >
+          <a class="nav-link" href="index.html">
+            <i class="fas fa-fw fa-home"></i>
+            <span>Dashboard</span>
+          </a>
         </li>
+
         <li class="nav-item">
-          <a class="nav-link" href="hafalan.html"
-            ><i class="fas fa-fw fa-book"></i
-            ><span>Input & List Hafalan</span></a
-          >
+          <a class="nav-link" href="peserta.html">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Data Peserta</span>
+          </a>
         </li>
+
         <li class="nav-item">
-          <a class="nav-link" href="riwayat-hafalan.html"
-            ><i class="fas fa-fw fa-history"></i><span>Riwayat Hafalan</span></a
-          >
+          <a class="nav-link" href="hafalan.html">
+            <i class="fas fa-fw fa-book"></i>
+            <span>Input & List Hafalan</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="riwayat-hafalan.html">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Riwayat Hafalan</span>
+          </a>
         </li>
         <!-- Absensi -->
         <li class="nav-item active">
@@ -95,15 +117,19 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="user-create.html"
-            ><i class="fas fa-user-plus"></i><span>Create User</span></a
-          >
+          <a class="nav-link" href="user-create.html">
+            <i class="fas fa-user-plus"></i>
+            <span>Create User</span>
+          </a>
         </li>
-        <hr class="sidebar-divider d-none d-md-block" />
+
+        <hr class="sidebar-divider" />
+
         <li class="nav-item">
-          <a class="nav-link text-danger" id="logoutBtn" href="#"
-            ><i class="fas fa-fw fa-sign-out-alt"></i><span>Logout</span></a
-          >
+          <a class="nav-link text-danger" id="logoutBtn" href="login.html">
+            <i class="fas fa-fw fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
         </li>
       </ul>
       <!-- ================= END SIDEBAR ================= -->

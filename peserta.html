@@ -34,17 +34,30 @@
         id="accordionSidebar"
       >
         <!-- Sidebar - Brand -->
-        <a
-          class="sidebar-brand d-flex align-items-center justify-content-center"
-          href="index.html"
+        <div class="sidebar-brand-wrapper">
+          <a
+            class="sidebar-brand d-flex align-items-center justify-content-center"
+            href="#"
+          >
+            <hr class="sidebar-divider" />
+            <div class="sidebar-brand-icon">
+              <i class="fas fa-mosque"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Tahfizh App</div>
+          </a>
+        </div>
+        <!-- SIDEBAR CLOSE BUTTON (MOBILE ONLY) -->
+        <button
+          id="sidebarClose"
+          type="button"
+          class="sidebar-close d-md-none"
+          aria-label="Close sidebar"
         >
-          <div class="sidebar-brand-icon">
-            <i class="fas fa-mosque"></i>
-          </div>
-          <div class="sidebar-brand-text mx-3">Tahfizh App</div>
-        </a>
+          ✕
+        </button>
 
         <hr class="sidebar-divider my-0" />
+        <div class="sidebar-heading">Menu Utama</div>
 
         <li class="nav-item">
           <a class="nav-link" href="index.html">
@@ -52,10 +65,6 @@
             <span>Dashboard</span>
           </a>
         </li>
-
-        <hr class="sidebar-divider" />
-
-        <div class="sidebar-heading">Menu Utama</div>
 
         <li class="nav-item active">
           <a class="nav-link" href="peserta.html">
@@ -77,7 +86,6 @@
             <span>Riwayat Hafalan</span>
           </a>
         </li>
-
         <!-- Absensi -->
         <li class="nav-item">
           <a
@@ -113,8 +121,6 @@
           </div>
         </li>
 
-        <hr class="sidebar-divider d-none d-md-block" />
-
         <li class="nav-item">
           <a class="nav-link" href="user-create.html">
             <i class="fas fa-user-plus"></i>
@@ -122,7 +128,7 @@
           </a>
         </li>
 
-        <hr class="sidebar-divider d-none d-md-block" />
+        <hr class="sidebar-divider" />
 
         <li class="nav-item">
           <a class="nav-link text-danger" id="logoutBtn" href="login.html">
