@@ -336,3 +336,31 @@ footer.sticky-footer {
     margin-bottom: 16px;
   }
 }
+/* =================================================
+   FORCE SIDEBAR DIVIDER — MOBILE (FINAL FIX)
+================================================= */
+@media (max-width: 768px) {
+  .sidebar hr.sidebar-divider {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    height: 1px !important;
+    min-height: 1px;
+
+    margin: 12px 0 !important;
+    padding: 0 !important;
+
+    border: none !important;
+    width: 100%;
+
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    );
+
+    flex-shrink: 0; /* 🔥 PENTING: lawan flex parent */
+  }
+}
