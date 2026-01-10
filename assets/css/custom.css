@@ -364,12 +364,3 @@ footer.sticky-footer {
     flex-shrink: 0; /* 🔥 PENTING: lawan flex parent */
   }
 }
-/* =====================================================
-   HARD FIX — ISOLATE SIDEBAR SCROLL (CHROME ANDROID)
-===================================================== */
-@media (max-width: 768px) {
-  #accordionSidebar {
-    overscroll-behavior: contain; /* STOP SCROLL CHAIN */
-    touch-action: pan-y; /* HANYA SCROLL VERTIKAL */
-  }
-}
