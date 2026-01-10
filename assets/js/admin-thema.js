@@ -8,6 +8,7 @@
 
   const MOBILE_WIDTH = 768;
   let isToggling = false; // 🔒 LOCK STATE
+  let isScrollingSidebar = false;
 
   /* ===============================
      UTIL
@@ -64,7 +65,7 @@
   });
 
   /* ===============================
-     MENU CLICK (MOBILE)
+     SCROLL SIDEBAR (MOBILE)
   =============================== */
   document.addEventListener("DOMContentLoaded", () => {
     const sb = document.querySelector(".sidebar");
