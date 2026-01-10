@@ -22,7 +22,7 @@
 ===================================================== */
 .topbar {
   flex-shrink: 0;
-  height: 50px;
+  height: 60px;
   position: sticky;
   top: 0;
   z-index: 3000;
@@ -38,13 +38,14 @@
    MAIN SCROLL AREA
 ===================================================== */
 .main-scroll {
-  position: relative; /* ❌ BUKAN fixed */
-  flex: 1;
+  position: fixed;
+  height: auto; /* ⬅️ WAJIB */
+  top: 70px;
+  bottom: 40px;
+  left: 0;
+  right: 0;
+
   overflow-y: auto;
-
-  padding-top: 0;
-  padding-bottom: 80px;
-
   -webkit-overflow-scrolling: touch;
 }
 /* ================= FOOTER ================= */
@@ -56,6 +57,8 @@ footer.sticky-footer {
   left: 0;
   right: 0;
   z-index: 1040;
+  background: #d8d8da;
+  border-top: 1px solid #e5e7eb;
 }
 
 /* =====================================================
