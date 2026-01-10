@@ -50,11 +50,7 @@
 /* ================= FOOTER ================= */
 .footer,
 footer.sticky-footer {
-  background: #d8d8da;
-  border-top: 1px solid #e5e7eb;
   font-size: 11px;
-  height: 32px;
-
   position: fixed;
   bottom: 0;
   left: 0;
