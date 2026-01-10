@@ -48,13 +48,15 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.footer,
-footer.sticky-footer {
-  position: fixed;
+.footer {
+  flex-shrink: 0;
+  height: 32px;
+  position: sticky;
   bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1040;
+  z-index: 1020;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 /* =====================================================
    SIDEBAR BASE
