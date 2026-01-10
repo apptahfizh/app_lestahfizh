@@ -209,9 +209,12 @@ footer.sticky-footer {
   /* ---------- FULLSCREEN SIDEBAR ---------- */
   #accordionSidebar {
     position: fixed;
-    inset: 0;
     width: 100vw;
-    height: 100dvh;
+    top: 0;
+    bottom: 0; /* 🔥 BUKAN height */
+    left: 0;
+    /*height: 100dvh;
+    inset: 0;*/
     z-index: 2000;
     overflow-y: auto;
     overflow-x: hidden;
