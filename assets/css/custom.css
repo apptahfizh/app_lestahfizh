@@ -22,7 +22,7 @@
 ===================================================== */
 .topbar {
   flex-shrink: 0;
-  height: 70px;
+  height: 100px;
   position: fixed;
   top: 0;
   z-index: 3000;
