@@ -297,3 +297,32 @@ document.addEventListener("DOMContentLoaded", function () {
     sidebar.classList.add("toggled");
   });
 });
+
+/* =====================================================
+   HARD GUARD — BLOCK AUTO CLOSE WHEN ADDRESS BAR HIDDEN
+===================================================== */
+(function () {
+  let lastHeight = window.innerHeight;
+
+  window.addEventListener("scroll", () => {
+    lastHeight = window.innerHeight;
+  });
+
+  document.addEventListener(
+    "pointerdown",
+    (e) => {
+      const sidebar = document.querySelector(".sidebar");
+      if (!sidebar) return;
+
+      const sidebarOpen = !document.body.classList.contains("sidebar-toggled");
+      if (!sidebarOpen) return;
+
+      // 🔥 Jika viewport sedang berubah (address bar animating)
+      if (window.innerHeight !== lastHeight) {
+        e.stopImmediatePropagation();
+        return;
+      }
+    },
+    true
+  );
+})();
