@@ -23,7 +23,9 @@
 .topbar {
   flex-shrink: 0;
   height: 60px;
-  position: sticky;
+  position: fixed;
+  width: 100vw;
+  max-width: 100vw;
   top: 0;
   z-index: 3000;
   background: #fff;
@@ -38,14 +40,13 @@
    MAIN SCROLL AREA
 ===================================================== */
 .main-scroll {
-  position: fixed;
-  height: auto; /* ⬅️ WAJIB */
-  top: 70px;
-  bottom: 40px;
-  left: 0;
-  right: 0;
-
+  position: relative; /* ❌ BUKAN fixed */
+  flex: 1;
   overflow-y: auto;
+
+  padding-top: 0;
+  padding-bottom: 80px;
+
   -webkit-overflow-scrolling: touch;
 }
 /* ================= FOOTER ================= */
