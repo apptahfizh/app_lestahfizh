@@ -562,15 +562,20 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 
-    overscroll-behavior: contain; /* 🔥 PALING PENTING */
-    touch-action: pan-y;
-
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
+  /* CEGAT SCROLL CHAINING HANYA DI SIDEBAR */
+  #accordionSidebar {
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+
+  /* BIARKAN BODY NORMAL → pull-to-refresh hidup */
   body {
-    overscroll-behavior: none;
+    overscroll-behavior-y: auto;
   }
 
   /* SEMBUNYIKAN CONTENT SAAT SIDEBAR AKTIF */
