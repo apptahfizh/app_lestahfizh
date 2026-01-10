@@ -25,7 +25,7 @@
   height: 70px;
   position: fixed;
   top: 0;
-  z-index: 2000;
+  z-index: 1030;
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
 }
