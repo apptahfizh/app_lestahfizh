@@ -325,7 +325,7 @@ footer.sticky-footer {
 ===================================================== */
 @media (max-width: 768px) {
   #accordionSidebar {
-    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
   }
 
   /* Pastikan item terakhir tidak kepotong */
