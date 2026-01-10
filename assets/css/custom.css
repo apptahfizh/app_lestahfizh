@@ -62,8 +62,10 @@ footer.sticky-footer {
   z-index: 1040;
   background: #d8d8da;
   border-top: 1px solid #e5e7eb;
+  display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
 /* =====================================================
