@@ -320,3 +320,16 @@ footer.sticky-footer {
     z-index: 1020;
   }
 }
+/* =====================================================
+   FIX ANDROID NAV BAR — SIDEBAR SAFE AREA
+===================================================== */
+@media (max-width: 768px) {
+  #accordionSidebar {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  }
+
+  /* Pastikan item terakhir tidak kepotong */
+  #accordionSidebar .nav-item:last-child {
+    margin-bottom: 12px;
+  }
+}
