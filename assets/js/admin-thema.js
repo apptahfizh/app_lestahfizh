@@ -24,16 +24,32 @@
   function collapseSidebar() {
     document.body.classList.add("sidebar-toggled");
     sidebar()?.classList.add("toggled");
+    ensureSidebarBackdrop().style.display = "none";
   }
 
   function expandSidebar() {
     document.body.classList.remove("sidebar-toggled");
     sidebar()?.classList.remove("toggled");
+    ensureSidebarBackdrop().style.display = "block";
   }
 
   function toggleSidebar() {
     document.body.classList.toggle("sidebar-toggled");
     sidebar()?.classList.toggle("toggled");
+  }
+
+  /* ===============================
+     BUAT BACKDROP (JS, NO HTML EDIT)
+  =============================== */
+  function ensureSidebarBackdrop() {
+    let backdrop = document.getElementById("sidebarBackdrop");
+    if (backdrop) return backdrop;
+
+    backdrop = document.createElement("div");
+    backdrop.id = "sidebarBackdrop";
+    document.body.appendChild(backdrop);
+
+    return backdrop;
   }
 
   /* ===============================
@@ -145,7 +161,7 @@
 
   /* ===============================
    OUTSIDE CLICK — POINTER SAFE
-=============================== */
+=============================== 
   document.addEventListener("pointerdown", (e) => {
     if (!isMobile()) return;
     if (isToggling) return;
@@ -162,6 +178,17 @@
     if (!document.body.classList.contains("sidebar-toggled")) {
       collapseSidebar();
     }
+  });
+
+/* ===============================
+   TUTUP SIDEBAR HANYA DARI BACKDROP
+=============================== */
+  document.addEventListener("DOMContentLoaded", () => {
+    const backdrop = ensureSidebarBackdrop();
+
+    backdrop.addEventListener("click", () => {
+      collapseSidebar();
+    });
   });
 
   /* ===============================
