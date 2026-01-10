@@ -47,17 +47,21 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-
-.footer {
-  flex-shrink: 0;
+/* ================= FOOTER ================= */
+.footer,
+footer.sticky-footer {
+  background: #d8d8da;
+  border-top: 1px solid #e5e7eb;
+  font-size: 11px;
   height: 32px;
-  position: sticky;
+
+  position: fixed;
   bottom: 0;
-  z-index: 1020;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  left: 0;
+  right: 0;
+  z-index: 1040;
 }
+
 /* =====================================================
    SIDEBAR BASE
 ===================================================== */
@@ -308,5 +312,15 @@
     border: none;
     cursor: pointer;
     z-index: 2100;
+  }
+
+  /* ---------- FOOTER ---------- */
+  body:not(.sidebar-open) .footer,
+  body:not(.sidebar-open) footer.sticky-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1020;
   }
 }
