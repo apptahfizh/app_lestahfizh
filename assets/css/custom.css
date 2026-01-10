@@ -330,6 +330,6 @@ footer.sticky-footer {
 
   /* Pastikan item terakhir tidak kepotong */
   #accordionSidebar .nav-item:last-child {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
 }
