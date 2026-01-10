@@ -47,7 +47,7 @@
   overflow-y: auto;
 
   padding-top: 0;
-  padding-bottom: 80px;
+  padding-bottom: 10px;
 
   -webkit-overflow-scrolling: touch;
 }
