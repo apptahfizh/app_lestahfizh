@@ -185,7 +185,44 @@
 =============================== */
   document.addEventListener("DOMContentLoaded", () => {
     const backdrop = ensureSidebarBackdrop();
+    let startX = 0;
+    let startY = 0;
+    let moved = false;
 
+    backdrop.addEventListener(
+      "touchstart",
+      (e) => {
+        const t = e.touches[0];
+        startX = t.clientX;
+        startY = t.clientY;
+        moved = false;
+      },
+      { passive: true }
+    );
+
+    backdrop.addEventListener(
+      "touchmove",
+      (e) => {
+        const t = e.touches[0];
+        const dx = Math.abs(t.clientX - startX);
+        const dy = Math.abs(t.clientY - startY);
+
+        // jika gesture scroll → JANGAN TUTUP
+        if (dx > 10 || dy > 10) {
+          moved = true;
+        }
+      },
+      { passive: true }
+    );
+
+    backdrop.addEventListener("touchend", () => {
+      // hanya TAP murni yang boleh nutup
+      if (!moved) {
+        collapseSidebar();
+      }
+    });
+
+    // fallback desktop / mouse
     backdrop.addEventListener("click", () => {
       collapseSidebar();
     });
