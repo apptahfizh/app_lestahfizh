@@ -23,8 +23,9 @@
 .topbar {
   flex-shrink: 0;
   height: 70px;
-  position: relative;
-  z-index: 2000;
+  position: sticky;
+  top: 0;
+  z-index: 3000;
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
 }
