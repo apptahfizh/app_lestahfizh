@@ -22,8 +22,8 @@
 ===================================================== */
 .topbar {
   flex-shrink: 0;
-  height: 100px;
-  position: fixed;
+  height: 50px;
+  position: sticky;
   top: 0;
   z-index: 3000;
   background: #fff;
