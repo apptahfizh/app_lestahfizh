@@ -37,14 +37,13 @@
    MAIN SCROLL AREA
 ===================================================== */
 .main-scroll {
-  position: fixed;
-  height: auto; /* ⬅️ WAJIB */
-  top: 70px;
-  bottom: 40px;
-  left: 0;
-  right: 0;
-
+  position: relative; /* ❌ BUKAN fixed */
+  flex: 1;
   overflow-y: auto;
+
+  padding-top: 0;
+  padding-bottom: 80px;
+
   -webkit-overflow-scrolling: touch;
 }
 /* ================= FOOTER ================= */
