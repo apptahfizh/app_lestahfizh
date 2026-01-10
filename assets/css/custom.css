@@ -23,7 +23,7 @@
 .topbar {
   flex-shrink: 0;
   height: 70px;
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 3000;
   background: #fff;
