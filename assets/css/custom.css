@@ -329,6 +329,8 @@ footer.sticky-footer {
     left: 0;
     right: 0;
     z-index: 1020;
+    align-items: center;
+    justify-content: center;
   }
 }
 /* =====================================================
