@@ -571,19 +571,6 @@ SIDEBAR UKURAN PENUH DI MOBILE
     right: 0;
     z-index: 1040;
   }
-
-  /* MAIN SCROLL AREA (SATU-SATUNYA SCROLL) */
-  .main-scroll {
-    position: fixed;
-    top: 70px; /* tinggi topbar */
-    bottom: 40px; /* tinggi footer (sesuaikan jika beda) */
-    left: 0;
-    right: 0;
-
-    height: auto; /* ⬅️ WAJIB */
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
 }
 /* =====================================================
    ORTU MOBILE — FINAL SCROLL & LAYER FIX (V2)
@@ -622,6 +609,7 @@ SIDEBAR UKURAN PENUH DI MOBILE
   /* ================= MAIN SCROLL ================= */
   .main-scroll {
     position: fixed;
+    height: auto; /* ⬅️ WAJIB */
     top: 70px;
     bottom: 40px;
     left: 0;
