@@ -125,8 +125,7 @@ footer.sticky-footer {
 .hafalan-card,
 .riwayat-card,
 .usercreate-card,
-.absensi-card,
-.daftarabsensi-card {
+.absensi-card {
   background: #fff;
   border-radius: 12px;
   padding: 14px 16px;
