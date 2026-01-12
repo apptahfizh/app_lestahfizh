@@ -38,7 +38,7 @@ async function loadDaftarKehadiran() {
     }));
 
     renderTable(); // desktop
-    renderMobileList(); // mobile
+    renderDaftarAbsensiCards(); // mobile
     renderRekap();
   } catch (err) {
     console.error(err);
