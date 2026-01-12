@@ -18,6 +18,8 @@ let tabelDetail = null;
 // LOAD REKAP BULANAN
 // ===============================
 async function loadRekap() {
+  window.AdminLoader?.show();
+
   try {
     const res = await api.get("/absensi/rekap-bulanan", {
       params: {
@@ -36,6 +38,8 @@ async function loadRekap() {
   } catch (err) {
     console.error("Gagal load rekap:", err);
     alert("Gagal load rekap");
+  } finally {
+    window.AdminLoader?.hide();
   }
 }
 
@@ -64,6 +68,8 @@ function renderRekapTable() {
 // LOAD PESERTA (DROPDOWN)
 // ===============================
 async function loadPeserta() {
+  window.AdminLoader?.show();
+
   try {
     const res = await api.get("/peserta");
 
@@ -78,6 +84,8 @@ async function loadPeserta() {
   } catch (err) {
     console.error("Gagal load peserta:", err);
     alert("Gagal memuat peserta");
+  } finally {
+    window.AdminLoader?.hide();
   }
 }
 
@@ -265,5 +273,7 @@ async function exportPdfPeserta() {
 // ===============================
 btnLoad.addEventListener("click", loadRekap);
 
-loadRekap();
-loadPeserta();
+(async () => {
+  await loadRekap();
+  await loadPeserta();
+})();
