@@ -44,16 +44,24 @@ async function loadDaftarKehadiran() {
 }
 
 // ===============================
-// TABLE
+// FUNGSI FILTER TERPUSAT
 // ===============================
-function renderTable() {
+function getFilteredData() {
   const statusFilter = filterStatus.value;
-  tabel.innerHTML = "";
 
-  const filtered = allData.filter((p) => {
+  return allData.filter((p) => {
     if (!statusFilter) return true;
     return p.status === statusFilter;
   });
+}
+
+// ===============================
+// TABLE
+// ===============================
+function renderTable() {
+  tabel.innerHTML = "";
+
+  const filtered = getFilteredData();
 
   const badgeMap = {
     hadir: "badge-success",
@@ -63,24 +71,19 @@ function renderTable() {
   };
 
   filtered.forEach((p) => {
-    const statusText = p.status
-      ? p.status.replace("_", " ").toUpperCase()
-      : "-";
-
+    const statusText = p.status.replace("_", " ").toUpperCase();
     const badgeClass = badgeMap[p.status] || "badge-secondary";
 
-    const tr = document.createElement("tr");
-    tr.classList.add("absensi-row");
-
-    tr.innerHTML = `
-      <td data-label="Nama">${p.nama}</td>
-      <td data-label="Status">
-        <span class="badge ${badgeClass}">${statusText}</span>
-      </td>
-      <td data-label="Keterangan">${p.keterangan || "-"}</td>
-    `;
-
-    tabel.appendChild(tr);
+    tabel.insertAdjacentHTML(
+      "beforeend",
+      `
+      <tr>
+        <td>${p.nama}</td>
+        <td><span class="badge ${badgeClass}">${statusText}</span></td>
+        <td>${p.keterangan || "-"}</td>
+      </tr>
+    `
+    );
   });
 }
 
@@ -90,13 +93,8 @@ function renderTable() {
 function renderMobileList() {
   if (!mobileList) return;
 
-  const statusFilter = filterStatus.value;
   mobileList.innerHTML = "";
-
-  const filtered = allData.filter((p) => {
-    if (!statusFilter) return true;
-    return p.status === statusFilter;
-  });
+  const filtered = getFilteredData();
 
   const badgeMap = {
     hadir: "badge-success",
@@ -106,28 +104,25 @@ function renderMobileList() {
   };
 
   filtered.forEach((p) => {
-    const statusText = p.status
-      ? p.status.replace("_", " ").toUpperCase()
-      : "-";
-
+    const statusText = p.status.replace("_", " ").toUpperCase();
     const badgeClass = badgeMap[p.status] || "badge-secondary";
 
-    const card = document.createElement("div");
-    card.className = "card shadow-sm mb-2";
-
-    card.innerHTML = `
-      <div class="card-body p-2">
-        <div class="d-flex justify-content-between">
-          <strong>${p.nama}</strong>
-          <span class="badge ${badgeClass}">${statusText}</span>
-        </div>
-        <div class="text-muted small mt-1">
-          ${p.keterangan || "-"}
+    mobileList.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="card shadow-sm mb-2">
+        <div class="card-body p-2">
+          <div class="d-flex justify-content-between">
+            <strong>${p.nama}</strong>
+            <span class="badge ${badgeClass}">${statusText}</span>
+          </div>
+          <div class="text-muted small mt-1">
+            ${p.keterangan || "-"}
+          </div>
         </div>
       </div>
-    `;
-
-    mobileList.appendChild(card);
+    `
+    );
   });
 }
 
@@ -135,6 +130,8 @@ function renderMobileList() {
 // REKAP
 // ===============================
 function renderRekap() {
+  const filtered = getFilteredData();
+
   const count = {
     hadir: 0,
     izin: 0,
@@ -142,13 +139,13 @@ function renderRekap() {
     tidak_hadir: 0,
   };
 
-  allData.forEach((p) => {
+  filtered.forEach((p) => {
     if (count[p.status] !== undefined) {
       count[p.status]++;
     }
   });
 
-  rekapTotal.textContent = allData.length;
+  rekapTotal.textContent = filtered.length;
   rekapHadir.textContent = count.hadir;
   rekapIzin.textContent = count.izin;
   rekapSakit.textContent = count.sakit;
