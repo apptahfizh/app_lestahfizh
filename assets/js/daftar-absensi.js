@@ -77,9 +77,11 @@ function renderTable() {
       "beforeend",
       `
       <tr>
-        <td>${p.nama}</td>
-        <td><span class="badge ${badgeClass}">${statusText}</span></td>
-        <td>${p.keterangan || "-"}</td>
+        <td data-label="Nama">${p.nama}</td>
+        <td data-label="Status">
+          <span class="badge ${badgeClass}">${statusText}</span>
+        </td>
+        <td data-label="Keterangan">${p.keterangan || "-"}</td>
       </tr>
     `
     );

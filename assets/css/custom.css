@@ -141,6 +141,50 @@ footer.sticky-footer {
   gap: 8px;
 }
 
+/* ===============================
+   MOBILE CARD LIST (ABSENSI)
+================================ */
+@media (max-width: 768px) {
+  table#tabelDaftar {
+    border: none;
+  }
+
+  table#tabelDaftar thead {
+    display: none;
+  }
+
+  table#tabelDaftar,
+  table#tabelDaftar tbody,
+  table#tabelDaftar tr,
+  table#tabelDaftar td {
+    display: block;
+    width: 100%;
+  }
+
+  table#tabelDaftar tr {
+    background: #fff;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    padding: 10px;
+  }
+
+  table#tabelDaftar td {
+    border: none;
+    padding: 6px 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  table#tabelDaftar td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6b7280;
+    font-size: 12px;
+  }
+}
+
 /* =====================================================
    MOBILE RULES
 ===================================================== */
