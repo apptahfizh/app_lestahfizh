@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-
 <html lang="id" translate="no">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rekap Absensi - Les Tahfizh</title>
 
-    <!-- CSS -->
-
+    <!-- Font Awesome -->
     <link
       href="assets/vendor/fontawesome-free/css/all.min.css"
       rel="stylesheet"
     />
+    <!-- SB Admin 2 CSS -->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet" />
+    <!-- CSS Global Halaman Admin -->
+    <link href="assets/css/loader-admin.css" rel="stylesheet" />
     <link href="assets/css/custom.css" rel="stylesheet" />
+    <!-- DataTables CSS -->
     <link
       href="assets/vendor/datatables/dataTables.bootstrap4.min.css"
       rel="stylesheet"
@@ -132,168 +134,198 @@
         </li>
       </ul>
       <!-- ================= END SIDEBAR ================= -->
+      <div id="sidebarBackdrop"></div>
 
-      <!-- ================= CONTENT ================= -->
+      <!-- ================= CONTENT WRAPPER ================= -->
       <div id="content-wrapper" class="d-flex flex-column">
-        <!-- TOPBAR -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar shadow">
-          <div class="d-flex align-items-center">
-            <h1 id="pageTitle" class="topbar-title">
-              <i class="fas fa-calendar-check topbar-icon"></i
-              ><span class="topbar-name">Rekap Absensi</span>
-            </h1>
-          </div>
-        </nav>
-        <!-- END TOPBAR -->
+        <!-- ===== MAIN CONTENT WRAPPER (FADE TARGET) ===== -->
+        <div id="mainContent" class="fade-content">
+          <!-- ================= TOPBAR ================= -->
+          <nav
+            class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+          >
+            <!-- Toggle Sidebar (Mobile) -->
+            <button
+              id="sidebarToggleTop"
+              class="btn btn-link d-md-none rounded-circle mr-3"
+            >
+              <i class="fa fa-bars"></i>
+            </button>
 
-        <!-- MAIN CONTENT / YANG BISA DI SCROLL -->
-        <div class="main-scroll">
-          <div class="container-fluid mt-4">
-            <!-- ================= REKAP BULANAN ================= -->
-            <div class="card shadow mb-4">
-              <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Rekap Bulanan</h6>
-              </div>
+            <h1 class="h5 mb-0 text-gray-800">Rekap Kehadiran</h1>
 
-              <div class="card-body">
-                <div class="form-row mb-3">
-                  <div class="col-md-3">
-                    <select id="bulan" class="form-control">
-                      <option value="1" selected>Januari</option>
-                      <option value="2">Februari</option>
-                      <option value="3">Maret</option>
-                      <option value="4">April</option>
-                      <option value="5">Mei</option>
-                      <option value="6">Juni</option>
-                      <option value="7">Juli</option>
-                      <option value="8">Agustus</option>
-                      <option value="9">September</option>
-                      <option value="10">Oktober</option>
-                      <option value="11">November</option>
-                      <option value="12">Desember</option>
-                    </select>
-                  </div>
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle">
+                  <span
+                    class="mr-2 d-none d-lg-inline text-gray-600 small"
+                    id="displayName"
+                  ></span>
+                  <i class="fas fa-user-circle fa-lg"></i>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <!-- ================= END TOPBAR ================= -->
 
-                  <div class="col-md-2">
-                    <input
-                      type="number"
-                      id="tahun"
-                      class="form-control"
-                      value="2025"
-                    />
-                  </div>
-
-                  <div class="col-md-4">
-                    <button class="btn btn-primary" id="btnLoad">
-                      Tampilkan
-                    </button>
-
-                    <button class="btn btn-danger" id="btnPdfRekap">
-                      <i class="fas fa-file-pdf"></i> Export PDF
-                    </button>
-                  </div>
+          <!-- ================= MAIN CONTENT (scroll area)================= -->
+          <div class="main-scroll">
+            <div class="container-fluid mt-4">
+              <!-- ================= REKAP BULANAN ================= -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                    Rekap Bulanan
+                  </h6>
                 </div>
 
-                <div class="table-responsive">
-                  <table class="table table-bordered">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th>Nama</th>
-                        <th>Hadir</th>
-                        <th>Izin</th>
-                        <th>Sakit</th>
-                        <th>Tidak Hadir</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tabelRekap"></tbody>
-                  </table>
+                <div class="card-body">
+                  <div class="form-row mb-3">
+                    <div class="col-md-3">
+                      <select id="bulan" class="form-control">
+                        <option value="1" selected>Januari</option>
+                        <option value="2">Februari</option>
+                        <option value="3">Maret</option>
+                        <option value="4">April</option>
+                        <option value="5">Mei</option>
+                        <option value="6">Juni</option>
+                        <option value="7">Juli</option>
+                        <option value="8">Agustus</option>
+                        <option value="9">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November</option>
+                        <option value="12">Desember</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2">
+                      <input
+                        type="number"
+                        id="tahun"
+                        class="form-control"
+                        value="2025"
+                      />
+                    </div>
+
+                    <div class="col-md-4">
+                      <button class="btn btn-primary" id="btnLoad">
+                        Tampilkan
+                      </button>
+
+                      <button class="btn btn-danger" id="btnPdfRekap">
+                        <i class="fas fa-file-pdf"></i> Export PDF
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Nama</th>
+                          <th>Hadir</th>
+                          <th>Izin</th>
+                          <th>Sakit</th>
+                          <th>Tidak Hadir</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tabelRekap"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ================= DETAIL PER PESERTA ================= -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                    Rekap Detail Per Peserta
+                  </h6>
+                </div>
+
+                <div class="card-body">
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Peserta</label>
+                    <div class="col-sm-4">
+                      <select id="filterPeserta" class="form-control">
+                        <option value="">-- Pilih Peserta --</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-sm-6">
+                      <button
+                        class="btn btn-danger"
+                        id="btnPdfPeserta"
+                        disabled
+                      >
+                        <i class="fas fa-file-pdf"></i> Export PDF
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="table-responsive">
+                    <table
+                      class="table table-bordered"
+                      id="tabelDetailAbsensi"
+                      width="100%"
+                    >
+                      <thead class="thead-light">
+                        <tr>
+                          <th>Tanggal</th>
+                          <th>Status</th>
+                          <th>Keterangan</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <!-- ================= DETAIL PER PESERTA ================= -->
-            <div class="card shadow mb-4">
-              <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">
-                  Rekap Detail Per Peserta
-                </h6>
-              </div>
-
-              <div class="card-body">
-                <div class="form-group row">
-                  <label class="col-sm-2 col-form-label">Peserta</label>
-                  <div class="col-sm-4">
-                    <select id="filterPeserta" class="form-control">
-                      <option value="">-- Pilih Peserta --</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-sm-6">
-                    <button class="btn btn-danger" id="btnPdfPeserta" disabled>
-                      <i class="fas fa-file-pdf"></i> Export PDF
-                    </button>
-                  </div>
-                </div>
-
-                <div class="table-responsive">
-                  <table
-                    class="table table-bordered"
-                    id="tabelDetailAbsensi"
-                    width="100%"
-                  >
-                    <thead class="thead-light">
-                      <tr>
-                        <th>Tanggal</th>
-                        <th>Status</th>
-                        <th>Keterangan</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
           </div>
+          <!-- ================ END MAIN CONTENT (scroll area)================ -->
+
+          <!-- FOOTER -->
+          <footer class="footer">
+            <span>© 2026 Les Tahfizh — Dzah Fitriani</span>
+          </footer>
+          <!-- END FOOTER -->
         </div>
-        <!-- END MAIN CONTENT / YANG BISA DI SCROLL -->
-
-        <!-- FOOTER -->
-        <footer class="footer">
-          <span>© 2026 Les Tahfizh — Dzah Fitriani</span>
-        </footer>
+        <!-- END #mainContent -->
       </div>
     </div>
 
-    <!-- ================= JS ================= -->
+    <!-- ================= GLOBAL LOADER ================= -->
+    <div id="adminLoader">
+      <div class="loader-content">
+        <div class="spinner"></div>
+        <div class="loader-text">
+          <div class="arabic basmallah">﷽</div>
+          <div class="latin">Memuat Data…</div>
+        </div>
+      </div>
+    </div>
 
+    <!-- JS -->
     <script src="assets/vendor/jquery/jquery.min.js"></script>
-
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
     <script src="assets/vendor/datatables/jquery.dataTables.min.js"></script>
-
     <script src="assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-    <script src="assets/js/sb-admin-2.min.js"></script>
-
     <script src="assets/vendor/sweetalert2/sweetalert2.all.min.js"></script>
-
     <script src="assets/vendor/axios/axios.min.js"></script>
 
     <script src="assets/js/api.js"></script>
-
     <script src="assets/js/auth.js"></script>
 
     <!-- jsPDF (LOCAL) -->
-
     <script src="assets/vendor/jspdf/jspdf.umd.min.js"></script>
-
     <script src="assets/vendor/jspdf/jspdf.plugin.autotable.min.js"></script>
 
     <!-- Logic -->
-
+    <script src="assets/js/admin-thema.js"></script>
     <script src="assets/js/rekap-absensi.js"></script>
   </body>
 </html>
