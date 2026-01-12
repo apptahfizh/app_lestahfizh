@@ -6,6 +6,7 @@ const tanggalInput = document.getElementById("tanggal");
 const filterStatus = document.getElementById("filterStatus");
 const tabel = document.getElementById("tabelDaftar");
 const btnLoad = document.getElementById("btnLoad");
+const mobileList = document.getElementById("daftar-absensiMobileList");
 
 // rekap
 const rekapTotal = document.getElementById("rekapTotal");
@@ -29,15 +30,10 @@ async function loadDaftarKehadiran() {
   window.AdminLoader?.show();
 
   try {
-    const data = await apiRequest(`/absensi?tanggal=${tanggal}`);
+    allData = await apiRequest(`/absensi?tanggal=${tanggal}`);
 
-    // 🔥 NORMALIZE SEKALI SAAT FETCH
-    allData = data.map((p) => ({
-      ...p,
-      status: normalizeStatus(p.status),
-    }));
-
-    renderTable();
+    renderTable(); // desktop
+    renderMobileList(); // mobile
     renderRekap();
   } catch (err) {
     console.error(err);
@@ -88,6 +84,53 @@ function renderTable() {
   });
 }
 
+// ==============================
+// RENDER DAFTAR ABSENSI CARD LIST (MOBILE)
+// ==============================
+function renderMobileList() {
+  if (!mobileList) return;
+
+  const statusFilter = filterStatus.value;
+  mobileList.innerHTML = "";
+
+  const filtered = allData.filter((p) => {
+    if (!statusFilter) return true;
+    return p.status === statusFilter;
+  });
+
+  const badgeMap = {
+    hadir: "badge-success",
+    izin: "badge-warning",
+    sakit: "badge-info",
+    tidak_hadir: "badge-danger",
+  };
+
+  filtered.forEach((p) => {
+    const statusText = p.status
+      ? p.status.replace("_", " ").toUpperCase()
+      : "-";
+
+    const badgeClass = badgeMap[p.status] || "badge-secondary";
+
+    const card = document.createElement("div");
+    card.className = "card shadow-sm mb-2";
+
+    card.innerHTML = `
+      <div class="card-body p-2">
+        <div class="d-flex justify-content-between">
+          <strong>${p.nama}</strong>
+          <span class="badge ${badgeClass}">${statusText}</span>
+        </div>
+        <div class="text-muted small mt-1">
+          ${p.keterangan || "-"}
+        </div>
+      </div>
+    `;
+
+    mobileList.appendChild(card);
+  });
+}
+
 // ===============================
 // REKAP
 // ===============================
@@ -114,7 +157,9 @@ function renderRekap() {
 
 // ===============================
 btnLoad.addEventListener("click", loadDaftarKehadiran);
-filterStatus.addEventListener("change", renderTable);
-
+filterStatus.addEventListener("change", () => {
+  renderTable();
+  renderMobileList();
+});
 // auto load
 loadDaftarKehadiran();
