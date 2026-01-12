@@ -127,7 +127,7 @@ function renderDaftarAbsensiCards() {
     const badgeClass = badgeMap[p.status];
 
     const card = document.createElement("div");
-    card.className = "absensi-card shadow-sm mb-2";
+    card.className = "daftarabsensi-card";
 
     card.innerHTML = `
       <div class="d-flex justify-content-between align-items-center mb-1">
