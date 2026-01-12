@@ -73,18 +73,18 @@ function renderTable() {
 
     const badgeClass = badgeMap[p.status] || "badge-secondary";
 
-    tabel.insertAdjacentHTML(
-      "beforeend",
-      `
-      <tr>
-        <td data-label="Nama">${p.nama}</td>
-        <td data-label="Status">
-          <span class="badge ${badgeClass}">${statusText}</span>
-        </td>
-        <td data-label="Keterangan">${p.keterangan || "-"}</td>
-      </tr>
-    `
-    );
+    const tr = document.createElement("tr");
+    tr.classList.add("absensi-row");
+
+    tr.innerHTML = `
+      <td data-label="Nama">${p.nama}</td>
+      <td data-label="Status">
+        <span class="badge ${badgeClass}">${statusText}</span>
+      </td>
+      <td data-label="Keterangan">${p.keterangan || "-"}</td>
+    `;
+
+    tabel.appendChild(tr);
   });
 }
 

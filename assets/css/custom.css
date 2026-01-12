@@ -142,46 +142,31 @@ footer.sticky-footer {
 }
 
 /* ===============================
-   MOBILE CARD LIST (ABSENSI)
+   ABSENSI MOBILE CARD LIST
 ================================ */
 @media (max-width: 768px) {
-  table#tabelDaftar {
-    border: none;
-  }
-
-  table#tabelDaftar thead {
-    display: none;
-  }
-
-  table#tabelDaftar,
-  table#tabelDaftar tbody,
-  table#tabelDaftar tr,
-  table#tabelDaftar td {
+  .absensi-row {
     display: block;
-    width: 100%;
-  }
-
-  table#tabelDaftar tr {
-    background: #fff;
     margin-bottom: 12px;
+    padding: 12px;
+    background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    padding: 10px;
   }
 
-  table#tabelDaftar td {
-    border: none;
-    padding: 6px 4px;
+  .absensi-row td {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 6px 0;
+    border: none;
   }
 
-  table#tabelDaftar td::before {
+  .absensi-row td::before {
     content: attr(data-label);
     font-weight: 600;
-    color: #6b7280;
     font-size: 12px;
+    color: #6b7280;
   }
 }
 
