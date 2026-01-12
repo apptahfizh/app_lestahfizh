@@ -106,7 +106,7 @@ router.get("/rekap-bulanan", async (req, res) => {
         SUM(CASE WHEN a.status = 'hadir' THEN 1 ELSE 0 END) AS hadir,
         SUM(CASE WHEN a.status = 'izin' THEN 1 ELSE 0 END) AS izin,
         SUM(CASE WHEN a.status = 'sakit' THEN 1 ELSE 0 END) AS sakit,
-        SUM(CASE WHEN a.status = 'tidak hadir' THEN 1 ELSE 0 END) AS tidak_hadir
+        SUM(CASE WHEN a.status = 'tidak_hadir' THEN 1 ELSE 0 END) AS tidak_hadir
       FROM peserta_didik p
       LEFT JOIN absensi a
         ON a.peserta_id = p.id
