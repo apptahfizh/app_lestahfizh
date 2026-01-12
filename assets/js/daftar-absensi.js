@@ -55,6 +55,7 @@ function renderTable() {
   });
 
   filtered.forEach((p) => {
+    const statusKey = normalizeStatus(p.status);
     const badgeMap = {
       hadir: "badge-success",
       izin: "badge-warning",
@@ -66,7 +67,6 @@ function renderTable() {
       ? statusKey.replace("_", " ").toUpperCase()
       : "-";
 
-    const statusKey = normalizeStatus(p.status);
     const badgeClass = badgeMap[statusKey] || "badge-secondary";
 
     tabel.insertAdjacentHTML(
