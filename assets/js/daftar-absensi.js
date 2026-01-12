@@ -15,6 +15,10 @@ tanggalInput.valueAsDate = new Date();
 
 let allData = [];
 
+function normalizeStatus(status) {
+  return status ? status.replace(" ", "_") : status;
+}
+
 // ===============================
 // LOAD DATA
 // ===============================
@@ -58,11 +62,12 @@ function renderTable() {
       tidak_hadir: "badge-danger",
     };
 
-    const statusText = p.status
-      ? p.status.replace("_", " ").toUpperCase()
+    const statusText = statusKey
+      ? statusKey.replace("_", " ").toUpperCase()
       : "-";
 
-    const badgeClass = badgeMap[p.status] || "badge-secondary";
+    const statusKey = normalizeStatus(p.status);
+    const badgeClass = badgeMap[statusKey] || "badge-secondary";
 
     tabel.insertAdjacentHTML(
       "beforeend",
@@ -89,7 +94,8 @@ function renderRekap() {
   };
 
   allData.forEach((p) => {
-    if (count[p.status] !== undefined) count[p.status]++;
+    const key = normalizeStatus(p.status);
+    if (count[key] !== undefined) count[key]++;
   });
 
   rekapTotal.textContent = allData.length;
