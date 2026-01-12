@@ -30,7 +30,12 @@ async function loadDaftarKehadiran() {
   window.AdminLoader?.show();
 
   try {
-    allData = await apiRequest(`/absensi?tanggal=${tanggal}`);
+    const rawData = await apiRequest(`/absensi?tanggal=${tanggal}`);
+
+    allData = rawData.map((p) => ({
+      ...p,
+      status: normalizeStatus(p.status),
+    }));
 
     renderTable(); // desktop
     renderMobileList(); // mobile
