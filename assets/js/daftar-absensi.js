@@ -95,11 +95,25 @@ function renderTable() {
 // ==============================
 // RENDER DAFTAR ABSENSI CARD LIST (MOBILE)
 // ==============================
-function renderMobileList() {
+function renderDaftarAbsensiCards() {
   if (!mobileList) return;
 
+  const statusFilter = filterStatus.value;
   mobileList.innerHTML = "";
-  const filtered = getFilteredData();
+
+  const filtered = allData.filter((p) => {
+    if (!statusFilter) return true;
+    return p.status === statusFilter;
+  });
+
+  if (!filtered.length) {
+    mobileList.innerHTML = `
+      <div class="text-muted text-center mt-3">
+        Tidak ada data absensi
+      </div>
+    `;
+    return;
+  }
 
   const badgeMap = {
     hadir: "badge-success",
@@ -110,24 +124,25 @@ function renderMobileList() {
 
   filtered.forEach((p) => {
     const statusText = p.status.replace("_", " ").toUpperCase();
-    const badgeClass = badgeMap[p.status] || "badge-secondary";
+    const badgeClass = badgeMap[p.status];
 
-    mobileList.insertAdjacentHTML(
-      "beforeend",
-      `
-      <div class="card shadow-sm mb-2">
-        <div class="card-body p-2">
-          <div class="d-flex justify-content-between">
-            <strong>${p.nama}</strong>
-            <span class="badge ${badgeClass}">${statusText}</span>
-          </div>
-          <div class="text-muted small mt-1">
-            ${p.keterangan || "-"}
-          </div>
-        </div>
+    const card = document.createElement("div");
+    card.className = "absensi-card shadow-sm mb-2";
+
+    card.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <div class="nama">👤 ${p.nama}</div>
+        <span class="badge ${badgeClass}">
+          ${statusText}
+        </span>
       </div>
-    `
-    );
+
+      <div class="keterangan text-muted small">
+        ${p.keterangan || "-"}
+      </div>
+    `;
+
+    mobileList.appendChild(card);
   });
 }
 
@@ -161,7 +176,7 @@ function renderRekap() {
 btnLoad.addEventListener("click", loadDaftarKehadiran);
 filterStatus.addEventListener("change", () => {
   renderTable();
-  renderMobileList();
+  renderDaftarAbsensiCards();
 });
 // auto load
 loadDaftarKehadiran();
