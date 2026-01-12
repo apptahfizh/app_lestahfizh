@@ -141,35 +141,6 @@ footer.sticky-footer {
   gap: 8px;
 }
 
-/* ===============================
-   ABSENSI MOBILE CARD LIST
-================================ */
-@media (max-width: 768px) {
-  .absensi-row {
-    display: block;
-    margin-bottom: 12px;
-    padding: 12px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  }
-
-  .absensi-row td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    border: none;
-  }
-
-  .absensi-row td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    font-size: 12px;
-    color: #6b7280;
-  }
-}
-
 /* =====================================================
    MOBILE RULES
 ===================================================== */
