@@ -111,6 +111,7 @@ function renderMobileList() {
   filtered.forEach((p) => {
     const statusText = p.status.replace("_", " ").toUpperCase();
     const badgeClass = badgeMap[p.status] || "badge-secondary";
+    card.className = "daftarabsensi-card";
 
     mobileList.insertAdjacentHTML(
       "beforeend",
