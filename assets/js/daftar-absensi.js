@@ -22,18 +22,13 @@ async function loadDaftarKehadiran() {
   const tanggal = tanggalInput.value;
   if (!tanggal) return alert("Tanggal wajib dipilih");
 
-  showAdminLoader();
-
   try {
     allData = await apiRequest(`/absensi?tanggal=${tanggal}`);
-
     renderTable();
     renderRekap();
   } catch (err) {
     console.error(err);
     alert(err.message || "Gagal memuat daftar kehadiran");
-  } finally {
-    hideAdminLoader();
   }
 }
 
