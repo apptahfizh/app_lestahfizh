@@ -21,12 +21,11 @@ async function loadRekap() {
   window.AdminLoader?.show();
 
   try {
-    const res = await api.get("/absensi/rekap-bulanan", {
-      params: {
-        bulan: bulan.value,
-        tahun: tahun.value,
-      },
-    });
+    const res = await apiRequest(
+      `/absensi/rekap-bulanan?bulan=${bulan.value}&tahun=${tahun.value}`
+    );
+
+    dataRekap = Array.isArray(res) ? res : [];
 
     dataRekap = Array.isArray(res.data)
       ? res.data
@@ -71,11 +70,9 @@ async function loadPeserta() {
   window.AdminLoader?.show();
 
   try {
-    const res = await api.get("/peserta");
+    const res = await apiRequest("/peserta");
 
-    filterPeserta.innerHTML = `<option value="">-- Pilih Peserta --</option>`;
-
-    res.data.forEach((p) => {
+    res.forEach((p) => {
       const opt = document.createElement("option");
       opt.value = p.id;
       opt.textContent = p.nama;
@@ -97,13 +94,9 @@ async function loadDetailAbsensi() {
   if (!pesertaId) return;
 
   try {
-    const res = await api.get("/absensi/detail", {
-      params: {
-        peserta_id: pesertaId,
-        bulan: bulan.value,
-        tahun: tahun.value,
-      },
-    });
+    const res = await apiRequest(
+      `/absensi/detail?peserta_id=${pesertaId}&bulan=${bulan.value}&tahun=${tahun.value}`
+    );
 
     if (tabelDetail) {
       tabelDetail.clear().destroy();
@@ -201,13 +194,9 @@ async function exportPdfPeserta() {
   }
 
   try {
-    const res = await api.get("/absensi/detail", {
-      params: {
-        peserta_id: pesertaId,
-        bulan: bulan.value,
-        tahun: tahun.value,
-      },
-    });
+    const res = await apiRequest(
+      `/absensi/detail?peserta_id=${pesertaId}&bulan=${bulan.value}&tahun=${tahun.value}`
+    );
 
     if (!res.data.length) {
       Swal.fire("Data kosong", "Tidak ada absensi bulan ini", "info");
@@ -234,7 +223,7 @@ async function exportPdfPeserta() {
     );
 
     // TABLE
-    const tableData = res.data.map((r) => [
+    const tableData = res.map((r) => [
       r.tanggal,
       r.status.toUpperCase(),
       r.keterangan || "-",
