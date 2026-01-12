@@ -1,5 +1,5 @@
 function normalizeStatus(status) {
-  return status ? status.replace(/\s+/g, "_") : status;
+  return status ? status.toLowerCase().replace(/\s+/g, "_") : status;
 }
 
 const tanggalInput = document.getElementById("tanggal");
@@ -26,18 +26,23 @@ async function loadDaftarKehadiran() {
   const tanggal = tanggalInput.value;
   if (!tanggal) return alert("Tanggal wajib dipilih");
 
-  // 🔥 TAMPILKAN LOADER
   window.AdminLoader?.show();
 
   try {
-    allData = await apiRequest(`/absensi?tanggal=${tanggal}`);
+    const data = await apiRequest(`/absensi?tanggal=${tanggal}`);
+
+    // 🔥 NORMALIZE SEKALI SAAT FETCH
+    allData = data.map((p) => ({
+      ...p,
+      status: normalizeStatus(p.status),
+    }));
+
     renderTable();
     renderRekap();
   } catch (err) {
     console.error(err);
     alert(err.message || "Gagal memuat daftar kehadiran");
   } finally {
-    // 🔥 PASTI DISEMBUNYIKAN
     window.AdminLoader?.hide();
   }
 }
@@ -54,20 +59,19 @@ function renderTable() {
     return p.status === statusFilter;
   });
 
-  filtered.forEach((p) => {
-    const statusKey = normalizeStatus(p.status);
-    const badgeMap = {
-      hadir: "badge-success",
-      izin: "badge-warning",
-      sakit: "badge-info",
-      tidak_hadir: "badge-danger",
-    };
+  const badgeMap = {
+    hadir: "badge-success",
+    izin: "badge-warning",
+    sakit: "badge-info",
+    tidak_hadir: "badge-danger",
+  };
 
-    const statusText = statusKey
-      ? statusKey.replace("_", " ").toUpperCase()
+  filtered.forEach((p) => {
+    const statusText = p.status
+      ? p.status.replace("_", " ").toUpperCase()
       : "-";
 
-    const badgeClass = badgeMap[statusKey] || "badge-secondary";
+    const badgeClass = badgeMap[p.status] || "badge-secondary";
 
     tabel.insertAdjacentHTML(
       "beforeend",
@@ -94,8 +98,9 @@ function renderRekap() {
   };
 
   allData.forEach((p) => {
-    const key = normalizeStatus(p.status);
-    if (count[key] !== undefined) count[key]++;
+    if (count[p.status] !== undefined) {
+      count[p.status]++;
+    }
   });
 
   rekapTotal.textContent = allData.length;
