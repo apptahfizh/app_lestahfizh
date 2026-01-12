@@ -1,5 +1,3 @@
-const API_BASE = "http://localhost:5000";
-
 const tanggalInput = document.getElementById("tanggal");
 const filterStatus = document.getElementById("filterStatus");
 const tabel = document.getElementById("tabelDaftar");
@@ -27,16 +25,15 @@ async function loadDaftarKehadiran() {
   showAdminLoader();
 
   try {
-    const res = await fetch(`${API_BASE}/api/absensi?tanggal=${tanggal}`);
-    allData = await res.json();
+    allData = await apiRequest(`/absensi?tanggal=${tanggal}`);
 
     renderTable();
     renderRekap();
   } catch (err) {
     console.error(err);
-    alert("Gagal memuat daftar kehadiran");
+    alert(err.message || "Gagal memuat daftar kehadiran");
   } finally {
-    hideAdminLoader(); // 🔥 INI KUNCI
+    hideAdminLoader();
   }
 }
 
