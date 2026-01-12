@@ -25,13 +25,8 @@ async function loadRekap() {
       `/absensi/rekap-bulanan?bulan=${bulan.value}&tahun=${tahun.value}`
     );
 
+    // apiRequest mengembalikan array langsung
     dataRekap = Array.isArray(res) ? res : [];
-
-    dataRekap = Array.isArray(res.data)
-      ? res.data
-      : Array.isArray(res.data?.data)
-      ? res.data.data
-      : [];
 
     renderRekapTable();
   } catch (err) {
@@ -103,7 +98,7 @@ async function loadDetailAbsensi() {
     }
 
     tabelDetail = $("#tabelDetailAbsensi").DataTable({
-      data: res.data,
+      data: res,
       order: [[0, "asc"]],
       columns: [
         { data: "tanggal" },
@@ -114,7 +109,7 @@ async function loadDetailAbsensi() {
               hadir: "success",
               izin: "warning",
               sakit: "info",
-              tidakhadir: "danger",
+              tidak_hadir: "danger",
             };
             return `<span class="badge badge-${
               map[s]
@@ -159,7 +154,7 @@ btnPdfRekap.addEventListener("click", () => {
     p.hadir,
     p.izin,
     p.sakit,
-    p.tidakhadir,
+    p.tidak_hadir,
   ]);
 
   doc.autoTable({
@@ -198,7 +193,7 @@ async function exportPdfPeserta() {
       `/absensi/detail?peserta_id=${pesertaId}&bulan=${bulan.value}&tahun=${tahun.value}`
     );
 
-    if (!res.data.length) {
+    if (!res.length) {
       Swal.fire("Data kosong", "Tidak ada absensi bulan ini", "info");
       return;
     }
