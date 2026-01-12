@@ -22,6 +22,9 @@ async function loadDaftarKehadiran() {
   const tanggal = tanggalInput.value;
   if (!tanggal) return alert("Tanggal wajib dipilih");
 
+  // 🔥 TAMPILKAN LOADER
+  window.AdminLoader?.show();
+
   try {
     allData = await apiRequest(`/absensi?tanggal=${tanggal}`);
     renderTable();
@@ -29,6 +32,9 @@ async function loadDaftarKehadiran() {
   } catch (err) {
     console.error(err);
     alert(err.message || "Gagal memuat daftar kehadiran");
+  } finally {
+    // 🔥 PASTI DISEMBUNYIKAN
+    window.AdminLoader?.hide();
   }
 }
 
