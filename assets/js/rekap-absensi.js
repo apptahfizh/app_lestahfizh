@@ -323,8 +323,8 @@ async function exportPdfPeserta() {
       y += 6;
     }
 
-    drawLabelValue("Periode", periodeText);
     drawLabelValue("Nama Peserta", namaPeserta);
+    drawLabelValue("Periode", periodeText);
 
     // =======================
     // TABLE
