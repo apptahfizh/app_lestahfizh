@@ -229,8 +229,9 @@ btnPdfRekap.addEventListener("click", () => {
   doc.setFontSize(14);
   doc.text("REKAP ABSENSI BULANAN", 105, 15, { align: "center" });
 
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "normal");
   doc.text("LES DZAH FITRIANI", 105, 21, { align: "center" });
-  doc.setDrawColor(0);
   doc.line(14, 24, 196, 24);
 
   doc.setFontSize(10);
@@ -322,8 +323,9 @@ async function exportPdfPeserta() {
     doc.setFontSize(14);
     doc.text("REKAP ABSENSI", 105, 15, { align: "center" });
 
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
     doc.text("LES DZAH FITRIANI", 105, 21, { align: "center" });
-    doc.setDrawColor(0);
     doc.line(14, 24, 196, 24);
 
     doc.setFontSize(10);
