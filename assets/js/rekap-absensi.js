@@ -144,12 +144,27 @@ async function loadDetailAbsensi() {
 // ===============================
 // EXPORT PDF REKAP BULANAN
 // ===============================
+// ===============================
+// EXPORT PDF REKAP BULANAN
+// ===============================
 btnPdfRekap.addEventListener("click", () => {
-  if (!dataRekap.length) {
-    alert("Data kosong");
+  const periode = getBulanTahun();
+
+  // ⛔ GUARD: belum pilih bulan
+  if (!periode) {
+    Swal.fire("Pilih Bulan", "Silakan pilih bulan terlebih dahulu", "warning");
     return;
   }
 
+  // ⛔ GUARD: data kosong
+  if (!dataRekap.length) {
+    Swal.fire("Data Kosong", "Tidak ada data untuk diexport", "info");
+    return;
+  }
+
+  // ===============================
+  // LANJUT EXPORT
+  // ===============================
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF("p", "mm", "a4");
 
@@ -157,9 +172,11 @@ btnPdfRekap.addEventListener("click", () => {
   doc.text("Rekap Absensi Bulanan", 14, 15);
 
   doc.setFontSize(10);
-  const periode = getBulanTahun();
-
-  doc.text(`Periode: ${periode.bulan}-${periode.tahun}`, 14, 22);
+  doc.text(
+    `Periode: ${String(periode.bulan).padStart(2, "0")}-${periode.tahun}`,
+    14,
+    22
+  );
 
   const tableData = dataRekap.map((p) => [
     p.nama,
@@ -171,7 +188,7 @@ btnPdfRekap.addEventListener("click", () => {
 
   doc.autoTable({
     startY: 28,
-    head: [["Nama", "Hadir", "Izin", "Sakit", "tidak hadir"]],
+    head: [["Nama", "Hadir", "Izin", "Sakit", "Tidak Hadir"]],
     body: tableData,
     theme: "grid",
     styles: { fontSize: 9 },
