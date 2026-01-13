@@ -21,6 +21,8 @@ const tabelRekap = document.getElementById("tabelRekap");
 
 const btnLoad = document.getElementById("btnLoad");
 const btnPdfRekap = document.getElementById("btnPdfRekap");
+btnPdfRekap.disabled = true;
+
 const btnPdfPeserta = document.getElementById("btnPdfPeserta");
 
 const filterPeserta = document.getElementById("filterPeserta");
@@ -49,6 +51,12 @@ async function loadRekap() {
   } finally {
     window.AdminLoader?.hide();
   }
+}
+
+// fungsi kontrol tombol
+function updateExportButtonState() {
+  const periode = getBulanTahun();
+  btnPdfRekap.disabled = !periode;
 }
 
 // ===============================
@@ -291,6 +299,7 @@ async function exportPdfPeserta() {
 
 (async () => {
   await loadPeserta();
+  updateExportButtonState();
 })();
 
 const bulanInput = document.getElementById("rekapAbsensiBulanan");
@@ -300,5 +309,6 @@ bulanInput.value = "";
 
 // auto reload saat bulan berubah
 bulanInput.addEventListener("change", () => {
+  updateExportButtonState();
   loadRekap();
 });
