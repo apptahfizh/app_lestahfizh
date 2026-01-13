@@ -278,19 +278,20 @@ async function exportPdfPeserta() {
     const doc = new jsPDF("p", "mm", "a4");
 
     // HEADER
-    doc.setFontSize(14);
-    doc.text("REKAP ABSENSI PESERTA", 105, 15, { align: "center" });
-
     doc.setFontSize(10);
-    doc.text(`Nama Peserta : ${namaPeserta}`, 14, 25);
-    doc.text(
-      `Periode: ${new Date(periode.tahun, periode.bulan - 1).toLocaleDateString(
-        "id-ID",
-        { month: "long", year: "numeric" }
-      )}`,
-      14,
-      22
-    );
+
+    const startX = 14;
+    let y = 25;
+
+    // fungsi helper agar titik dua sejajar
+    function drawLabelValue(label, value) {
+      const paddedLabel = label.padEnd(14, " "); // KUNCI SEJAJAR
+      doc.text(`${paddedLabel}: ${value}`, startX, y);
+      y += 6;
+    }
+
+    drawLabelValue("Periode", periodeText);
+    drawLabelValue("Nama Peserta", namaPeserta);
 
     // TABLE
     const tableData = res.map((r) => [
