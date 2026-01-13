@@ -1,5 +1,28 @@
+function getPeriodeText() {
+  const el = document.getElementById("rekapAbsensiBulanan");
+  if (!el || !el.value) return "";
+
+  const [tahun, bulan] = el.value.split("-");
+  const namaBulan = [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
+  ];
+
+  return `${namaBulan[Number(bulan) - 1]} ${tahun}`;
+}
+
 // ===============================
-// ELEMENT
+//
 // ===============================
 function getBulanTahun() {
   const el = document.getElementById("rekapAbsensiBulanan");
