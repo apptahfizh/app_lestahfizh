@@ -200,44 +200,41 @@ async function loadDetailAbsensi() {
 // ===============================
 btnPdfRekap.addEventListener("click", () => {
   const periode = getBulanTahun();
-
-  // ⛔ GUARD: belum pilih bulan
   if (!periode) {
     Swal.fire("Pilih Bulan", "Silakan pilih bulan terlebih dahulu", "warning");
     return;
   }
 
-  // ⛔ GUARD: data kosong
   if (!dataRekap.length) {
     Swal.fire("Data Kosong", "Tidak ada data untuk diexport", "info");
     return;
   }
 
-  // ===============================
-  // LANJUT EXPORT
-  // ===============================
+  const periodeText = getPeriodeText();
+
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF("p", "mm", "a4");
 
   doc.setFontSize(14);
-  doc.text("Rekap Absensi Bulanan", 14, 15);
+  doc.text("REKAP ABSENSI BULANAN", 105, 15, { align: "center" });
 
-  // HEADER
   doc.setFontSize(10);
 
-  const startX = 14;
   let y = 25;
+  const labelX = 14;
+  const colonX = 45;
+  const valueX = 48;
 
-  // fungsi helper agar titik dua sejajar
   function drawLabelValue(label, value) {
-    const paddedLabel = label.padEnd(14, " "); // KUNCI SEJAJAR
-    doc.text(`${paddedLabel}: ${value}`, startX, y);
+    doc.text(label, labelX, y);
+    doc.text(":", colonX, y);
+    doc.text(value, valueX, y);
     y += 6;
   }
 
-  drawLabelValue("Nama Peserta", namaPeserta);
+  // ✅ HANYA PERIODE
+  drawLabelValue("Periode", periodeText);
 
-  // TABLE
   const tableData = dataRekap.map((p) => [
     p.nama,
     p.hadir,
@@ -247,7 +244,7 @@ btnPdfRekap.addEventListener("click", () => {
   ]);
 
   doc.autoTable({
-    startY: 28,
+    startY: y + 4,
     head: [["Nama", "Hadir", "Izin", "Sakit", "Tidak Hadir"]],
     body: tableData,
     theme: "grid",
@@ -323,8 +320,8 @@ async function exportPdfPeserta() {
       y += 6;
     }
 
-    drawLabelValue("Nama Peserta", namaPeserta);
-    drawLabelValue("Periode", periodeText);
+    drawLabelValue("Nama", namaPeserta);
+    drawLabelValue("Bulan", periodeText);
 
     // =======================
     // TABLE
