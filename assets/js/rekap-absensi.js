@@ -229,13 +229,13 @@ btnPdfRekap.addEventListener("click", () => {
   doc.setFontSize(14);
   doc.text("REKAP ABSENSI BULANAN", 105, 15, { align: "center" });
 
-  doc.setFontSize(11);
-  doc.setFont("helvetica", "normal");
   doc.text("LES DZAH FITRIANI", 105, 21, { align: "center" });
+  doc.setDrawColor(0);
+  doc.line(14, 24, 196, 24);
 
   doc.setFontSize(10);
 
-  let y = 25;
+  let y = 32;
   const labelX = 14;
   const colonX = 45;
   const valueX = 48;
@@ -259,7 +259,7 @@ btnPdfRekap.addEventListener("click", () => {
   ]);
 
   doc.autoTable({
-    startY: y + 4,
+    startY: y + 8,
     head: [["Nama", "Hadir", "Izin", "Sakit", "Tidak Hadir"]],
     body: tableData,
     theme: "grid",
@@ -322,13 +322,13 @@ async function exportPdfPeserta() {
     doc.setFontSize(14);
     doc.text("REKAP ABSENSI", 105, 15, { align: "center" });
 
-    doc.setFontSize(11);
-    doc.setFont("helvetica", "normal");
     doc.text("LES DZAH FITRIANI", 105, 21, { align: "center" });
+    doc.setDrawColor(0);
+    doc.line(14, 24, 196, 24);
 
     doc.setFontSize(10);
 
-    let y = 25;
+    let y = 32;
     const labelX = 14;
     const colonX = 45;
     const valueX = 48;
@@ -353,7 +353,7 @@ async function exportPdfPeserta() {
     ]);
 
     doc.autoTable({
-      startY: y + 4,
+      startY: y + 8,
       head: [["Tanggal", "Status", "Keterangan"]],
       body: tableData,
       theme: "grid",
