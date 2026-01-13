@@ -154,15 +154,18 @@ async function loadDetailAbsensi() {
 
   if (!periode || !pesertaId) return;
 
+  window.AdminLoader?.show(); // ✅ pakai loader global
+
   try {
     const res = await apiRequest(
       `/absensi/detail?peserta_id=${pesertaId}&bulan=${periode.bulan}&tahun=${periode.tahun}`
     );
 
+    // === DESKTOP ===
     if (tabelDetail) {
       tabelDetail.clear().destroy();
     }
-    // render DataTable (desktop)
+
     tabelDetail = $("#tabelDetailAbsensi").DataTable({
       data: res,
       order: [[0, "asc"]],
@@ -171,7 +174,6 @@ async function loadDetailAbsensi() {
           data: "tanggal",
           render: (d) => formatTanggalDMY(d),
         },
-
         {
           data: "status",
           render: (s) => {
@@ -181,9 +183,9 @@ async function loadDetailAbsensi() {
               sakit: "info",
               tidak_hadir: "danger",
             };
-            return `<span class="badge badge-${
-              map[s]
-            }">${s.toUpperCase()}</span>`;
+            return `<span class="badge badge-${map[s]}">
+              ${s.toUpperCase()}
+            </span>`;
           },
         },
         {
@@ -192,10 +194,14 @@ async function loadDetailAbsensi() {
         },
       ],
     });
-    // render Card-list (mobile)
+
+    // === MOBILE ===
     renderDetailAbsensiMobile(res);
   } catch (err) {
     console.error("Gagal load detail absensi:", err);
+    Swal.fire("Error", "Gagal memuat detail absensi", "error");
+  } finally {
+    window.AdminLoader?.hide(); // ✅ WAJIB di finally
   }
 }
 
@@ -452,7 +458,7 @@ function renderRekapBulananMobile(data) {
     card.className = "rekap-card";
 
     card.innerHTML = `
-      <h6>${p.nama}</h6>
+      <h6>👤 ${p.nama}</h6>
 
       <div class="rekap-row">
         <span>Hadir</span>
