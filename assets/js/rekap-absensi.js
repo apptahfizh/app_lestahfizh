@@ -261,8 +261,11 @@ async function exportPdfPeserta() {
     return;
   }
 
-  const periodeText =
-    bulan.options[bulan.selectedIndex].text + " " + periode.tahun;
+  const periodeText = getPeriodeText();
+  const namaPeserta = filterPeserta.options[filterPeserta.selectedIndex].text;
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
 
   try {
     const res = await apiRequest(
@@ -277,9 +280,6 @@ async function exportPdfPeserta() {
     const namaPeserta = filterPeserta.options[filterPeserta.selectedIndex].text;
 
     const periode = getBulanTahun();
-
-    const periodeText =
-      bulan.options[bulan.selectedIndex].text + " " + periode.tahun;
 
     // =======================
     // HEADER PDF
@@ -298,7 +298,6 @@ async function exportPdfPeserta() {
     }
 
     drawLabelValue("Periode", periodeText);
-    drawLabelValue("Nama Peserta", namaPeserta);
 
     // TABLE
     const tableData = res.map((r) => [
