@@ -1,3 +1,6 @@
+// ===============================
+// untuk UI & PDF
+// ===============================
 function getPeriodeText() {
   const el = document.getElementById("rekapAbsensiBulanan");
   if (!el || !el.value) return "";
@@ -22,7 +25,7 @@ function getPeriodeText() {
 }
 
 // ===============================
-//
+// untuk API & logic
 // ===============================
 function getBulanTahun() {
   const el = document.getElementById("rekapAbsensiBulanan");
@@ -300,15 +303,15 @@ async function exportPdfPeserta() {
       return;
     }
 
-    const namaPeserta = filterPeserta.options[filterPeserta.selectedIndex].text;
-
-    const periode = getBulanTahun();
-
     // =======================
     // HEADER PDF
     // =======================
-    let y = 25;
+    doc.setFontSize(14);
+    doc.text("REKAP ABSENSI PESERTA", 105, 15, { align: "center" });
 
+    doc.setFontSize(10);
+
+    let y = 25;
     const labelX = 14;
     const colonX = 45;
     const valueX = 48;
@@ -321,8 +324,11 @@ async function exportPdfPeserta() {
     }
 
     drawLabelValue("Periode", periodeText);
+    drawLabelValue("Nama Peserta", namaPeserta);
 
+    // =======================
     // TABLE
+    // =======================
     const tableData = res.map((r) => [
       formatTanggalDMY(r.tanggal),
       r.status.toUpperCase(),
@@ -330,23 +336,25 @@ async function exportPdfPeserta() {
     ]);
 
     doc.autoTable({
-      startY: 38,
+      startY: y + 4,
       head: [["Tanggal", "Status", "Keterangan"]],
       body: tableData,
       theme: "grid",
       styles: { fontSize: 9, halign: "left" },
       columnStyles: {
-        0: { halign: "left" }, // Tanggal
-        1: { halign: "left" }, // Status
-        2: { halign: "left" }, // Keterangan
+        0: { halign: "left" },
+        1: { halign: "left" },
+        2: { halign: "left" },
       },
       headStyles: { fillColor: [41, 128, 185] },
     });
 
+    // =======================
     // FOOTER
-    y = doc.lastAutoTable.finalY + 20;
-    doc.text("Ustadzah,", 140, y);
-    doc.text("FITRIANI, S.PdI.Gr", 140, y + 20);
+    // =======================
+    const footerY = doc.lastAutoTable.finalY + 20;
+    doc.text("Ustadzah,", 140, footerY);
+    doc.text("FITRIANI, S.PdI.Gr", 140, footerY + 20);
 
     const fileName = `absensi-${namaPeserta
       .replace(/\s+/g, "-")
