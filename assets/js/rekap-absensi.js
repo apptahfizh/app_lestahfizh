@@ -31,10 +31,13 @@ let tabelDetail = null;
 // ===============================
 // LOAD REKAP BULANAN
 // ===============================
-async function loadRekap() {
+async function loadRekap({ silent = false } = {}) {
   const periode = getBulanTahun();
+
   if (!periode) {
-    alert("Silakan pilih bulan");
+    if (!silent) {
+      alert("Silakan pilih bulan");
+    }
     return;
   }
 
@@ -271,10 +274,13 @@ async function exportPdfPeserta() {
 // ===============================
 // INIT
 // ===============================
-btnLoad.addEventListener("click", loadRekap);
+btnLoad.addEventListener("click", () => {
+  loadRekap(); 
+});
+
 
 (async () => {
-  await loadRekap();
+  await loadRekap({ silent: true });
   await loadPeserta();
 })();
 
