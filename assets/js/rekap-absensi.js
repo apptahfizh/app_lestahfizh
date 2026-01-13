@@ -226,6 +226,13 @@ btnPdfPeserta.addEventListener("click", exportPdfPeserta);
 
 async function exportPdfPeserta() {
   const pesertaId = filterPeserta.value;
+  const periode = getBulanTahun();
+
+  if (!periode) {
+    Swal.fire("Pilih Bulan", "Silakan pilih bulan terlebih dahulu", "warning");
+    return;
+  }
+
   if (!pesertaId) {
     Swal.fire("Pilih Peserta", "Silakan pilih peserta dulu", "warning");
     return;
@@ -233,7 +240,7 @@ async function exportPdfPeserta() {
 
   try {
     const res = await apiRequest(
-      `/absensi/detail?peserta_id=${pesertaId}&bulan=${bulan.value}&tahun=${tahun.value}`
+      `/absensi/detail?peserta_id=${pesertaId}&bulan=${periode.bulan}&tahun=${periode.tahun}`
     );
 
     if (!res.length) {
@@ -252,13 +259,7 @@ async function exportPdfPeserta() {
 
     doc.setFontSize(10);
     doc.text(`Nama Peserta : ${namaPeserta}`, 14, 25);
-    doc.text(
-      `Periode      : ${bulan.options[bulan.selectedIndex].text} ${
-        tahun.value
-      }`,
-      14,
-      31
-    );
+    doc.text(`Periode      : ${periode.bulan}-${periode.tahun}`, 14, 31);
 
     // TABLE
     const tableData = res.map((r) => [
