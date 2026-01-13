@@ -30,6 +30,20 @@ filterPeserta.disabled = true;
 let dataRekap = [];
 let tabelDetail = null;
 
+// Helper Format Tanggal ID
+function formatTanggalID(dateStr) {
+  if (!dateStr) return "-";
+
+  const d = new Date(dateStr);
+  if (isNaN(d)) return "-";
+
+  return d.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 // ===============================
 // LOAD REKAP BULANAN
 // ===============================
@@ -125,7 +139,11 @@ async function loadDetailAbsensi() {
       data: res,
       order: [[0, "asc"]],
       columns: [
-        { data: "tanggal" },
+        {
+          data: "tanggal",
+          render: (d) => formatTanggalID(d),
+        },
+
         {
           data: "status",
           render: (s) => {
@@ -151,9 +169,6 @@ async function loadDetailAbsensi() {
   }
 }
 
-// ===============================
-// EXPORT PDF REKAP BULANAN
-// ===============================
 // ===============================
 // EXPORT PDF REKAP BULANAN
 // ===============================
@@ -259,11 +274,18 @@ async function exportPdfPeserta() {
 
     doc.setFontSize(10);
     doc.text(`Nama Peserta : ${namaPeserta}`, 14, 25);
-    doc.text(`Periode      : ${periode.bulan}-${periode.tahun}`, 14, 31);
+    doc.text(
+      `Periode: ${new Date(periode.tahun, periode.bulan - 1).toLocaleDateString(
+        "id-ID",
+        { month: "long", year: "numeric" }
+      )}`,
+      14,
+      22
+    );
 
     // TABLE
     const tableData = res.map((r) => [
-      r.tanggal,
+      formatTanggalID(r.tanggal),
       r.status.toUpperCase(),
       r.keterangan || "-",
     ]);
