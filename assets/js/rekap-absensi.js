@@ -273,13 +273,11 @@ async function exportPdfPeserta() {
 })();
 
 const bulanInput = document.getElementById("rekapAbsensiBulanan");
-bulanInput.value = ""; // 🔥 paksa kosong, lawan browser restore
 
-// ===============================
-// AUTO LOAD SAAT BULAN BERUBAH
-// ===============================
-const bulanInput = document.getElementById("rekapAbsensiBulanan");
+// paksa kosong agar tidak auto pilih bulan
+bulanInput.value = "";
 
+// auto reload saat bulan berubah
 bulanInput.addEventListener("change", () => {
   loadRekap();
 });
