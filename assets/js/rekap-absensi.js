@@ -212,6 +212,7 @@ btnPdfRekap.addEventListener("click", () => {
   drawLabelValue("Periode", periodeText);
   drawLabelValue("Nama Peserta", namaPeserta);
 
+  // TABLE
   const tableData = dataRekap.map((p) => [
     p.nama,
     p.hadir,
