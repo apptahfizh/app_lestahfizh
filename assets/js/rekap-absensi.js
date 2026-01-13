@@ -85,7 +85,9 @@ async function loadRekap() {
     );
 
     dataRekap = Array.isArray(res) ? res : [];
-    renderRekapTable();
+
+    renderRekapTable(); // DESKTOP (TABEL)
+    renderRekapBulananMobile(dataRekap); // MOBILE (CARD)
   } catch (err) {
     console.error("Gagal load rekap:", err);
   } finally {
@@ -233,7 +235,7 @@ btnPdfRekap.addEventListener("click", () => {
   }
 
   // ✅ HANYA PERIODE
-  drawLabelValue("Periode", periodeText);
+  drawLabelValue("Bulan", periodeText);
 
   const tableData = dataRekap.map((p) => [
     p.nama,
@@ -423,3 +425,53 @@ bulanInput.addEventListener("change", () => {
   // load rekap bulanan
   loadRekap();
 });
+
+// ===============================
+// RENDER CARD LIST MOBILE
+// ===============================
+function renderRekapBulananMobile(data) {
+  const container = document.getElementById("rekapBulananMobile");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (!data.length) {
+    container.innerHTML = `
+      <div class="text-center text-muted mt-4">
+        Tidak ada data
+      </div>
+    `;
+    return;
+  }
+
+  data.forEach((p) => {
+    const card = document.createElement("div");
+    card.className = "rekap-card";
+
+    card.innerHTML = `
+      <h6>${p.nama}</h6>
+
+      <div class="rekap-row">
+        <span>Hadir</span>
+        <span>${p.hadir}</span>
+      </div>
+
+      <div class="rekap-row">
+        <span>Izin</span>
+        <span>${p.izin}</span>
+      </div>
+
+      <div class="rekap-row">
+        <span>Sakit</span>
+        <span>${p.sakit}</span>
+      </div>
+
+      <div class="rekap-row">
+        <span>Tidak Hadir</span>
+        <span>${p.tidak_hadir}</span>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
