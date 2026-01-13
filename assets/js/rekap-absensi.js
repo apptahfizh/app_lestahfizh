@@ -227,7 +227,7 @@ btnPdfRekap.addEventListener("click", () => {
 
   doc.setFontSize(14);
   doc.text("REKAP ABSENSI BULANAN", 105, 15, { align: "center" });
-  doc.text("LES DAZAH FITRIANI", 105, 15, { align: "center" });
+  doc.text("LES DZAH FITRIANI", 105, 15, { align: "center" });
 
   doc.setFontSize(10);
 
