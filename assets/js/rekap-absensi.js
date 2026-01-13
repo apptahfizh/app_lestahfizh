@@ -197,11 +197,21 @@ btnPdfRekap.addEventListener("click", () => {
   doc.text("Rekap Absensi Bulanan", 14, 15);
 
   doc.setFontSize(10);
-  doc.text(
-    `Periode: ${String(periode.bulan).padStart(2, "0")}-${periode.tahun}`,
-    14,
-    22
-  );
+
+  const labelX = 14; // posisi label
+  const colonX = 45; // posisi ":" (DIKUNCI)
+  const valueX = 48; // posisi nilai
+  let y = 25;
+
+  doc.text("Periode", labelX, y);
+  doc.text(":", colonX, y);
+  doc.text(`${periodeText}`, valueX, y);
+
+  y += 6;
+
+  doc.text("Nama Peserta", labelX, y);
+  doc.text(":", colonX, y);
+  doc.text(namaPeserta, valueX, y);
 
   const tableData = dataRekap.map((p) => [
     p.nama,
