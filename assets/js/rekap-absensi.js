@@ -426,9 +426,9 @@ bulanInput.addEventListener("change", () => {
   loadRekap();
 });
 
-// ===============================
-// RENDER CARD LIST MOBILE
-// ===============================
+// ======================================
+// RENDER CARD LIST MOBILE rekap bulanan
+// ======================================
 function renderRekapBulananMobile(data) {
   const container = document.getElementById("rekapBulananMobile");
   if (!container) return;
@@ -473,5 +473,45 @@ function renderRekapBulananMobile(data) {
     `;
 
     container.appendChild(card);
+  });
+}
+
+// ================================================
+// RENDER CARD LIST MOBILE rekap detail per peserta
+// ================================================
+function renderDetailAbsensiMobile(data) {
+  const container = document.getElementById("detailAbsensiMobile");
+  container.innerHTML = "";
+
+  if (!data || !data.length) {
+    container.innerHTML = `
+      <div class="text-muted text-center small">
+        Tidak ada data absensi
+      </div>`;
+    return;
+  }
+
+  data.forEach((r) => {
+    const badgeMap = {
+      hadir: "success",
+      izin: "warning",
+      sakit: "info",
+      tidak_hadir: "danger",
+    };
+
+    container.innerHTML += `
+      <div class="card shadow-sm mb-2">
+        <div class="card-body p-2">
+          <div class="d-flex justify-content-between">
+            <strong>${formatTanggalDMY(r.tanggal)}</strong>
+            <span class="badge badge-${badgeMap[r.status]}">
+              ${r.status.toUpperCase()}
+            </span>
+          </div>
+          <div class="text-muted small mt-1">
+            ${r.keterangan || "-"}
+          </div>
+        </div>
+      </div>`;
   });
 }

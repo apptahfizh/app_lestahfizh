@@ -177,13 +177,23 @@ footer.sticky-footer {
   display: none;
 }
 
-/* Mobile */
+/* REKAP BULANAN - MOBILE */
 @media (max-width: 768px) {
   .card .table-responsive {
     display: none !important;
   }
 
   #rekapBulananMobile {
+    display: block;
+  }
+}
+/* DETAIL ABSENSI PESERTA - MOBILE */
+@media (max-width: 768px) {
+  #tabelDetailAbsensi_wrapper {
+    display: none !important;
+  }
+
+  #detailAbsensiMobile {
     display: block;
   }
 }
