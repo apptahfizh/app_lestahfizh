@@ -1,6 +1,20 @@
 // ===============================
 // ELEMENT
 // ===============================
+function getBulanTahun() {
+  const val = document.getElementById("pdfBulan")?.value;
+  if (!val) return null;
+
+  const [tahun, bulan] = val.split("-");
+  return {
+    bulan: Number(bulan),
+    tahun: Number(tahun),
+  };
+}
+
+// ===============================
+// ELEMENT
+// ===============================
 const bulan = document.getElementById("bulan");
 const tahun = document.getElementById("tahun");
 const tabelRekap = document.getElementById("tabelRekap");
@@ -22,12 +36,10 @@ async function loadRekap() {
 
   try {
     const res = await apiRequest(
-      `/absensi/rekap-bulanan?bulan=${bulan.value}&tahun=${tahun.value}`
+      `/absensi/rekap-bulanan?bulan=${periode.bulan}&tahun=${periode.tahun}`
     );
 
-    // apiRequest mengembalikan array langsung
     dataRekap = Array.isArray(res) ? res : [];
-
     renderRekapTable();
   } catch (err) {
     console.error("Gagal load rekap:", err);
@@ -85,12 +97,12 @@ async function loadPeserta() {
 // LOAD DETAIL ABSENSI PER PESERTA
 // ===============================
 async function loadDetailAbsensi() {
-  const pesertaId = filterPeserta.value;
-  if (!pesertaId) return;
+  const periode = getBulanTahun();
+  if (!periode) return;
 
   try {
     const res = await apiRequest(
-      `/absensi/detail?peserta_id=${pesertaId}&bulan=${bulan.value}&tahun=${tahun.value}`
+      `/absensi/detail?peserta_id=${pesertaId}&bulan=${periode.bulan}&tahun=${periode.tahun}`
     );
 
     if (tabelDetail) {
@@ -143,11 +155,9 @@ btnPdfRekap.addEventListener("click", () => {
   doc.text("Rekap Absensi Bulanan", 14, 15);
 
   doc.setFontSize(10);
-  doc.text(
-    `Bulan: ${bulan.options[bulan.selectedIndex].text} ${tahun.value}`,
-    14,
-    22
-  );
+  const periode = getBulanTahun();
+
+  doc.text(`Periode: ${periode.bulan}-${periode.tahun}`, 14, 22);
 
   const tableData = dataRekap.map((p) => [
     p.nama,
@@ -261,3 +271,7 @@ btnLoad.addEventListener("click", loadRekap);
   await loadRekap();
   await loadPeserta();
 })();
+
+document.getElementById("pdfBulan").value = new Date()
+  .toISOString()
+  .slice(0, 7);
