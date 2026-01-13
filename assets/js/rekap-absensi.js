@@ -320,7 +320,7 @@ async function exportPdfPeserta() {
     // =======================
     doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
-    doc.text("REKAP ABSENSI LES DZAH FITIRANI", 105, 15, { align: "center" });
+    doc.text("REKAP ABSENSI", 105, 15, { align: "center" });
 
     doc.setFontSize(11);
     doc.setFont("helvetica", "normal");
