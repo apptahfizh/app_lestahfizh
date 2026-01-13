@@ -2,10 +2,10 @@
 // ELEMENT
 // ===============================
 function getBulanTahun() {
-  const val = document.getElementById("rekapAbsensiBulanan")?.value;
-  if (!val) return null;
+  const el = document.getElementById("rekapAbsensiBulanan");
+  if (!el || !el.value) return null;
 
-  const [tahun, bulan] = val.split("-");
+  const [tahun, bulan] = el.value.split("-");
   return {
     bulan: Number(bulan),
     tahun: Number(tahun),
@@ -275,15 +275,22 @@ async function exportPdfPeserta() {
 // INIT
 // ===============================
 btnLoad.addEventListener("click", () => {
-  loadRekap(); 
+  loadRekap();
 });
 
-
 (async () => {
-  await loadRekap({ silent: true });
   await loadPeserta();
 })();
 
 document.getElementById("rekapAbsensiBulanan").value = new Date()
   .toISOString()
   .slice(0, 7);
+
+// ===============================
+// AUTO LOAD SAAT BULAN BERUBAH
+// ===============================
+const bulanInput = document.getElementById("pdfBulan");
+
+bulanInput.addEventListener("change", () => {
+  loadRekap();
+});
