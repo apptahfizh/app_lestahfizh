@@ -225,9 +225,13 @@ btnPdfRekap.addEventListener("click", () => {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF("p", "mm", "a4");
 
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.text("REKAP ABSENSI BULANAN", 105, 15, { align: "center" });
-  doc.text("LES DZAH FITRIANI", 105, 15, { align: "center" });
+
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "normal");
+  doc.text("LES DZAH FITRIANI", 105, 21, { align: "center" });
 
   doc.setFontSize(10);
 
