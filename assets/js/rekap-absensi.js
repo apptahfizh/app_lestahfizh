@@ -250,17 +250,19 @@ btnPdfPeserta.addEventListener("click", exportPdfPeserta);
 
 async function exportPdfPeserta() {
   const pesertaId = filterPeserta.value;
-  const periode = getBulanTahun();
+  if (!pesertaId) {
+    Swal.fire("Pilih Peserta", "Silakan pilih peserta dulu", "warning");
+    return;
+  }
 
+  const periode = getBulanTahun();
   if (!periode) {
     Swal.fire("Pilih Bulan", "Silakan pilih bulan terlebih dahulu", "warning");
     return;
   }
 
-  if (!pesertaId) {
-    Swal.fire("Pilih Peserta", "Silakan pilih peserta dulu", "warning");
-    return;
-  }
+  const periodeText =
+    bulan.options[bulan.selectedIndex].text + " " + periode.tahun;
 
   try {
     const res = await apiRequest(
