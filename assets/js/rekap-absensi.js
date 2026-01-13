@@ -196,22 +196,21 @@ btnPdfRekap.addEventListener("click", () => {
   doc.setFontSize(14);
   doc.text("Rekap Absensi Bulanan", 14, 15);
 
+  // HEADER
   doc.setFontSize(10);
 
-  const labelX = 14; // posisi label
-  const colonX = 45; // posisi ":" (DIKUNCI)
-  const valueX = 48; // posisi nilai
+  const startX = 14;
   let y = 25;
 
-  doc.text("Periode", labelX, y);
-  doc.text(":", colonX, y);
-  doc.text(`${periodeText}`, valueX, y);
+  // fungsi helper agar titik dua sejajar
+  function drawLabelValue(label, value) {
+    const paddedLabel = label.padEnd(14, " "); // KUNCI SEJAJAR
+    doc.text(`${paddedLabel}: ${value}`, startX, y);
+    y += 6;
+  }
 
-  y += 6;
-
-  doc.text("Nama Peserta", labelX, y);
-  doc.text(":", colonX, y);
-  doc.text(namaPeserta, valueX, y);
+  drawLabelValue("Periode", periodeText);
+  drawLabelValue("Nama Peserta", namaPeserta);
 
   const tableData = dataRekap.map((p) => [
     p.nama,
