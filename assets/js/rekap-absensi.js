@@ -178,7 +178,11 @@ btnPdfRekap.addEventListener("click", () => {
     headStyles: { fillColor: [52, 58, 64] },
   });
 
-  doc.save(`rekap-absensi-${bulan.value}-${tahun.value}.pdf`);
+  doc.save(
+    `rekap-absensi-${String(periode.bulan).padStart(2, "0")}-${
+      periode.tahun
+    }.pdf`
+  );
 });
 
 // ===============================
