@@ -296,6 +296,24 @@ async function exportPdfPeserta() {
 }
 
 // ===============================
+// FUNGSI RESET Rekap Detail Per Peserta
+// ===============================
+function resetDetailAbsensi() {
+  // reset dropdown peserta
+  filterPeserta.value = "";
+  filterPeserta.disabled = true;
+
+  // disable tombol export detail
+  btnPdfPeserta.disabled = true;
+
+  // hapus DataTable jika ada
+  if (tabelDetail) {
+    tabelDetail.clear().destroy();
+    tabelDetail = null;
+  }
+}
+
+// ===============================
 // INIT
 // ===============================
 
@@ -317,6 +335,8 @@ bulanInput.addEventListener("change", () => {
 bulanInput.addEventListener("change", () => {
   const periode = getBulanTahun();
 
+  resetDetailAbsensi();
+
   if (!periode) {
     filterPeserta.disabled = true;
     filterPeserta.value = "";
@@ -329,6 +349,6 @@ bulanInput.addEventListener("change", () => {
   // reset pilihan peserta & detail
   filterPeserta.value = "";
   btnPdfPeserta.disabled = true;
-
+  // load rekap bulanan
   loadRekap();
 });
