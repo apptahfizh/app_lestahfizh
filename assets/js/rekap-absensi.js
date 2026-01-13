@@ -272,9 +272,8 @@ async function exportPdfPeserta() {
   await loadPeserta();
 })();
 
-document.getElementById("rekapAbsensiBulanan").value = new Date()
-  .toISOString()
-  .slice(0, 7);
+const bulanInput = document.getElementById("rekapAbsensiBulanan");
+bulanInput.value = ""; // 🔥 paksa kosong, lawan browser restore
 
 // ===============================
 // AUTO LOAD SAAT BULAN BERUBAH
