@@ -209,7 +209,6 @@ btnPdfRekap.addEventListener("click", () => {
     y += 6;
   }
 
-  drawLabelValue("Periode", periodeText);
   drawLabelValue("Nama Peserta", namaPeserta);
 
   // TABLE
