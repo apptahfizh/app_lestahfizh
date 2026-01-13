@@ -285,8 +285,8 @@ async function exportPdfPeserta() {
 
     const fileName = `absensi-${namaPeserta
       .replace(/\s+/g, "-")
-      .toLowerCase()}-${String(bulan.value).padStart(2, "0")}-${
-      tahun.value
+      .toLowerCase()}-${String(periode.bulan).padStart(2, "0")}-${
+      periode.tahun
     }.pdf`;
 
     doc.save(fileName);
