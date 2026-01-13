@@ -24,8 +24,8 @@ const btnPdfRekap = document.getElementById("btnPdfRekap");
 btnPdfRekap.disabled = true;
 
 const btnPdfPeserta = document.getElementById("btnPdfPeserta");
-
 const filterPeserta = document.getElementById("filterPeserta");
+filterPeserta.disabled = true;
 
 let dataRekap = [];
 let tabelDetail = null;
@@ -310,9 +310,27 @@ const bulanInput = document.getElementById("rekapAbsensiBulanan");
 
 // paksa kosong agar tidak auto pilih bulan
 bulanInput.value = "";
-
 // auto reload saat bulan berubah
 bulanInput.addEventListener("change", () => {
   updateExportButtonState();
+  loadRekap();
+});
+
+bulanInput.addEventListener("change", () => {
+  const periode = getBulanTahun();
+
+  if (!periode) {
+    filterPeserta.disabled = true;
+    filterPeserta.value = "";
+    btnPdfPeserta.disabled = true;
+    return;
+  }
+
+  // ✅ aktifkan peserta
+  filterPeserta.disabled = false;
+  // reset pilihan peserta & detail
+  filterPeserta.value = "";
+  btnPdfPeserta.disabled = true;
+
   loadRekap();
 });
