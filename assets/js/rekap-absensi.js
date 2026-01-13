@@ -289,7 +289,7 @@ document.getElementById("rekapAbsensiBulanan").value = new Date()
 // ===============================
 // AUTO LOAD SAAT BULAN BERUBAH
 // ===============================
-const bulanInput = document.getElementById("pdfBulan");
+const bulanInput = document.getElementById("rekapAbsensiBulanan");
 
 bulanInput.addEventListener("change", () => {
   loadRekap();
