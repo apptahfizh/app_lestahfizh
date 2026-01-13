@@ -31,17 +31,17 @@ let dataRekap = [];
 let tabelDetail = null;
 
 // Helper Format Tanggal ID
-function formatTanggalID(dateStr) {
+function formatTanggalDMY(dateStr) {
   if (!dateStr) return "-";
 
   const d = new Date(dateStr);
   if (isNaN(d)) return "-";
 
-  return d.toLocaleDateString("id-ID", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+
+  return `${dd}/${mm}/${yyyy}`;
 }
 
 // ===============================
@@ -141,7 +141,7 @@ async function loadDetailAbsensi() {
       columns: [
         {
           data: "tanggal",
-          render: (d) => formatTanggalID(d),
+          render: (d) => formatTanggalDMY(d),
         },
 
         {
@@ -285,7 +285,7 @@ async function exportPdfPeserta() {
 
     // TABLE
     const tableData = res.map((r) => [
-      formatTanggalID(r.tanggal),
+      formatTanggalDMY(r.tanggal),
       r.status.toUpperCase(),
       r.keterangan || "-",
     ]);
@@ -295,8 +295,12 @@ async function exportPdfPeserta() {
       head: [["Tanggal", "Status", "Keterangan"]],
       body: tableData,
       theme: "grid",
-      styles: { fontSize: 9, halign: "center" },
-      columnStyles: { 2: { halign: "left" } },
+      styles: { fontSize: 9, halign: "left" },
+      columnStyles: {
+        0: { halign: "left" }, // Tanggal
+        1: { halign: "left" }, // Status
+        2: { halign: "left" }, // Keterangan
+      },
       headStyles: { fillColor: [41, 128, 185] },
     });
 
