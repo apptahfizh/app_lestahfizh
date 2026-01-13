@@ -31,15 +31,9 @@ let tabelDetail = null;
 // ===============================
 // LOAD REKAP BULANAN
 // ===============================
-async function loadRekap({ silent = false } = {}) {
+async function loadRekap() {
   const periode = getBulanTahun();
-
-  if (!periode) {
-    if (!silent) {
-      alert("Silakan pilih bulan");
-    }
-    return;
-  }
+  if (!periode) return; // ⛔ silent stop
 
   window.AdminLoader?.show();
 
@@ -52,7 +46,6 @@ async function loadRekap({ silent = false } = {}) {
     renderRekapTable();
   } catch (err) {
     console.error("Gagal load rekap:", err);
-    alert("Gagal load rekap");
   } finally {
     window.AdminLoader?.hide();
   }
