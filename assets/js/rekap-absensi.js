@@ -227,6 +227,7 @@ btnPdfRekap.addEventListener("click", () => {
 
   doc.setFontSize(14);
   doc.text("REKAP ABSENSI BULANAN", 105, 15, { align: "center" });
+  doc.text("LES DAZAH FITRIANI", 105, 15, { align: "center" });
 
   doc.setFontSize(10);
 
@@ -314,7 +315,7 @@ async function exportPdfPeserta() {
     // HEADER PDF
     // =======================
     doc.setFontSize(14);
-    doc.text("REKAP ABSENSI PESERTA", 105, 15, { align: "center" });
+    doc.text("REKAP ABSENSI LES DZAH FITIRANI", 105, 15, { align: "center" });
 
     doc.setFontSize(10);
 
