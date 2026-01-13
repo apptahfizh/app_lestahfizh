@@ -316,7 +316,7 @@ async function exportPdfPeserta() {
     });
 
     // FOOTER
-    const y = doc.lastAutoTable.finalY + 20;
+    y = doc.lastAutoTable.finalY + 20;
     doc.text("Ustadzah,", 140, y);
     doc.text("FITRIANI, S.PdI.Gr", 140, y + 20);
 
