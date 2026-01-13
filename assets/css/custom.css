@@ -172,7 +172,21 @@ footer.sticky-footer {
 .rekap-row span:last-child {
   font-weight: 600;
 }
+/* Desktop default */
+#rekapBulananMobile {
+  display: none;
+}
 
+/* Mobile */
+@media (max-width: 768px) {
+  .card .table-responsive {
+    display: none !important;
+  }
+
+  #rekapBulananMobile {
+    display: block;
+  }
+}
 /* =====================================================
    MOBILE RULES
 ===================================================== */
