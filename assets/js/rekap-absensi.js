@@ -162,7 +162,7 @@ async function loadDetailAbsensi() {
     if (tabelDetail) {
       tabelDetail.clear().destroy();
     }
-
+    // render DataTable (desktop)
     tabelDetail = $("#tabelDetailAbsensi").DataTable({
       data: res,
       order: [[0, "asc"]],
@@ -192,6 +192,8 @@ async function loadDetailAbsensi() {
         },
       ],
     });
+    // render Card-list (mobile)
+    renderDetailAbsensiMobile(res);
   } catch (err) {
     console.error("Gagal load detail absensi:", err);
   }
@@ -372,6 +374,7 @@ async function exportPdfPeserta() {
 // FUNGSI RESET Rekap Detail Per Peserta
 // ===============================
 function resetDetailAbsensi() {
+  document.getElementById("detailAbsensiMobile").innerHTML = "";
   // reset dropdown peserta
   filterPeserta.value = "";
   filterPeserta.disabled = true;
