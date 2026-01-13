@@ -274,9 +274,6 @@ async function exportPdfPeserta() {
 // ===============================
 // INIT
 // ===============================
-btnLoad.addEventListener("click", () => {
-  loadRekap();
-});
 
 (async () => {
   await loadPeserta();
