@@ -110,6 +110,9 @@ async function loadDetailAbsensi() {
   const periode = getBulanTahun();
   if (!periode) return;
 
+  const pesertaId = filterPeserta.value;
+  if (!pesertaId) return; // ⛔ guard
+
   try {
     const res = await apiRequest(
       `/absensi/detail?peserta_id=${pesertaId}&bulan=${periode.bulan}&tahun=${periode.tahun}`
@@ -216,7 +219,8 @@ btnPdfRekap.addEventListener("click", () => {
 btnPdfPeserta.disabled = true;
 
 filterPeserta.addEventListener("change", () => {
-  btnPdfPeserta.disabled = !filterPeserta.value;
+  const periode = getBulanTahun();
+  btnPdfPeserta.disabled = !filterPeserta.value || !periode;
   loadDetailAbsensi();
 });
 
