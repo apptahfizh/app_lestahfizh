@@ -274,19 +274,24 @@ async function exportPdfPeserta() {
 
     const namaPeserta = filterPeserta.options[filterPeserta.selectedIndex].text;
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF("p", "mm", "a4");
+    const periode = getBulanTahun();
 
-    // HEADER
-    doc.setFontSize(10);
+    const periodeText =
+      bulan.options[bulan.selectedIndex].text + " " + periode.tahun;
 
-    const startX = 14;
+    // =======================
+    // HEADER PDF
+    // =======================
     let y = 25;
 
-    // fungsi helper agar titik dua sejajar
+    const labelX = 14;
+    const colonX = 45;
+    const valueX = 48;
+
     function drawLabelValue(label, value) {
-      const paddedLabel = label.padEnd(14, " "); // KUNCI SEJAJAR
-      doc.text(`${paddedLabel}: ${value}`, startX, y);
+      doc.text(label, labelX, y);
+      doc.text(":", colonX, y);
+      doc.text(value, valueX, y);
       y += 6;
     }
 
