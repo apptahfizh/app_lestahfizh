@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Riwayat Hafalan</title>
 
-    <!-- CSS -->
     <link
       href="assets/vendor/fontawesome-free/css/all.min.css"
       rel="stylesheet"
     />
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet" />
+
     <link href="assets/css/layout-ortu-riwayat.css" rel="stylesheet" />
     <link href="assets/css/theme-ortu.css" rel="stylesheet" />
     <link href="assets/css/loader-ortu.css" rel="stylesheet" />
@@ -113,20 +113,12 @@
                 <div class="card-body">
                   <div class="form-row">
                     <div class="col-md-3 mb-2">
-                      <label class="small text-muted">Tanggal Mulai</label>
+                      <label class="small text-muted">Pilih Bulan</label>
                       <input
-                        type="date"
-                        id="filterTanggalMulai"
+                        type="month"
+                        id="filterBulan"
                         class="form-control"
-                      />
-                    </div>
-
-                    <div class="col-md-3 mb-2">
-                      <label class="small text-muted">Tanggal Selesai</label>
-                      <input
-                        type="date"
-                        id="filterTanggalSelesai"
-                        class="form-control"
+                        autocomplete="off"
                       />
                     </div>
 
@@ -213,7 +205,7 @@
               </div>
             </div>
           </div>
-          <!-- ================= END MAIN SCROLL ================= -->
+          <!-- ================= END MAIN SCROLL (scroll area)================= -->
 
           <!-- ================= FOOTER ================= -->
           <footer class="footer mt-auto py-3 bg-light">

@@ -72,8 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===============================
   document.getElementById("btnFilter")?.addEventListener("click", () => {
     const filter = {
-      tanggal_mulai: getVal("filterTanggalMulai"),
-      tanggal_selesai: getVal("filterTanggalSelesai"),
+      bulan: getVal("filterBulan"), // YYYY-MM
       surah_id: getVal("filterSurahId"),
     };
 
@@ -89,12 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // RESET BUTTON
   // ===============================
   document.getElementById("btnReset")?.addEventListener("click", () => {
-    [
-      "filterTanggalMulai",
-      "filterTanggalSelesai",
-      "filterSurah",
-      "filterSurahId",
-    ].forEach((id) => setVal(id, ""));
+    ["filterBulan", "filterSurah", "filterSurahId"].forEach((id) =>
+      setVal(id, "")
+    );
 
     document.getElementById("surahList")?.replaceChildren();
 
@@ -102,6 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleSurahFilterActive();
     toggleFilterActive(document.getElementById("filterTanggalMulai"));
     toggleFilterActive(document.getElementById("filterTanggalSelesai"));
+    toggleSurahFilterActive();
+
+    toggleFilterActive(document.getElementById("filterBulan"));
     toggleSurahFilterActive();
 
     safeShowLoader("Memuat ulang data…");
@@ -263,47 +262,16 @@ async function triggerRiwayatPdf() {
 // ===============================
 // validasi riwayat hafalan/ filter
 // ===============================
-function validateRiwayatFilter({ tanggal_mulai, tanggal_selesai, surah_id }) {
-  const startFilled = !!tanggal_mulai;
-  const endFilled = !!tanggal_selesai;
-  const surahFilled = !!surah_id;
-
-  // 🚫 1️⃣ SEMUA KOSONG → BLOK
-  if (!startFilled && !endFilled && !surahFilled) {
+function validateRiwayatFilter({ bulan, surah_id }) {
+  if (!bulan && !surah_id) {
     Swal.fire({
       icon: "warning",
       title: "Filter belum diisi",
-      text: "Silakan isi minimal salah satu filter (tanggal atau surah).",
+      text: "Silakan pilih bulan atau surah.",
     });
     return false;
   }
 
-  // 🚫 2️⃣ SALAH SATU TANGGAL SAJA
-  if (startFilled !== endFilled) {
-    Swal.fire({
-      icon: "warning",
-      title: "Filter tanggal tidak lengkap",
-      text: "Tanggal mulai dan tanggal selesai harus diisi keduanya.",
-    });
-    return false;
-  }
-
-  // 🚫 3️⃣ URUTAN TANGGAL SALAH
-  if (startFilled && endFilled) {
-    const startDate = new Date(tanggal_mulai);
-    const endDate = new Date(tanggal_selesai);
-
-    if (endDate < startDate) {
-      Swal.fire({
-        icon: "warning",
-        title: "Rentang tanggal tidak valid",
-        text: "Tanggal selesai tidak boleh lebih kecil dari tanggal mulai.",
-      });
-      return false;
-    }
-  }
-
-  // ✅ VALID
   return true;
 }
 
@@ -319,10 +287,12 @@ async function loadRiwayatHafalan(filter = {}) {
   try {
     const params = new URLSearchParams({ length: 100 });
 
-    if (filter.tanggal_mulai)
-      params.append("tanggal_mulai", filter.tanggal_mulai);
-    if (filter.tanggal_selesai)
-      params.append("tanggal_selesai", filter.tanggal_selesai);
+    if (filter.bulan) {
+      const [year, month] = filter.bulan.split("-");
+      params.append("year", year);
+      params.append("month", month);
+    }
+
     if (filter.surah_id) params.append("surah", filter.surah_id);
 
     const res = await fetch(`/api/hafalan/all?${params}`, {
