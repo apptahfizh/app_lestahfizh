@@ -474,6 +474,24 @@ function toggleFilterActive(input) {
     input.classList.remove("filter-active");
   }
 }
+
+/* ===============================
+   INIT FILTER BULAN
+================================ */
+const filterBulan = document.getElementById("filterBulan");
+
+if (filterBulan) {
+  filterBulan.addEventListener("input", () => toggleFilterActive(filterBulan));
+
+  // set status awal (jika reload / back)
+  toggleFilterActive(filterBulan);
+}
+/* ===============================
+   EVENT BUTTON
+================================ */
+document.getElementById("btnCari").addEventListener("click", handleCari);
+document.getElementById("btnReset").addEventListener("click", handleReset);
+
 // ===============================
 // SURAH FILTER BACKGROUND HANDLER
 // ===============================
