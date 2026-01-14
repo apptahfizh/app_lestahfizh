@@ -297,25 +297,48 @@ async function loadRiwayatHafalan(filter = {}) {
 
     if (!res.ok) throw new Error("Gagal mengambil data riwayat hafalan");
 
-    const { data: rows = [] } = await res.json();
+    const { data = [] } = await res.json();
     tbody.innerHTML = "";
     Swal.close();
 
+    // ===============================
+    // FILTER CLIENT-SIDE (BULAN)
+    // ===============================
+    let rows = data;
+
+    if (filter.bulan) {
+      const [year, month] = filter.bulan.split("-");
+
+      rows = data.filter((r) => {
+        if (!r.tanggal) return false;
+        const d = new Date(r.tanggal);
+        return (
+          d.getFullYear() === Number(year) && d.getMonth() + 1 === Number(month)
+        );
+      });
+    }
+
+    // ===============================
+    // EMPTY STATE
+    // ===============================
     if (rows.length === 0) {
       tbody.innerHTML = `
-        <tr>
-          <td colspan="8" class="text-center text-muted py-4">
-            <i class="fas fa-inbox fa-2x mb-2"></i><br>
-            Belum ada riwayat hafalan<br>
-            <small class="text-muted">
-              Silakan ubah filter atau tunggu setoran berikutnya
-            </small>
-          </td>
-        </tr>
-      `;
+    <tr>
+      <td colspan="8" class="text-center text-muted py-4">
+        <i class="fas fa-inbox fa-2x mb-2"></i><br>
+        Belum ada riwayat hafalan<br>
+        <small class="text-muted">
+          Tidak ada data pada bulan yang dipilih
+        </small>
+      </td>
+    </tr>
+  `;
       return;
     }
 
+    // ===============================
+    // RENDER TABLE
+    // ===============================
     rows.forEach((row, i) => {
       const ayatHafal = ambilAkhirAyat(row.ayat_hafal);
       const totalAyat = Number(row.total_ayat) || 0;
@@ -324,26 +347,26 @@ async function loadRiwayatHafalan(filter = {}) {
       tbody.insertAdjacentHTML(
         "beforeend",
         `
-        <tr>
-          <td>${i + 1}</td>
-          <td>${formatTanggalIndo(row.tanggal)}</td>
-          <td>${row.ayat_setor || "-"}</td>
-          <td>QS ${row.surah_nama}</td>
-          <td>${ayatHafal}</td>
-          <td>
-            <div class="progress-wrapper">
-              <div class="progress">
-                <div
-                  class="progress-bar bg-success"
-                  style="width:${persen}%"
-                ></div>
-              </div>
-              <div class="progress-text">${persen}%</div>
-            </div>
-          </td>
-          <td>${row.keterangan || "-"}</td>
-        </tr>
-      `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${formatTanggalIndo(row.tanggal)}</td>
+      <td>${row.ayat_setor || "-"}</td>
+      <td>QS ${row.surah_nama}</td>
+      <td>${ayatHafal}</td>
+      <td>
+        <div class="progress-wrapper">
+          <div class="progress">
+            <div
+              class="progress-bar bg-success"
+              style="width:${persen}%"
+            ></div>
+          </div>
+          <div class="progress-text">${persen}%</div>
+        </div>
+      </td>
+      <td>${row.keterangan || "-"}</td>
+    </tr>
+    `
       );
     });
   } catch (err) {
