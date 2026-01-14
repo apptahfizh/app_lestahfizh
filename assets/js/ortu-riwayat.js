@@ -1,11 +1,5 @@
 checkAuth(["ortu"]);
-// ===================================================
-// GLOBAL STATE (ORTU RIWAYAT PDF)
-// ===================================================
-let riwayatFilterState = {
-  bulan: null,
-  tahun: null,
-};
+
 // ===============================
 // DATA BULAN (GLOBAL)
 // ===============================
@@ -100,24 +94,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // RESET BUTTON
   // ===============================
   document.getElementById("btnReset")?.addEventListener("click", () => {
-    // ===============================
     // RESET INPUT
-    // ===============================
     ["filterBulan", "filterSurah", "filterSurahId"].forEach((id) =>
       setVal(id, "")
     );
 
     document.getElementById("surahList")?.replaceChildren();
 
-    // ===============================
     // RESET UI STATE
-    // ===============================
     toggleFilterActive(document.getElementById("filterBulan"));
     toggleSurahFilterActive();
 
-    // ===============================
     // KEMBALIKAN KE EMPTY STATE
-    // ===============================
     renderRiwayatEmptyState(); // ❌ JANGAN loadRiwayatHafalan()
   });
 
@@ -129,133 +117,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===============================
   // SAVE PDF → BUKA MODAL PILIH BULAN
   // ===============================
-  document.getElementById("btnSavePdf")?.addEventListener("click", () => {
-    $("#filterModal").modal("show");
-  });
-});
+  document.getElementById("pdfBulan")?.addEventListener("change", async (e) => {
+    const bulan = e.target.value; // YYYY-MM
+    if (!bulan) return;
 
-// ===============================
-//BUTTON HANDLER
-// ===============================
+    $("#filterModal").modal("hide");
 
-//Open Bulan
-document.getElementById("btnOpenBulan")?.addEventListener("click", () => {
-  document.getElementById("bulanList")?.classList.toggle("d-none");
-  document.getElementById("tahunList")?.classList.add("d-none");
-  renderRiwayatMonthPicker();
-});
-//Open Tahun
-document.getElementById("btnOpenTahun")?.addEventListener("click", () => {
-  document.getElementById("tahunList")?.classList.toggle("d-none");
-  document.getElementById("bulanList")?.classList.add("d-none");
-  renderRiwayatYearPicker();
-});
-//RENDER BULAN
-function renderRiwayatMonthPicker() {
-  const list = document.getElementById("bulanList");
-  if (!list) return;
+    safeShowLoader(`Menyiapkan laporan ${bulan}…`);
 
-  list.innerHTML = "";
-
-  bulanData.forEach((b) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className =
-      "list-group-item list-group-item-action" +
-      (b.v === riwayatFilterState.bulan ? " active" : "");
-
-    btn.textContent = b.t;
-
-    btn.onclick = () => {
-      riwayatFilterState.bulan = b.v;
-      list.classList.add("d-none");
-      updateRiwayatButtonText();
-
-      if (riwayatFilterState.tahun) {
-        $("#filterModal").modal("hide");
-        triggerRiwayatPdf();
-      }
-    };
-
-    list.appendChild(btn);
-  });
-}
-//RENDER TAHUN
-function renderRiwayatYearPicker() {
-  const list = document.getElementById("tahunList");
-  if (!list) return;
-
-  list.innerHTML = "";
-
-  const currentYear = new Date().getFullYear();
-  const startYear = currentYear - 1;
-  const endYear = currentYear + 2;
-
-  for (let y = startYear; y <= endYear; y++) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className =
-      "list-group-item list-group-item-action" +
-      (y === riwayatFilterState.tahun ? " active" : "");
-
-    btn.textContent = y;
-
-    btn.onclick = () => {
-      riwayatFilterState.tahun = y;
-      list.classList.add("d-none");
-      updateRiwayatButtonText();
-
-      if (riwayatFilterState.bulan) {
-        $("#filterModal").modal("hide");
-        triggerRiwayatPdf();
-      }
-    };
-
-    list.appendChild(btn);
-  }
-} //END BUTTON HANDLER
-
-// ===============================
-// UPDATE TEXT BUTTON (BULAN & TAHUN) — GLOBAL
-// ===============================
-function updateRiwayatButtonText() {
-  const btnBulan = document.getElementById("btnOpenBulan");
-  const btnTahun = document.getElementById("btnOpenTahun");
-
-  if (btnBulan) {
-    if (riwayatFilterState.bulan) {
-      const bulan = bulanData.find((b) => b.v === riwayatFilterState.bulan);
-      btnBulan.textContent = bulan ? bulan.t : "Pilih Bulan";
-    } else {
-      btnBulan.textContent = "Pilih Bulan";
+    try {
+      await generatePdfRiwayatBulanan(bulan);
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "Gagal membuat PDF", "error");
+    } finally {
+      safeHideLoader();
+      e.target.value = ""; // reset agar bisa pilih ulang
     }
-  }
-
-  if (btnTahun) {
-    btnTahun.textContent = riwayatFilterState.tahun || "Pilih Tahun";
-  }
-}
-
-// ===============================
-//TRIGGER PDF
-// ===============================
-async function triggerRiwayatPdf() {
-  if (!riwayatFilterState.bulan || !riwayatFilterState.tahun) return;
-
-  const bulan = String(riwayatFilterState.bulan).padStart(2, "0");
-  const periode = `${riwayatFilterState.tahun}-${bulan}`;
-
-  safeShowLoader(`Menyiapkan laporan ${periode}…`);
-
-  try {
-    await generatePdfRiwayatBulanan(periode);
-  } catch (err) {
-    console.error(err);
-    Swal.fire("Error", "Gagal membuat PDF", "error");
-  } finally {
-    safeHideLoader();
-  }
-}
+  });
+});
 
 // ===============================
 // validasi riwayat hafalan/ filter

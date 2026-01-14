@@ -244,38 +244,11 @@
           </div>
 
           <div class="modal-body">
-            <!-- PILIH BULAN -->
-            <div class="mb-3">
-              <button
-                type="button"
-                id="btnOpenBulan"
-                class="btn btn-outline-primary btn-block"
-              >
-                Pilih Bulan
-              </button>
-
-              <div
-                id="bulanList"
-                class="list-group mt-2 d-none"
-                style="max-height: 240px; overflow-y: auto"
-              ></div>
-            </div>
-
-            <!-- PILIH TAHUN -->
-            <div class="mb-3">
-              <button
-                type="button"
-                id="btnOpenTahun"
-                class="btn btn-outline-primary btn-block"
-              >
-                Pilih Tahun
-              </button>
-
-              <div
-                id="tahunList"
-                class="list-group mt-2 d-none"
-                style="max-height: 240px; overflow-y: auto"
-              ></div>
+            <div class="form-group">
+              <label for="pdfBulan" class="font-weight-bold">
+                Pilih Bulan Laporan
+              </label>
+              <input type="month" id="pdfBulan" class="form-control" />
             </div>
           </div>
         </div>
