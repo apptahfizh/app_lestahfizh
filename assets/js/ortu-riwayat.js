@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   // ===============================
-  // SAVE PDF → BUKA MODAL
+  // BUKA MODAL → SAVE PDF
   // ===============================
   document.getElementById("btnSavePdf")?.addEventListener("click", () => {
     const input = document.getElementById("pdfBulan");
