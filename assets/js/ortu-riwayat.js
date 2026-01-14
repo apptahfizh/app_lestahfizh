@@ -100,21 +100,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // RESET BUTTON
   // ===============================
   document.getElementById("btnReset")?.addEventListener("click", () => {
+    // ===============================
+    // RESET INPUT
+    // ===============================
     ["filterBulan", "filterSurah", "filterSurahId"].forEach((id) =>
       setVal(id, "")
     );
 
     document.getElementById("surahList")?.replaceChildren();
 
-    renderRiwayatEmptyState(); // ⬅️ BALIK KOSONG
-    toggleSurahFilterActive();
-    toggleSurahFilterActive();
-
+    // ===============================
+    // RESET UI STATE
+    // ===============================
     toggleFilterActive(document.getElementById("filterBulan"));
     toggleSurahFilterActive();
 
-    safeShowLoader("Memuat ulang data…");
-    loadRiwayatHafalan();
+    // ===============================
+    // KEMBALIKAN KE EMPTY STATE
+    // ===============================
+    renderRiwayatEmptyState(); // ❌ JANGAN loadRiwayatHafalan()
   });
 
   // ===============================
