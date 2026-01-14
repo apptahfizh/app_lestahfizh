@@ -237,7 +237,11 @@
                   </div>
 
                   <div class="card-body">
-                    <div class="table-responsive">
+                    <!-- MOBILE CARD LIST -->
+                    <div id="riwayatCardList" class="d-md-none">
+                      <!-- card akan di-render via JS -->
+                    </div>
+                    <div class="table-responsive d-none d-md-block">
                       <table
                         id="riwayatHafalanTable"
                         class="table table-bordered d-none d-md-table"
@@ -257,10 +261,6 @@
                           <!-- Data akan dimuat via JS -->
                         </tbody>
                       </table>
-                      <!-- MOBILE CARD LIST -->
-                      <div id="riwayatCardList" class="d-md-none">
-                        <!-- card akan di-render via JS -->
-                      </div>
                     </div>
                   </div>
                 </div>
