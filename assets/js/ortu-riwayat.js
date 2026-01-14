@@ -135,6 +135,19 @@ document.addEventListener("DOMContentLoaded", () => {
       e.target.value = ""; // reset agar bisa pilih ulang
     }
   });
+  // ===============================
+  // SAVE PDF → BUKA MODAL
+  // ===============================
+  document.getElementById("btnSavePdf")?.addEventListener("click", () => {
+    const input = document.getElementById("pdfBulan");
+
+    // set default bulan = bulan sekarang
+    if (input && !input.value) {
+      input.value = new Date().toISOString().slice(0, 7);
+    }
+
+    $("#filterModal").modal("show");
+  });
 });
 
 // ===============================
