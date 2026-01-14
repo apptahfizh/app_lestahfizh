@@ -56,6 +56,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   // END SURAH INPUT LISTENER
 
+  // FILTER BULAN STYLE
+  const filterBulan = document.getElementById("filterBulan");
+
+  if (filterBulan) {
+    filterBulan.addEventListener("input", () =>
+      toggleFilterActive(filterBulan)
+    );
+
+    // set status awal (reload / back)
+    toggleFilterActive(filterBulan);
+  }
+
   // LOADER
   (async () => {
     showGlobalLoading("Menyiapkan halaman…");
@@ -96,8 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderRiwayatEmptyState(); // ⬅️ BALIK KOSONG
     toggleSurahFilterActive();
-    toggleFilterActive(document.getElementById("filterTanggalMulai"));
-    toggleFilterActive(document.getElementById("filterTanggalSelesai"));
     toggleSurahFilterActive();
 
     toggleFilterActive(document.getElementById("filterBulan"));
@@ -105,22 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     safeShowLoader("Memuat ulang data…");
     loadRiwayatHafalan();
-  });
-
-  // ===============================
-  // TANGGAL FILTER STYLE
-  // ===============================
-  const tanggalMulai = document.getElementById("filterTanggalMulai");
-  const tanggalSelesai = document.getElementById("filterTanggalSelesai");
-
-  [tanggalMulai, tanggalSelesai].forEach((input) => {
-    if (!input) return;
-
-    // saat user memilih tanggal
-    input.addEventListener("input", () => toggleFilterActive(input));
-
-    // saat reload halaman (persist value)
-    toggleFilterActive(input);
   });
 
   // ===============================
@@ -432,6 +426,19 @@ async function loadSurah() {
 }
 
 // ===============================
+// FILTER INPUT BACKGROUND HANDLER
+// ===============================
+function toggleFilterActive(input) {
+  if (!input) return;
+
+  if (input.value && input.value !== "") {
+    input.classList.add("filter-active");
+  } else {
+    input.classList.remove("filter-active");
+  }
+}
+
+// ===============================
 // UI HELPERS
 // ===============================
 function showLoadingTable() {
@@ -462,35 +469,6 @@ function setVal(id, val) {
   const el = document.getElementById(id);
   if (el) el.value = val;
 }
-// ===============================
-// FILTER INPUT BACKGROUND HANDLER
-// ===============================
-function toggleFilterActive(input) {
-  if (!input) return;
-
-  if (input.value && input.value !== "") {
-    input.classList.add("filter-active");
-  } else {
-    input.classList.remove("filter-active");
-  }
-}
-
-/* ===============================
-   INIT FILTER BULAN
-================================ */
-const filterBulan = document.getElementById("filterBulan");
-
-if (filterBulan) {
-  filterBulan.addEventListener("input", () => toggleFilterActive(filterBulan));
-
-  // set status awal (jika reload / back)
-  toggleFilterActive(filterBulan);
-}
-/* ===============================
-   EVENT BUTTON
-================================ */
-document.getElementById("btnCari").addEventListener("click", handleCari);
-document.getElementById("btnReset").addEventListener("click", handleReset);
 
 // ===============================
 // SURAH FILTER BACKGROUND HANDLER
