@@ -423,7 +423,7 @@ function renderRiwayatCards(rows) {
         </div>
 
         <div class="label-row">
-          <span class="label">Ayat Sudah Hafal:</span>
+          <span class="label">Hafalan:</span>
           <span class="value">${ayatHafal} ayat</span>
         </div>
 
