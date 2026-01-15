@@ -436,6 +436,11 @@ function renderRiwayatCards(rows) {
       <span class="value">${ayatHafal} ayat</span>
     </div>
 
+    <div class="label-row mt-2">
+      <span class="label">Keterangan:</span>
+      <span class="value">${row.keterangan || "-"}</span>
+    </div>
+
     <!-- PROGRESS BAR + % -->
     <div class="progress-wrapper mt-4">
       <div class="progress">
@@ -450,11 +455,6 @@ function renderRiwayatCards(rows) {
       >
         0%
       </div>
-    </div>
-
-    <div class="label-row mt-2">
-      <span class="label">Keterangan:</span>
-      <span class="value">${row.keterangan || "-"}</span>
     </div>
   </div>
   `
@@ -486,7 +486,8 @@ function animateCardProgress() {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      const current = Math.round(progress * target);
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(easeOut * target);
 
       bar.style.width = `${current}%`;
       text.textContent = `${current}%`;
