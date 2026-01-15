@@ -228,7 +228,7 @@ async function loadRiwayatHafalan(filter = {}) {
         <i class="fas fa-inbox fa-2x mb-2"></i><br>
         Belum ada riwayat hafalan<br>
         <small class="text-muted">
-          Tidak ada data pada bulan yang dipilih
+          Tidak ada data pada bulan/surah yang dipilih
         </small>
       </td>
     </tr>
@@ -629,7 +629,7 @@ function renderRiwayatCardEmptyState() {
       <i class="fas fa-inbox fa-2x mb-2"></i><br>
       Belum ada riwayat hafalan<br>
       <small class="text-muted">
-        Tidak ada data pada bulan yang dipilih
+        Tidak ada data pada bulan/surah yang dipilih
       </small>
     </div>
   `;
