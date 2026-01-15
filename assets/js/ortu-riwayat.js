@@ -141,10 +141,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btnSavePdf")?.addEventListener("click", () => {
     const input = document.getElementById("pdfBulan");
 
-    // set default bulan = bulan sekarang
-    if (input && !input.value) {
-      input.value = new Date().toISOString().slice(0, 7);
-    }
+    // reset agar change selalu terpanggil
+    if (input) input.value = "";
 
     $("#filterModal").modal("show");
   });
