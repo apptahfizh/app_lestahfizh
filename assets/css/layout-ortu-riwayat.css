@@ -180,7 +180,7 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
   );
 
   /* ANIMASI */
-  transition: width 2s ease-out;
+  transition: none !important;
 }
 
 /* sembunyikan tabel di mode mobile */
