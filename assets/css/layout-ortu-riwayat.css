@@ -159,9 +159,28 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
 }
 
 /* ANIMATED PROGRESS (CARD) */
-.riwayat-card .progress-bar {
-  width: 0;
-  transition: width 0.8s ease-in-out;
+.progress {
+  height: 8px;
+  border-radius: 999px;
+  background-color: #e5e7eb; /* abu-abu track */
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0; /* penting untuk animasi */
+  border-radius: 999px;
+
+  /* GRADIENT */
+  background: linear-gradient(
+    90deg,
+    #16a34a 0%,
+    /* green-600 */ #22c55e 40%,
+    /* green-500 */ #06b6d4 100% /* cyan-500 */
+  );
+
+  /* ANIMASI */
+  transition: width 1s ease-out;
 }
 
 /* sembunyikan tabel di mode mobile */
