@@ -445,6 +445,8 @@ function renderRiwayatCards(rows) {
           <div class="progress">
             <div
               class="progress-bar bg-success"
+              data-progress="${persen}"
+              style="width:0%"
             ></div>
           </div>
           <div class="progress-text">${persen}%</div>
@@ -453,12 +455,11 @@ function renderRiwayatCards(rows) {
     `
     );
   });
+  // Trigger animasi SETELAH DOM card masuk
+  animateCardProgress();
 }
-// Jalankan animasi progress bar
-animateCardProgress();
-// ===============================
+
 // helper Trigger animasi SETELAH card masuk DOM
-// ===============================
 function animateCardProgress() {
   const bars = document.querySelectorAll(
     "#riwayatCardList .progress-bar[data-progress]"
