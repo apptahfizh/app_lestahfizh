@@ -5,7 +5,7 @@
 }
 
 /* =====================================
-   QURAN / BOOK PAGE LOADER
+   ISLAMI PAGE LOADER
 ===================================== */
 @font-face {
   font-family: "Amiri";
@@ -221,6 +221,3 @@
 body.loading {
   overflow: hidden;
 }
-/* ===============================
-   GLOBAL LOADER BLUR EFFECT
-================================ */
