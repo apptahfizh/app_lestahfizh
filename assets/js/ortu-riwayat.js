@@ -449,7 +449,7 @@ function renderRiwayatCards(rows) {
               style="width:0%"
             ></div>
           </div>
-          <div class="progress-text mt-1">${persen}%</div>
+          <div class="progress-text mt-0">${persen}%</div>
         </div>
       </div>
     `
