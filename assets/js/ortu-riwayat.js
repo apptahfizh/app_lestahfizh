@@ -639,7 +639,7 @@ function renderRiwayatEmptyState() {
   if (tbody) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="8" class="text-center text-muted py-5">
+        <td colspan="8" class="text-center text-muted py-5 primary">
           <i class="fas fa-filter fa-2x mb-2"></i><br>
           Silakan gunakan filter untuk menampilkan riwayat hafalan
         </td>
@@ -649,7 +649,7 @@ function renderRiwayatEmptyState() {
 
   if (cardList) {
     cardList.innerHTML = `
-      <div class="text-center text-muted py-5">
+      <div class="text-center text-muted py-5 primary">
         <i class="fas fa-filter fa-2x mb-2"></i><br>
         Silakan gunakan filter untuk menampilkan riwayat hafalan
       </div>
