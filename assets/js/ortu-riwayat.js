@@ -409,22 +409,33 @@ function renderRiwayatCards(rows) {
       "beforeend",
       `
       <div class="riwayat-card">
-        <div class="tanggal">${formatTanggalIndo(row.tanggal)}</div>
-
-        <div class="surah">QS ${row.surah_nama}</div>
-
-        <div class="row-info">
-          <div>Setor: <strong>${row.ayat_setor || "-"}</strong></div>
-          <div>${ayatHafal} ayat</div>
+        <div class="tanggal">
+          ${formatTanggalIndo(row.tanggal)}
         </div>
 
-        <div class="progress">
-          <div
-            class="progress-bar bg-success"
-            style="width:${persen}%"
-          ></div>
+        <div class="surah">
+          QS ${row.surah_nama}
         </div>
-        <div class="progress-text">${persen}%</div>
+
+        <div class="label-row">
+          <span class="label">Setor</span>
+          <span class="value">${row.ayat_setor || "-"}</span>
+        </div>
+
+        <div class="label-row">
+          <span class="label">Hafalan</span>
+          <span class="value">${ayatHafal} ayat</span>
+        </div>
+
+        <div class="progress-wrapper mt-2">
+          <div class="progress">
+            <div
+              class="progress-bar bg-success"
+              style="width:${persen}%"
+            ></div>
+          </div>
+          <div class="progress-text">${persen}%</div>
+        </div>
 
         ${
           row.keterangan

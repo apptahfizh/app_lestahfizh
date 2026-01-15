@@ -95,11 +95,11 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
 ================================ */
 .riwayat-card {
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 12px;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
   background: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .riwayat-card .tanggal {
@@ -111,18 +111,34 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
 .riwayat-card .surah {
   font-weight: 600;
   font-size: 14px;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
-.riwayat-card .row-info {
+/* LABEL STACK (Setor & Hafalan) */
+.riwayat-card .label-row {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
+.riwayat-card .label {
+  color: #6b7280;
+}
+
+.riwayat-card .value {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* PROGRESS */
 .riwayat-card .progress {
   height: 6px;
+  border-radius: 6px;
+  background-color: #e5e7eb;
+}
+
+.riwayat-card .progress-bar {
   border-radius: 6px;
 }
 
@@ -133,8 +149,11 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
   color: #374151;
 }
 
+/* KETERANGAN */
 .riwayat-card .keterangan {
   font-size: 12px;
   color: #374151;
-  margin-top: 6px;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed #e5e7eb;
 }
