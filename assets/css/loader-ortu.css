@@ -1,249 +1,7 @@
-#globalLoading {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-}
+/* ===============================
+   GLOBAL LOADER (LIGHT)
+=============================== */
 
-/* =====================================
-   QURAN / BOOK PAGE LOADER
-===================================== */
-@font-face {
-  font-family: "Amiri";
-  src: url("../vendor/fonts-amiri/Amiri-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-.loader-text .arabic {
-  font-family: "Amiri", serif;
-  font-size: 20px;
-  font-weight: 600;
-  color: #2e59d9;
-  margin-bottom: 6px;
-}
-
-.basmallah {
-  font-family: "Amiri", serif;
-  font-size: 20px;
-  font-weight: 400;
-  color: #1f7a5c;
-  margin-bottom: 2px;
-  letter-spacing: 2px;
-  opacity: 0.9;
-  text-shadow: 0 0 6px rgba(31, 122, 92, 0.35),
-    0 0 12px rgba(212, 175, 55, 0.25);
-}
-
-.loader-text {
-  text-align: center; /* ⬅️ KUNCI: bikin teks center */
-}
-
-.loader-text .latin {
-  display: block;
-  text-align: center; /* jaga-jaga */
-  font-size: 14px;
-  font-weight: 600; /* ⬅️ BOLD tapi masih elegan */
-  color: #114105;
-  margin-top: 8px; /* beri jarak dari basmalah */
-  letter-spacing: 0.3px;
-
-  animation: softPulse 1.6s ease-in-out infinite;
-}
-
-@keyframes softPulse {
-  0% {
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.4;
-  }
-}
-
-.loader-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-
-/* loader animasi membuka buku */
-/*.loader {
-  width: 200px;
-  height: 140px;
-  background: linear-gradient(90deg, #1f7a5cfa, #d4af37, #13ce13);
-  border-radius: 20px;
-  position: relative;
-  perspective: 1000px;
-  box-shadow: 0 10px 24px rgba(31, 122, 92, 0.35);
-}
-*/
-
-/* Halaman dalam */
-/*.loader::before {
-  content: "";
-  position: absolute;
-  inset: 10px;
-  border-radius: 8px;
-  background: #d1e9c6a9 no-repeat;
-  background-size: 60px 7px;
-  background-image: linear-gradient(#ddd 100px, transparent 0),
-    linear-gradient(#ddd 100px, transparent 0),
-    linear-gradient(#ddd 100px, transparent 0),
-    linear-gradient(#ddd 100px, transparent 0),
-    linear-gradient(#ddd 100px, transparent 0),
-    linear-gradient(#ddd 100px, transparent 0);
-  background-position: 15px 28px, 15px 48px, 15px 68px, 105px 28px, 105px 48px,
-    105px 68px;
-}
-*/
-
-/* Halaman dibuka */
-/* .loader::after {
-  content: "";
-  position: absolute;
-  width: calc(50% - 10px);
-  right: 10px;
-  top: 10px;
-  bottom: 10px;
-  border-radius: 8px;
-  background: #69b36da4 no-repeat;
-  background-size: 60px 7px;
-  background-image: linear-gradient(#f0eed3 100px, transparent 0),
-    linear-gradient(#f0eed3 100px, transparent 0),
-    linear-gradient(#f0eed3 100px, transparent 0);
-  background-position: 50% 28px, 50% 48px, 50% 68px;
-  transform-origin: left center;
-  animation: paging 1.6s ease-in-out infinite;
-  backface-visibility: hidden;
-}
-*/
-
-/*@keyframes paging {
-  to {
-    transform: rotateY(-180deg);
-  }
-}*/
-
-/* =====================================
-   LOADER SIMPLE CLEAN SPINNER (REPLACEMENT)
-===================================== */
-
-.loader {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 4px solid rgba(31, 122, 92, 0.2);
-  border-top-color: #1f7a5c;
-  animation: spin 0.9s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* =====================================
-   ISLAMIC LOADER — LITE VERSION
-   (CSS ONLY, NO FONT LOAD)
-===================================== */
-
-.loader-lite {
-  text-align: center;
-  min-width: 220px;
-}
-
-/* Basmalah */
-.loader-lite .basmallah {
-  font-size: 20px;
-  color: #2f855a;
-  margin-bottom: 10px;
-  animation: basmallahFade 2.4s ease-in-out infinite;
-}
-
-/* Latin text */
-.loader-lite .latin {
-  font-size: 14px;
-  font-weight: 600;
-  color: #3a3a3a;
-  letter-spacing: 0.3px;
-  margin-bottom: 14px;
-  animation: textPulse 1.6s ease-in-out infinite;
-}
-
-/* Progress bar */
-.loader-lite .progress {
-  width: 180px;
-  height: 6px;
-  margin: 0 auto;
-  border-radius: 6px;
-  background: #e6e6e6;
-  overflow: hidden;
-  position: relative;
-}
-
-.loader-lite .progress::before {
-  content: "";
-  position: absolute;
-  left: -40%;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(90deg, #2f855a, #c9a227, #2f855a);
-  animation: progressMove 1.4s ease-in-out infinite;
-}
-
-/* =====================
-   ANIMATIONS (LIGHT)
-===================== */
-
-@keyframes basmallahFade {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(0.98);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes textPulse {
-  0%,
-  100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-@keyframes progressMove {
-  0% {
-    left: -40%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .quran-loader {
-    display: none;
-  }
-  .loader-lite {
-    display: block;
-  }
-}
-
-/* =====================================
-   FADE TRANSITION: LOADER → CONTENT
-===================================== */
-
-/* Loader default */
 .global-loading {
   position: fixed;
   inset: 0;
@@ -254,23 +12,37 @@
   justify-content: center;
 }
 
-/* Saat ditutup */
-.global-loading.fade-out {
-  opacity: 0;
-  pointer-events: none;
+.loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
-/* Konten utama */
-.fade-content {
-  opacity: 0;
-  transition: opacity 0.35s ease;
+/* Spinner only */
+.loader {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #e5e7eb;
+  border-top-color: #1f7a5c;
+  animation: spin 1s linear infinite;
 }
 
-/* Konten aktif */
-.fade-content.show {
-  opacity: 1;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
-/* Anti scroll saat loading jalan */
+
+/* Text */
+.loader-text .latin {
+  font-size: 14px;
+  font-weight: 600;
+  color: #114105;
+}
+
+/* Lock scroll */
 body.loading {
   overflow: hidden;
 }
