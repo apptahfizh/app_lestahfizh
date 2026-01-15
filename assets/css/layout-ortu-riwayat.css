@@ -89,3 +89,52 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
 #btnExportPDF {
   text-align: center;
 }
+
+/* ===============================
+   RIWAYAT CARD LIST (MOBILE)
+================================ */
+.riwayat-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.riwayat-card .tanggal {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.riwayat-card .surah {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.riwayat-card .row-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.riwayat-card .progress {
+  height: 6px;
+  border-radius: 6px;
+}
+
+.riwayat-card .progress-text {
+  font-size: 11px;
+  text-align: right;
+  margin-top: 4px;
+  color: #374151;
+}
+
+.riwayat-card .keterangan {
+  font-size: 12px;
+  color: #374151;
+  margin-top: 6px;
+}

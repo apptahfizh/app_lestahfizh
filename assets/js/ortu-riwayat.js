@@ -264,6 +264,9 @@ async function loadRiwayatHafalan(filter = {}) {
     `
       );
     });
+
+    // RENDER CARD (MOBILE)
+    renderRiwayatCards(rows);
   } catch (err) {
     console.error(err);
 
@@ -386,6 +389,52 @@ function getVal(id) {
 function setVal(id, val) {
   const el = document.getElementById(id);
   if (el) el.value = val;
+}
+
+// ===============================
+// render card list
+// ===============================
+function renderRiwayatCards(rows) {
+  const container = document.getElementById("riwayatCardList");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  rows.forEach((row) => {
+    const ayatHafal = ambilAkhirAyat(row.ayat_hafal);
+    const totalAyat = Number(row.total_ayat) || 0;
+    const persen = totalAyat ? Math.round((ayatHafal / totalAyat) * 100) : 0;
+
+    container.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="riwayat-card">
+        <div class="tanggal">${formatTanggalIndo(row.tanggal)}</div>
+
+        <div class="surah">QS ${row.surah_nama}</div>
+
+        <div class="row-info">
+          <div>Setor: <strong>${row.ayat_setor || "-"}</strong></div>
+          <div>${ayatHafal} ayat</div>
+        </div>
+
+        <div class="progress">
+          <div
+            class="progress-bar bg-success"
+            style="width:${persen}%"
+          ></div>
+        </div>
+        <div class="progress-text">${persen}%</div>
+
+        ${
+          row.keterangan
+            ? `<div class="keterangan">${row.keterangan}</div>`
+            : ""
+        }
+      </div>
+    `
+    );
+  });
 }
 
 // ===============================
@@ -527,16 +576,27 @@ async function generatePdfRiwayatBulanan(monthYear) {
 //EMPTY STATE
 function renderRiwayatEmptyState() {
   const tbody = document.querySelector("#tabelRiwayat tbody");
-  if (!tbody) return;
+  const cardList = document.getElementById("riwayatCardList");
 
-  tbody.innerHTML = `
-    <tr>
-      <td colspan="8" class="text-center text-muted py-5">
+  if (tbody) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="text-center text-muted py-5">
+          <i class="fas fa-filter fa-2x mb-2"></i><br>
+          Silakan gunakan filter untuk menampilkan riwayat hafalan
+        </td>
+      </tr>
+    `;
+  }
+
+  if (cardList) {
+    cardList.innerHTML = `
+      <div class="text-center text-muted py-5">
         <i class="fas fa-filter fa-2x mb-2"></i><br>
         Silakan gunakan filter untuk menampilkan riwayat hafalan
-      </td>
-    </tr>
-  `;
+      </div>
+    `;
+  }
 }
 
 function formatTanggalIndo(dateString) {
