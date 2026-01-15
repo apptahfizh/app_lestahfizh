@@ -173,6 +173,10 @@ async function loadRiwayatHafalan(filter = {}) {
 
   showLoadingTable();
 
+  // RESET CARD LIST SEBELUM LOAD
+  const cardList = document.getElementById("riwayatCardList");
+  if (cardList) cardList.innerHTML = "";
+
   try {
     const params = new URLSearchParams({ length: 100 });
 
@@ -217,6 +221,7 @@ async function loadRiwayatHafalan(filter = {}) {
     // EMPTY STATE
     // ===============================
     if (rows.length === 0) {
+      // EMPTY TABLE (DESKTOP)
       tbody.innerHTML = `
     <tr>
       <td colspan="8" class="text-center text-muted py-4">
@@ -228,6 +233,10 @@ async function loadRiwayatHafalan(filter = {}) {
       </td>
     </tr>
   `;
+
+      // EMPTY CARD LIST (MOBILE)
+      renderRiwayatCardEmptyState();
+
       return;
     }
 
@@ -392,7 +401,7 @@ function setVal(id, val) {
 }
 
 // ===============================
-// render card list
+// RENDER CARD LIST
 // ===============================
 function renderRiwayatCards(rows) {
   const container = document.getElementById("riwayatCardList");
@@ -610,6 +619,23 @@ function renderRiwayatEmptyState() {
   }
 }
 
+//EMPTY STATE KHUSUS CARD
+function renderRiwayatCardEmptyState() {
+  const container = document.getElementById("riwayatCardList");
+  if (!container) return;
+
+  container.innerHTML = `
+    <div class="text-center text-muted py-5">
+      <i class="fas fa-inbox fa-2x mb-2"></i><br>
+      Belum ada riwayat hafalan<br>
+      <small class="text-muted">
+        Tidak ada data pada bulan yang dipilih
+      </small>
+    </div>
+  `;
+}
+
+//FORMAT TANGGAL
 function formatTanggalIndo(dateString) {
   if (!dateString) return "-";
 
