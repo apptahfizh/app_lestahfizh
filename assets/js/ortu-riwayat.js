@@ -276,6 +276,8 @@ async function loadRiwayatHafalan(filter = {}) {
 
     // RENDER CARD (MOBILE)
     renderRiwayatCards(rows);
+    // Jalankan animasi progress bar
+    animateCardProgress();
   } catch (err) {
     console.error(err);
 
@@ -445,7 +447,6 @@ function renderRiwayatCards(rows) {
           <div class="progress">
             <div
               class="progress-bar bg-success"
-              style="width:${persen}%"
             ></div>
           </div>
           <div class="progress-text">${persen}%</div>
@@ -453,6 +454,25 @@ function renderRiwayatCards(rows) {
       </div>
     `
     );
+  });
+}
+// ===============================
+// helper Trigger animasi SETELAH card masuk DOM
+// ===============================
+function animateCardProgress() {
+  const bars = document.querySelectorAll(
+    "#riwayatCardList .progress-bar[data-progress]"
+  );
+
+  bars.forEach((bar) => {
+    const target = bar.dataset.progress;
+
+    // force reflow (penting supaya animasi jalan)
+    bar.getBoundingClientRect();
+
+    requestAnimationFrame(() => {
+      bar.style.width = `${target}%`;
+    });
   });
 }
 

@@ -137,8 +137,9 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
   color: #374151;
   margin-top: 8px;
 }
-
-/* PROGRESS */
+/* ===============================
+ PROGRESS BAR
+================================ */
 .riwayat-card .progress {
   height: 8px;
   border-radius: 6px;
@@ -156,6 +157,13 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
   color: #374151;
 }
 
+/* ANIMATED PROGRESS (CARD) */
+.riwayat-card .progress-bar {
+  width: 0;
+  transition: width 0.8s ease-in-out;
+}
+
+/* sembunyikan tabel di mode mobile */
 @media (max-width: 767.98px) {
   #tabelRiwayat {
     display: none !important;
