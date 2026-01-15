@@ -276,8 +276,6 @@ async function loadRiwayatHafalan(filter = {}) {
 
     // RENDER CARD (MOBILE)
     renderRiwayatCards(rows);
-    // Jalankan animasi progress bar
-    animateCardProgress();
   } catch (err) {
     console.error(err);
 
@@ -456,6 +454,8 @@ function renderRiwayatCards(rows) {
     );
   });
 }
+// Jalankan animasi progress bar
+animateCardProgress();
 // ===============================
 // helper Trigger animasi SETELAH card masuk DOM
 // ===============================
