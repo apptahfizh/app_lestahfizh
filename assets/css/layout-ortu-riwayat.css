@@ -142,7 +142,7 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
  PROGRESS BAR
 ================================ */
 .riwayat-card .progress {
-  height: 10px;
+  height: 20px;
   border-radius: 6px;
   background-color: #e5e7eb;
 }
