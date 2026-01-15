@@ -486,8 +486,7 @@ function animateCardProgress() {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      const easeOut = 1 - Math.pow(1 - progress, 3);
-      const current = Math.round(easeOut * target);
+      const current = Math.round(progress * target);
 
       bar.style.width = `${current}%`;
       text.textContent = `${current}%`;
