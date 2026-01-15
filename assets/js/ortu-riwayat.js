@@ -417,42 +417,47 @@ function renderRiwayatCards(rows) {
     container.insertAdjacentHTML(
       "beforeend",
       `
-      <div class="riwayat-card">
-        <div class="tanggal">
-          ${formatTanggalIndo(row.tanggal)}
-        </div>
+  <div class="riwayat-card">
+    <div class="tanggal">
+      ${formatTanggalIndo(row.tanggal)}
+    </div>
 
-        <div class="surah">
-          QS ${row.surah_nama}
-        </div>
+    <div class="surah">
+      QS ${row.surah_nama}
+    </div>
 
-        <div class="label-row">
-          <span class="label">Setor Ayat ke:</span>
-          <span class="value">${row.ayat_setor || "-"}</span>
-        </div>
+    <div class="label-row">
+      <span class="label">Setor Ayat ke:</span>
+      <span class="value">${row.ayat_setor || "-"}</span>
+    </div>
 
-        <div class="label-row">
-          <span class="label">Hafalan:</span>
-          <span class="value">${ayatHafal} ayat</span>
-        </div>
+    <div class="label-row">
+      <span class="label">Hafalan:</span>
+      <span class="value">${ayatHafal} ayat</span>
+    </div>
 
-        <div class="label-row">
-          <span class="label">Keterangan:</span>
-          <span class="value">${row.keterangan}</span>
-        </div>
-
-        <div class="progress-wrapper mt-4">
-          <div class="progress">
-            <div
-              class="progress-bar bg-success"
-              data-progress="${persen}"
-              style="width:0%"
-            ></div>
-          </div>
-          <div class="progress-text mt-0">${persen}%</div>
-        </div>
+    <!-- PROGRESS BAR + % -->
+    <div class="progress-wrapper mt-4">
+      <div class="progress">
+        <div
+          class="progress-bar"
+          data-progress="${persen}"
+        ></div>
       </div>
-    `
+      <div
+        class="progress-text"
+        data-progress="${persen}"
+      >
+        0%
+      </div>
+    </div>
+
+    <div class="label-row mt-2">
+      <span class="label">Keterangan:</span>
+      <span class="value">${row.keterangan || "-"}</span>
+    </div>
+  </div>
+  `
     );
   });
   // Trigger animasi SETELAH DOM card masuk
@@ -461,19 +466,37 @@ function renderRiwayatCards(rows) {
 
 // helper Trigger animasi SETELAH card masuk DOM
 function animateCardProgress() {
-  const bars = document.querySelectorAll(
-    "#riwayatCardList .progress-bar[data-progress]"
-  );
+  const items = document.querySelectorAll("#riwayatCardList .progress-wrapper");
 
-  bars.forEach((bar) => {
-    const target = bar.dataset.progress;
+  items.forEach((wrapper) => {
+    const bar = wrapper.querySelector(".progress-bar");
+    const text = wrapper.querySelector(".progress-text");
 
-    // force reflow (penting supaya animasi jalan)
-    bar.getBoundingClientRect();
+    if (!bar || !text) return;
 
-    requestAnimationFrame(() => {
-      bar.style.width = `${target}%`;
-    });
+    const target = Number(bar.dataset.progress) || 0;
+    const duration = 1000; // ms
+    const startTime = performance.now();
+
+    // RESET (penting saat filter ulang)
+    bar.style.width = "0%";
+    text.textContent = "0%";
+
+    function animate(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      const current = Math.round(progress * target);
+
+      bar.style.width = `${current}%`;
+      text.textContent = `${current}%`;
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    requestAnimationFrame(animate);
   });
 }
 
