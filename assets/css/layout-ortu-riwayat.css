@@ -131,9 +131,16 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
   color: #111827;
 }
 
+/* KETERANGAN */
+.riwayat-card .keterangan {
+  font-size: 12px;
+  color: #374151;
+  margin-top: 8px;
+}
+
 /* PROGRESS */
 .riwayat-card .progress {
-  height: 6px;
+  height: 8px;
   border-radius: 6px;
   background-color: #e5e7eb;
 }
@@ -149,12 +156,6 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
   color: #374151;
 }
 
-/* KETERANGAN */
-.riwayat-card .keterangan {
-  font-size: 12px;
-  color: #374151;
-  margin-top: 8px;
-}
 @media (max-width: 767.98px) {
   #tabelRiwayat {
     display: none !important;

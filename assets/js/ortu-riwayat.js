@@ -441,7 +441,7 @@ function renderRiwayatCards(rows) {
           <span class="value">${row.keterangan}</span>
         </div>
 
-        <div class="progress-wrapper mt-2">
+        <div class="progress-wrapper mt-4">
           <div class="progress">
             <div
               class="progress-bar bg-success"
