@@ -471,7 +471,6 @@ function animateCardProgress() {
 
     const target = Number(bar.dataset.progress) || 0;
     const duration = 3000; // ms
-    const easeOut = 1 - Math.pow(1 - progress, 4);
     const startTime = performance.now();
 
     // RESET (penting saat filter ulang)
