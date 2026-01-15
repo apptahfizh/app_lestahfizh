@@ -436,7 +436,7 @@ function renderRiwayatCards(rows) {
       <span class="value">${ayatHafal} ayat</span>
     </div>
 
-    <div class="label-row mt-2">
+    <div class="label-row">
       <span class="label">Keterangan:</span>
       <span class="value">${row.keterangan || "-"}</span>
     </div>

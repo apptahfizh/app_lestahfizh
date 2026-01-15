@@ -160,7 +160,7 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
 
 /* ANIMATED PROGRESS (CARD) */
 .progress {
-  height: 8px;
+  height: 10px;
   border-radius: 999px;
   background-color: #e5e7eb; /* abu-abu track */
   overflow: hidden;
