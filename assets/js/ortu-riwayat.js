@@ -470,10 +470,9 @@ function animateCardProgress() {
     if (!bar || !text) return;
 
     const target = Number(bar.dataset.progress) || 0;
-    const duration = 3000; // ms
+    const duration = 3000;
     const startTime = performance.now();
 
-    // RESET (penting saat filter ulang)
     bar.style.width = "0%";
     text.textContent = "0%";
 
@@ -481,7 +480,8 @@ function animateCardProgress() {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      const current = Math.round(progress * target);
+      const easeOut = 1 - Math.pow(1 - progress, 4);
+      const current = Math.round(easeOut * target);
 
       bar.style.width = `${current}%`;
       text.textContent = `${current}%`;
