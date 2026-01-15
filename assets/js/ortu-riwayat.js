@@ -435,6 +435,12 @@ function renderRiwayatCards(rows) {
           <span class="label">Hafalan:</span>
           <span class="value">${ayatHafal} ayat</span>
         </div>
+        
+         ${
+           row.keterangan
+             ? `<div class="keterangan">${row.keterangan}</div>`
+             : ""
+         }
 
         <div class="progress-wrapper mt-2">
           <div class="progress">
@@ -445,12 +451,6 @@ function renderRiwayatCards(rows) {
           </div>
           <div class="progress-text">${persen}%</div>
         </div>
-
-        ${
-          row.keterangan
-            ? `<div class="keterangan">${row.keterangan}</div>`
-            : ""
-        }
       </div>
     `
     );
