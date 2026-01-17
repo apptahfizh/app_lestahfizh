@@ -30,7 +30,8 @@
   margin-bottom: 2px;
   letter-spacing: 2px;
   opacity: 0.9;
-  text-shadow: 0 0 6px rgba(31, 122, 92, 0.35),
+  text-shadow:
+    0 0 6px rgba(31, 122, 92, 0.35),
     0 0 12px rgba(212, 175, 55, 0.25);
 }
 
@@ -86,55 +87,6 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-/* =====================================
-   ISLAMIC LOADER — LITE VERSION
-   (CSS ONLY, NO FONT LOAD)
-===================================== */
-
-.loader-lite {
-  text-align: center;
-  min-width: 220px;
-}
-
-/* Basmalah */
-.loader-lite .basmallah {
-  font-size: 20px;
-  color: #2f855a;
-  margin-bottom: 10px;
-  animation: basmallahFade 2.4s ease-in-out infinite;
-}
-
-/* Latin text */
-.loader-lite .latin {
-  font-size: 14px;
-  font-weight: 600;
-  color: #3a3a3a;
-  letter-spacing: 0.3px;
-  margin-bottom: 14px;
-  animation: textPulse 1.6s ease-in-out infinite;
-}
-
-/* Progress bar */
-.loader-lite .progress {
-  width: 180px;
-  height: 6px;
-  margin: 0 auto;
-  border-radius: 6px;
-  background: #e6e6e6;
-  overflow: hidden;
-  position: relative;
-}
-
-.loader-lite .progress::before {
-  content: "";
-  position: absolute;
-  left: -40%;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(90deg, #2f855a, #c9a227, #2f855a);
-  animation: progressMove 1.4s ease-in-out infinite;
 }
 
 /* =====================
