@@ -235,10 +235,8 @@ document.getElementById("btnExportPDF")?.addEventListener("click", () => {
     Swal.fire("Info", "Tidak ada data untuk diexport", "info");
     return;
   }
-  if (!filterState.bulan || !filterState.tahun) {
-    Swal.fire("Info", "Pilih bulan dan tahun terlebih dahulu", "info");
-    return;
-  }
+
+  const [tahun, bulan] = filterState.bulan.split("-");
 
   const bulanNama = [
     "",
@@ -254,9 +252,7 @@ document.getElementById("btnExportPDF")?.addEventListener("click", () => {
     "Oktober",
     "November",
     "Desember",
-  ][filterState.bulan];
-
-  const tahun = filterState.tahun;
+  ][parseInt(bulan)];
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
