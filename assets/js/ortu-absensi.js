@@ -154,7 +154,13 @@ document.addEventListener("DOMContentLoaded", () => {
         ordering: true,
         data: rows,
         columns: [
-          { data: "tanggal_hari" },
+          {
+            data: "tanggal_hari",
+            render: (val) => {
+              const { hari, tanggal } = splitHariTanggal(val);
+              return `${hari}, ${tanggal}`;
+            },
+          },
           { data: "status" },
           { data: "keterangan", defaultContent: "-" },
         ],
@@ -192,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
     rows.forEach((row) => {
       wrapper.innerHTML += `
         <div class="absensi-card">
-          <div class="tanggal">${row.tanggal_hari || "-"}</div>
+          <div class="tanggal">${hari}, ${tanggal}</div>
           <div class="status"><span class="badge badge-${
             statusColor[row.status] || "secondary"
           } px-3">${(row.status || "-").toUpperCase()}</span></div>
