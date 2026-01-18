@@ -3,30 +3,8 @@
 // ===================================================
 // Satu-satunya sumber kebenaran untuk filter
 let filterState = {
-  bulan: null,
-  tahun: null,
+  bulan: null, // format: YYYY-MM
 };
-
-// Sumber data global (table, card, export)
-let absensiRows = [];
-function updateTriggerText() {
-  const btnBulan = document.getElementById("btnOpenBulan");
-  const btnTahun = document.getElementById("btnOpenTahun");
-
-  if (!btnBulan || !btnTahun) return;
-
-  // Text Bulan
-  if (filterState.bulan) {
-    const bulanText = bulanData.find((b) => b.v === filterState.bulan)?.t;
-
-    btnBulan.textContent = bulanText || "Pilih Bulan";
-  } else {
-    btnBulan.textContent = "Pilih Bulan";
-  }
-
-  // Text Tahun
-  btnTahun.textContent = filterState.tahun ? filterState.tahun : "Pilih Tahun";
-}
 
 // ===================================================
 // HELPER Split Hari Tanggal
@@ -75,24 +53,24 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "login.html";
     return;
   }
+
   // ===================================================
-  // HELPER: UPDATE TRIGGER TEXT (SCOPED & SAFE)
+  // EVENT FILTER BULAN (type="month")
   // ===================================================
-  function updateTriggerText() {
-    const placeholder = "Pilih Bulan & Tahun";
+  const filterBulan = document.getElementById("filterBulan");
+  const btnFilter = document.getElementById("btnFilter");
 
-    if (!filterState.bulan || !filterState.tahun) {
-      if (mobileTrigger) mobileTrigger.value = placeholder;
-      if (desktopTrigger) desktopTrigger.value = placeholder;
-      return;
-    }
+  if (btnFilter && filterBulan) {
+    btnFilter.addEventListener("click", () => {
+      if (!filterBulan.value) {
+        Swal.fire("Info", "Silakan pilih bulan terlebih dahulu", "info");
+        return;
+      }
 
-    const bulanNama = bulanData.find((x) => x.v === filterState.bulan)?.t;
-
-    const text = `${bulanNama} ${filterState.tahun}`;
-
-    if (mobileTrigger) mobileTrigger.value = text;
-    if (desktopTrigger) desktopTrigger.value = text;
+      filterState.bulan = filterBulan.value; // YYYY-MM
+      showGlobalLoading();
+      loadAbsensi();
+    });
   }
 
   // ===================================================
@@ -101,98 +79,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const tbody = document.querySelector("#tabelAbsensi tbody");
   const tableWrapper = document.querySelector(".table-responsive");
 
-  const desktopTrigger = document.getElementById("filterDesktopTrigger");
-  const mobileTrigger = document.getElementById("filterMobileTrigger");
-
-  const bulanPicker = document.getElementById("bulanPicker");
-  const tahunMobileInput = document.getElementById("tahunMobileInput");
-
   let table = null;
-  // ===================================================
-  // EVENT BUKA PILIHAN (BUKAN MODAL)
-  // ===================================================
-  const btnOpenBulan = document.getElementById("btnOpenBulan");
-  const btnOpenTahun = document.getElementById("btnOpenTahun");
-
-  if (btnOpenBulan) {
-    btnOpenBulan.addEventListener("click", () => {
-      document.getElementById("bulanList")?.classList.toggle("d-none");
-      document.getElementById("tahunList")?.classList.add("d-none");
-      renderMonthPicker();
-    });
-  }
-
-  if (btnOpenTahun) {
-    btnOpenTahun.addEventListener("click", () => {
-      document.getElementById("tahunList")?.classList.toggle("d-none");
-      document.getElementById("bulanList")?.classList.add("d-none");
-      renderYearPicker();
-    });
-  }
 
   // ===================================================
   // DATA BULAN
   // ===================================================
   const currentYear = new Date().getFullYear();
 
-  // Rentang tahun (misalnya -1 sampai +2)
-  const tahunData = Array.from({ length: 5 }, (_, i) => {
-    const y = currentYear - 1 + i;
-    return { v: y, t: String(y) };
-  });
-
-  // ===================================================
-  // DATA BULAN
-  // ===================================================
-  const bulanData = [
-    { v: 1, t: "Januari" },
-    { v: 2, t: "Februari" },
-    { v: 3, t: "Maret" },
-    { v: 4, t: "April" },
-    { v: 5, t: "Mei" },
-    { v: 6, t: "Juni" },
-    { v: 7, t: "Juli" },
-    { v: 8, t: "Agustus" },
-    { v: 9, t: "September" },
-    { v: 10, t: "Oktober" },
-    { v: 11, t: "November" },
-    { v: 12, t: "Desember" },
-  ];
-  // ===================================================
-  // HELPER: UPDATE LABEL BUTTON BULAN & TAHUN
-  // ===================================================
-  function updateBulanButton() {
-    const btn = document.getElementById("btnOpenBulan");
-    if (!btn) return;
-
-    if (!filterState.bulan) {
-      btn.textContent = "Pilih Bulan";
-      btn.classList.add("text-muted");
-      return;
-    }
-
-    const bulanText = bulanData.find((b) => b.v === filterState.bulan)?.t;
-
-    btn.textContent = bulanText || "Pilih Bulan";
-    btn.classList.remove("text-muted");
-  }
-
-  function updateTahunButton() {
-    const btn = document.getElementById("btnOpenTahun");
-    if (!btn) return;
-
-    if (!filterState.tahun) {
-      btn.textContent = "Pilih Tahun";
-      btn.classList.add("text-muted");
-      return;
-    }
-
-    btn.textContent = filterState.tahun;
-    btn.classList.remove("text-muted");
-  }
-
   // ===================================================
   // HELPER KHUSUS
+  // ===================================================
+
+  renderEmptyState();
+
+  // ===================================================
+  // EMPTY STATE
   // ===================================================
   function renderEmptyState() {
     const wrapper = document.getElementById("absensiCardWrapper");
@@ -200,114 +101,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     wrapper.innerHTML = `
     <div class="text-center text-muted py-4">
-      <div style="color:#4ecdc4;">Silakan Search Dengan Bulan dan Tahun</div>
+      Silakan pilih bulan lalu klik <b>Cari</b>
     </div>
   `;
   }
 
-  // Set nilai awal modal
-
   renderEmptyState();
-  // ===================================================
-  // OPEN MODAL (DESKTOP & MOBILE)
-  // ===================================================
-  [desktopTrigger, mobileTrigger].forEach((trigger) => {
-    if (!trigger) return;
-    trigger.addEventListener("click", () => {
-      $("#filterModal").modal("show");
-    });
-  });
-  // PREPARE CONTENT WHEN MODAL OPENS
-  $("#filterModal").on("show.bs.modal", () => {
-    document.getElementById("bulanList").classList.add("d-none");
-    document.getElementById("tahunList").classList.add("d-none");
-
-    updateBulanButton();
-    updateTahunButton();
-  });
-
-  // ===================================================
-  // fungsi render month picker
-  // ===================================================
-  function renderMonthPicker() {
-    const list = document.getElementById("bulanList");
-    list.innerHTML = "";
-
-    bulanData.forEach((b) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className =
-        "list-group-item list-group-item-action" +
-        (b.v === filterState.bulan ? " active" : "");
-
-      btn.textContent = b.t;
-
-      btn.onclick = () => {
-        filterState.bulan = b.v;
-
-        list.classList.add("d-none");
-
-        updateBulanButton(); // ⬅️ INI PENTING
-        updateTriggerText(); // untuk trigger utama
-
-        if (filterState.tahun) {
-          $("#filterModal").modal("hide");
-
-          setTimeout(() => {
-            showGlobalLoading(); // ⬅️ TAMBAHKAN DI SINI
-            loadAbsensi();
-          }, 300);
-        }
-      };
-
-      list.appendChild(btn);
-    });
-  }
-
-  // ===================================================
-  // fungsi render year picker
-  // ===================================================
-  function renderYearPicker() {
-    const list = document.getElementById("tahunList");
-    list.innerHTML = "";
-
-    const startYear = new Date().getFullYear() - 1;
-    const endYear = new Date().getFullYear() + 2;
-
-    for (let y = startYear; y <= endYear; y++) {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className =
-        "list-group-item list-group-item-action" +
-        (y === filterState.tahun ? " active" : "");
-
-      btn.textContent = y;
-
-      btn.onclick = () => {
-        filterState.tahun = y;
-
-        list.classList.add("d-none");
-        updateTriggerText();
-
-        if (filterState.bulan) {
-          $("#filterModal").modal("hide");
-
-          setTimeout(() => {
-            showGlobalLoading(); // ⬅️ TAMBAHKAN DI SINI
-            loadAbsensi();
-          }, 300);
-        }
-      };
-
-      list.appendChild(btn);
-    }
-  }
 
   // ===================================================
   // LOAD ABSENSI DATA
   // ===================================================
   async function loadAbsensi() {
-    if (!filterState.bulan || !filterState.tahun) return;
+    if (!filterState.bulan) return;
+
+    const [tahun, bulan] = filterState.bulan.split("-");
 
     showGlobalLoading();
     await new Promise((r) => setTimeout(r, 3000)); // durasi loading
@@ -315,8 +122,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const params = new URLSearchParams({
-        bulan: filterState.bulan,
-        tahun: filterState.tahun,
+        bulan,
+        tahun,
       });
 
       const res = await fetch(`/api/ortu/absensi/kehadiran?${params}`, {

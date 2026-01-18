@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id" translate="no">
   <head>
     <meta charset="UTF-8" />
@@ -11,6 +11,7 @@
       rel="stylesheet"
     />
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet" />
+
     <link href="assets/css/layout-ortu-absensi.css" rel="stylesheet" />
     <link href="assets/css/theme-ortu.css" rel="stylesheet" />
     <link href="assets/css/loader-ortu.css" rel="stylesheet" />
@@ -106,28 +107,21 @@
                 </div>
 
                 <div class="card-body">
-                  <div class="row align-items-end">
-                    <!-- BULAN -->
-                    <div class="col-md-4 mb-3">
-                      <label for="bulan" class="small font-weight-bold"></label>
-
-                      <!-- DESKTOP TRIGGER -->
+                  <div class="form-row align-items-end">
+                    <div class="col-md-3 mb-2">
+                      <label class="small text-muted">Pilih Bulan</label>
                       <input
-                        type="text"
-                        id="filterDesktopTrigger"
-                        class="form-control d-none d-md-block"
-                        placeholder=" Pilih Bulan & Tahun"
-                        readonly
+                        type="month"
+                        id="filterBulan"
+                        class="form-control"
+                        autocomplete="off"
                       />
+                    </div>
 
-                      <!-- MOBILE TRIGGER -->
-                      <input
-                        type="text"
-                        id="filterMobileTrigger"
-                        class="form-control d-md-none"
-                        placeholder="Pilih Bulan & Tahun"
-                        readonly
-                      />
+                    <div class="col-md-2 mb-2">
+                      <button id="btnFilter" class="btn btn-primary btn-block">
+                        <i class="fas fa-search"></i> Cari
+                      </button>
                     </div>
                   </div>
                 </div>
