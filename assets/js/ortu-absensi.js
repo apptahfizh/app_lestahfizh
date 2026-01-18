@@ -14,24 +14,30 @@ function splitHariTanggal(value) {
     return { hari: "-", tanggal: "-" };
   }
 
-  // Jika format ISO: YYYY-MM-DD
+  // Case 1: ISO YYYY-MM-DD
   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     const [y, m, d] = value.split("-");
     return {
       hari: new Date(value).toLocaleDateString("id-ID", { weekday: "long" }),
-      tanggal: `${d}/${m}/${y}`, // DD/MM/YYYY
+      tanggal: `${d}/${m}/${y}`,
     };
   }
 
-  // Jika sudah mengandung hari (fallback lama)
-  if (value.includes(",")) {
-    const [hari, tanggal] = value.split(",").map((v) => v.trim());
+  // Case 2: "Rabu, 2026-01-07" atau "Rabu 2026-01-07"
+  const match = value.match(
+    /^(?<hari>[A-Za-zÀ-ÿ]+)[,\s]+(?<tanggal>\d{4}-\d{2}-\d{2})$/,
+  );
+
+  if (match?.groups) {
+    const { hari, tanggal } = match.groups;
+    const [y, m, d] = tanggal.split("-");
     return {
-      hari: hari || "-",
-      tanggal: tanggal || "-",
+      hari,
+      tanggal: `${d}/${m}/${y}`,
     };
   }
 
+  // fallback aman
   return { hari: "-", tanggal: value };
 }
 
