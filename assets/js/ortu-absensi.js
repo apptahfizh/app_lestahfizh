@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       wrapper.innerHTML += `
     <div class="absensi-card">
-      <div class="tanggal">${hari}, ${tanggal}</div>
+      <div class="tanggal">📅${hari}, ${tanggal}</div>
       <div class="status">
         <span class="badge badge-${
           statusColor[row.status] || "secondary"
