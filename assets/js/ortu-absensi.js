@@ -196,15 +196,21 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     rows.forEach((row) => {
+      const { hari, tanggal } = splitHariTanggal(row.tanggal_hari);
+
       wrapper.innerHTML += `
-        <div class="absensi-card">
-          <div class="tanggal">${hari}, ${tanggal}</div>
-          <div class="status"><span class="badge badge-${
-            statusColor[row.status] || "secondary"
-          } px-3">${(row.status || "-").toUpperCase()}</span></div>
-          <div class="keterangan">${row.keterangan || "-"}</div>
-        </div>
-      `;
+    <div class="absensi-card">
+      <div class="tanggal">${hari}, ${tanggal}</div>
+      <div class="status">
+        <span class="badge badge-${
+          statusColor[row.status] || "secondary"
+        } px-3">
+          ${(row.status || "-").toUpperCase()}
+        </span>
+      </div>
+      <div class="keterangan">${row.keterangan || "-"}</div>
+    </div>
+  `;
     });
   }
 
