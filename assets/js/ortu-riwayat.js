@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (filterBulan) {
     filterBulan.addEventListener("input", () =>
-      toggleFilterActive(filterBulan)
+      toggleFilterActive(filterBulan),
     );
 
     // set status awal (reload / back)
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btnReset")?.addEventListener("click", () => {
     // RESET INPUT
     ["filterBulan", "filterSurah", "filterSurahId"].forEach((id) =>
-      setVal(id, "")
+      setVal(id, ""),
     );
 
     document.getElementById("surahList")?.replaceChildren();
@@ -270,7 +270,7 @@ async function loadRiwayatHafalan(filter = {}) {
       </td>
       <td>${row.keterangan || "-"}</td>
     </tr>
-    `
+    `,
       );
     });
 
@@ -419,7 +419,7 @@ function renderRiwayatCards(rows) {
       `
   <div class="riwayat-card">
     <div class="tanggal">
-      ${formatTanggalIndo(row.tanggal)}
+      📅 ${formatTanggalIndo(row.tanggal)}
     </div>
 
     <div class="surah">
@@ -452,7 +452,7 @@ function renderRiwayatCards(rows) {
       <div class="progress-text">0%</div>
     </div>
   </div>
-  `
+  `,
     );
   });
   // Trigger animasi SETELAH DOM card masuk
