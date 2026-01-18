@@ -14,7 +14,16 @@ function splitHariTanggal(value) {
     return { hari: "-", tanggal: "-" };
   }
 
-  // Kasus: "Senin, 17/12/2025"
+  // Jika format ISO: YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    const [y, m, d] = value.split("-");
+    return {
+      hari: new Date(value).toLocaleDateString("id-ID", { weekday: "long" }),
+      tanggal: `${d}/${m}/${y}`, // DD/MM/YYYY
+    };
+  }
+
+  // Jika sudah mengandung hari (fallback lama)
   if (value.includes(",")) {
     const [hari, tanggal] = value.split(",").map((v) => v.trim());
     return {
@@ -23,20 +32,6 @@ function splitHariTanggal(value) {
     };
   }
 
-  // Kasus: ISO / YYYY-MM-DD
-  const d = new Date(value);
-  if (!isNaN(d)) {
-    return {
-      hari: d.toLocaleDateString("id-ID", { weekday: "long" }),
-      tanggal: d.toLocaleDateString("id-ID", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      }),
-    };
-  }
-
-  // fallback
   return { hari: "-", tanggal: value };
 }
 
