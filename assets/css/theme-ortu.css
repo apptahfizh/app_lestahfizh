@@ -49,7 +49,11 @@ TOPBAR THEME
   z-index: 1030;
 }
 .topbar i {
-  color: #2563eb;
+  color: linear-gradient(
+    135deg,
+    rgba(129, 231, 129, 0.61),
+    rgba(253, 230, 138, 0.85)
+  );
 }
 
 /* =====================================================
