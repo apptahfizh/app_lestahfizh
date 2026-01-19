@@ -95,6 +95,14 @@ FILTER & BUTTON
 #btnExportPDF {
   text-align: center;
 }
+
+/* ===============================
+   FILTER INPUT
+================================ */
+#btnFilter {
+  background: linear-gradient(90deg, #3f7003, #158806, #a09d04) !important;
+  color: #fff !important;
+}
 /* =====================================================
 MODAL FILTER — GRADIENT + GLASS EFFECT
 ===================================================== */
