@@ -491,10 +491,6 @@ SIDEBAR UKURAN PENUH DI MOBILE
     font-size: 0.85rem;
     letter-spacing: 0.3px;
   }
-
-  .sidebar-menu-wrapper .nav-item.active .nav-link {
-    border-left: none;
-  }
 }
 /* =====================================================
    MOBILE SIDEBAR — TRUE CENTER ALIGNMENT FIX
