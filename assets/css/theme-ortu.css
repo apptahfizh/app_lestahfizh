@@ -670,3 +670,23 @@ FOOTER
   position: relative;
   z-index: 1;
 }
+.sidebar .nav-link,
+.sidebar .nav-link i {
+  color: #ffffff !important;
+}
+
+.sidebar .nav-link.active {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+}
+.sidebar .sidebar-brand {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 0 0 18px 18px;
+  margin-bottom: 10px;
+}
+@media (max-width: 768px) {
+  .sidebar {
+    background-position: center top;
+    background-size: cover;
+  }
+}
