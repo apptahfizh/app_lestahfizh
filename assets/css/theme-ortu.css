@@ -168,6 +168,7 @@ MENU TOGGLE BUTTON
 #sidebarToggleTop {
   width: 20px;
   height: 20px;
+  padding: 0;
   border-radius: 10px;
   background: linear-gradient(
     135deg,
