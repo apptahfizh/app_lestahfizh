@@ -1,5 +1,6 @@
 function normalizeStatus(status) {
-  return status ? status.toLowerCase().replace(/\s+/g, "_") : status;
+  if (!status) return "tidak_hadir";
+  return status.toLowerCase().replace(/\s+/g, "_");
 }
 
 const tanggalInput = document.getElementById("tanggal");
@@ -76,18 +77,19 @@ function renderTable() {
   };
 
   filtered.forEach((p) => {
-    const statusText = p.status.replace("_", " ").toUpperCase();
-    const badgeClass = badgeMap[p.status] || "badge-secondary";
+    const statusKey = p.status || "tidak_hadir";
+    const statusText = statusKey.replace("_", " ").toUpperCase();
+    const badgeClass = badgeMap[statusKey] || "badge-secondary";
 
     tabel.insertAdjacentHTML(
       "beforeend",
       `
-      <tr>
-        <td>${p.nama}</td>
-        <td><span class="badge ${badgeClass}">${statusText}</span></td>
-        <td>${p.keterangan || "-"}</td>
-      </tr>
-    `
+    <tr>
+      <td>${p.nama || "-"}</td>
+      <td><span class="badge ${badgeClass}">${statusText}</span></td>
+      <td>${p.keterangan || "-"}</td>
+    </tr>
+  `,
     );
   });
 }
@@ -123,24 +125,25 @@ function renderDaftarAbsensiCards() {
   };
 
   filtered.forEach((p) => {
-    const statusText = p.status.replace("_", " ").toUpperCase();
-    const badgeClass = badgeMap[p.status];
+    const statusKey = p.status || "tidak_hadir";
+    const statusText = statusKey.replace("_", " ").toUpperCase();
+    const badgeClass = badgeMap[statusKey] || "badge-secondary";
 
     const card = document.createElement("div");
     card.className = "daftarabsensi-card";
 
     card.innerHTML = `
-      <div class="d-flex justify-content-between align-items-center mb-1">
-        <div class="nama">👤 ${p.nama}</div>
-        <span class="badge ${badgeClass}">
-          ${statusText}
-        </span>
-      </div>
+    <div class="d-flex justify-content-between align-items-center mb-1">
+      <div class="nama">👤 ${p.nama || "-"}</div>
+      <span class="badge ${badgeClass}">
+        ${statusText}
+      </span>
+    </div>
 
-      <div class="keterangan text-muted small">
-        ${p.keterangan || "-"}
-      </div>
-    `;
+    <div class="keterangan text-muted small">
+      ${p.keterangan || "-"}
+    </div>
+  `;
 
     mobileList.appendChild(card);
   });
