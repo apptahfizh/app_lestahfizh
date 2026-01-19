@@ -147,9 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // MOBILE
       if (window.innerWidth < 768) {
-        if (table) table.destroy();
-        table = null;
-        tableWrapper.classList.add("d-none");
         renderMobileCards(rows);
         hideGlobalLoading();
         return;
