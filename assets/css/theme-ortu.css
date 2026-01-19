@@ -654,11 +654,12 @@ FOOTER
   background-image: url("../img/sidebar-bg.webp");
   background-repeat: no-repeat;
   background-position: center top;
-  background-size: cover;
+  background-size: 100% auto;
 
-  /* penting agar full tinggi */
+  background-color: #0f7a2a; /* warna dasar kalau gambar habis */
   min-height: 100vh;
 }
+
 .sidebar::before {
   content: "";
   position: absolute;
