@@ -108,11 +108,14 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
   margin-bottom: 4px;
 }
 
-.riwayat-card .surah {
+.quran-icon {
+  color: #158806; /* hijau islami */
+}
+
+.surah {
   font-weight: 600;
-  font-size: 14px;
-  color: #0e52da;
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
 }
 
 /* LABEL STACK (Setor & Hafalan) */

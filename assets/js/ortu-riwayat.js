@@ -434,9 +434,22 @@ function renderRiwayatCards(rows) {
   ${formatTanggalIndo(row.tanggal)}
 </div>
 
-    <div class="surah">
-      QS ${row.surah_nama}
-    </div>
+   <div class="surah">
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 640 512"
+    class="mr-1 quran-icon"
+    style="vertical-align:-2px"
+    aria-hidden="true"
+  >
+    <path
+      fill="currentColor"
+      d="M320 32C145.1 32 0 64.6 0 128v256c0 63.4 145.1 96 320 96s320-32.6 320-96V128C640 64.6 494.9 32 320 32zm0 64c141.4 0 256 22.9 256 32s-114.6 32-256 32S64 137.1 64 128s114.6-32 256-32zm0 96c141.4 0 256 22.9 256 32s-114.6 32-256 32S64 233.1 64 224s114.6-32 256-32zm0 96c141.4 0 256 22.9 256 32s-114.6 32-256 32S64 329.1 64 320s114.6-32 256-32z"
+    />
+  </svg>
+  QS ${row.surah_nama}
+</div>
 
     <div class="label-row">
       <span class="label">Setor Ayat ke</span>
