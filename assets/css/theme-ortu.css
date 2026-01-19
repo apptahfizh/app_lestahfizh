@@ -156,12 +156,7 @@ SIDEBAR ICON
 /* =====================================================
 SIDEBAR ORNAMENT
 ===================================================== */
-.sidebar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
+
 /* =====================================================
 MENU TOGGLE BUTTON
 ===================================================== */
@@ -661,9 +656,18 @@ FOOTER
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.25);
   z-index: 0;
+
+  /* Gelap di atas, transparan di bawah */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.25) 35%,
+    rgba(0, 0, 0, 0.05) 65%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
+
 .sidebar > * {
   position: relative;
   z-index: 1;
@@ -684,7 +688,7 @@ FOOTER
 }
 @media (max-width: 768px) {
   .sidebar {
-    background-position: center top;
+    background-position: top center;
     background-size: cover;
   }
 }
