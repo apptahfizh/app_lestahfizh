@@ -649,7 +649,7 @@ FOOTER
   background-image: url("../img/sidebar-bg.webp");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: top center;
+  background-position: center bottom;
 }
 
 .sidebar::before {
