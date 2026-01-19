@@ -1,5 +1,5 @@
 function normalizeStatus(status) {
-  if (!status) return "tidak_hadir";
+  if (!status) return null;
   return status.toLowerCase().replace(/\s+/g, "_");
 }
 
@@ -77,8 +77,15 @@ function renderTable() {
   };
 
   filtered.forEach((p) => {
-    const statusKey = p.status || "tidak_hadir";
-    const statusText = statusKey.replace("_", " ").toUpperCase();
+    let statusHtml = `<span class="text-muted">belum input absensi</span>`;
+
+    if (p.status) {
+      const statusText = p.status.replace("_", " ").toUpperCase();
+      const badgeClass = badgeMap[p.status] || "badge-secondary";
+
+      statusHtml = `<span class="badge ${badgeClass}">${statusText}</span>`;
+    }
+
     const badgeClass = badgeMap[statusKey] || "badge-secondary";
 
     tabel.insertAdjacentHTML(
@@ -125,8 +132,15 @@ function renderDaftarAbsensiCards() {
   };
 
   filtered.forEach((p) => {
-    const statusKey = p.status || "tidak_hadir";
-    const statusText = statusKey.replace("_", " ").toUpperCase();
+    let statusHtml = `<span class="text-muted">belum input absensi</span>`;
+
+    if (p.status) {
+      const statusText = p.status.replace("_", " ").toUpperCase();
+      const badgeClass = badgeMap[p.status] || "badge-secondary";
+
+      statusHtml = `<span class="badge ${badgeClass}">${statusText}</span>`;
+    }
+
     const badgeClass = badgeMap[statusKey] || "badge-secondary";
 
     const card = document.createElement("div");
