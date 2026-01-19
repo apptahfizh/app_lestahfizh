@@ -649,3 +649,24 @@ FOOTER
   align-items: center;
   justify-content: center;
 }
+/* ================= SIDEBAR BACKGROUND ================= */
+.sidebar {
+  background-image: url("../img/sidebar-bg.webp");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+
+  /* penting agar full tinggi */
+  min-height: 100vh;
+}
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 0;
+}
+.sidebar > * {
+  position: relative;
+  z-index: 1;
+}
