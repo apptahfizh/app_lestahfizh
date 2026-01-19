@@ -48,6 +48,9 @@ TOPBAR THEME
   top: 0;
   z-index: 1030;
 }
+.topbar i {
+  color: #2563eb;
+}
 
 /* =====================================================
 MAIN SCROLL THEME
@@ -74,7 +77,8 @@ SIDEBAR THEME
 }
 
 .sidebar::before {
-  background-image: repeating-linear-gradient(
+  background-image:
+    repeating-linear-gradient(
       45deg,
       rgba(255, 215, 0, 0.04) 0,
       rgba(255, 215, 0, 0.04) 1px,
@@ -135,7 +139,9 @@ SIDEBAR ICON
 ===================================================== */
 .sidebar .nav-link i {
   color: #fbbf24;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
 }
 
 .sidebar .nav-link:hover i {
@@ -160,7 +166,7 @@ SIDEBAR ORNAMENT
 MENU TOGGLE BUTTON
 ===================================================== */
 #sidebarToggleTop {
-  width: 40px;
+  width: 20px;
   height: 40px;
   border-radius: 10px;
   background: linear-gradient(
@@ -171,7 +177,8 @@ MENU TOGGLE BUTTON
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25),
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.25),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transition: all 0.25s ease;
 }
@@ -408,7 +415,8 @@ SIDEBAR UKURAN PENUH DI MOBILE
   pointer-events: none;
   z-index: 0;
 
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at top right,
       rgba(212, 175, 55, 0.08),
       transparent 45%
