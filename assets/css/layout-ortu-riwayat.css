@@ -118,10 +118,17 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
 /* LABEL STACK (Setor & Hafalan) */
 .riwayat-card .label-row {
   display: flex;
-  justify-content: flex-start;
+  align-items: flex-start;
   gap: 6px;
   font-size: 13px;
   margin-bottom: 4px;
+}
+
+.label-row .label {
+  min-width: 120px;
+}
+.label-row .value {
+  text-align: left;
 }
 
 .riwayat-card .label {
