@@ -103,6 +103,29 @@ FILTER & BUTTON
   background: linear-gradient(90deg, #3f7003, #158806, #a09d04) !important;
   color: #fff !important;
 }
+/* ===============================
+   FILTER INPUT - ACTIVE STATE
+================================ */
+
+.filter-active::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ===============================
+   FILTER INPUT - TERISI
+================================ */
+.form-control.filter-active {
+  background: linear-gradient(90deg, #3f7003, #158806, #a09d04) !important;
+  color: #fff !important;
+  border-color: #2f5c02 !important;
+}
+
+.form-control.filter-active::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+#btnExportPDF {
+  text-align: center;
+}
 /* =====================================================
 MODAL FILTER — GRADIENT + GLASS EFFECT
 ===================================================== */
