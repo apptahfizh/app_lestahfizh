@@ -212,7 +212,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       wrapper.innerHTML += `
     <div class="absensi-card">
-      <div class="tanggal">📅 ${hari}, ${tanggal}</div>
+      <div class="tanggal">
+  <svg width="14" height="14" viewBox="0 0 448 512"
+       class="mr-1" style="vertical-align:-2px">
+    <path fill="currentColor"
+      d="M152 64c0-13.3-10.7-24-24-24H24C10.7 40 0 50.7 0 64v384c0 35.3 28.7 64 64 64h320c35.3 0 64-28.7 64-64V64c0-13.3-10.7-24-24-24h-104c-13.3 0-24 10.7-24 24v40H152V64z"/>
+  </svg>
+  ${hari}, ${tanggal}
+</div>
+
       <div class="status">
         <span class="badge badge-${
           statusColor[row.status] || "secondary"
