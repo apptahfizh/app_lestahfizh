@@ -166,8 +166,8 @@ SIDEBAR ORNAMENT
 MENU TOGGLE BUTTON
 ===================================================== */
 #sidebarToggleTop {
-  width: 10px !important;
-  height: 10px !important;
+  width: 20px !important;
+  height: 20px !important;
   padding: 0;
   border-radius: 10px;
   background: linear-gradient(
