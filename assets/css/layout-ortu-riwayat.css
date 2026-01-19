@@ -111,7 +111,7 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
 .riwayat-card .surah {
   font-weight: 600;
   font-size: 14px;
-  color: #072563;
+  color: #0e52da;
   margin-bottom: 10px;
 }
 
@@ -141,12 +141,6 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
   color: #111827;
 }
 
-/* KETERANGAN */
-.riwayat-card .keterangan {
-  font-size: 12px;
-  color: #374151;
-  margin-top: 8px;
-}
 /* ===============================
  PROGRESS BAR
 ================================ */

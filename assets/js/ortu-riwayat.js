@@ -440,17 +440,17 @@ function renderRiwayatCards(rows) {
 
     <div class="label-row">
       <span class="label">Setor Ayat ke</span>
-      <span class="value">:${row.ayat_setor || "-"}</span>
+      <span class="value">: ${row.ayat_setor || "-"}</span>
     </div>
 
     <div class="label-row">
       <span class="label">Hafalan</span>
-      <span class="value">:${ayatHafal} ayat</span>
+      <span class="value">: ${ayatHafal} ayat</span>
     </div>
 
     <div class="label-row">
       <span class="label">Keterangan</span>
-      <span class="value">:${row.keterangan || "-"}</span>
+      <span class="value">: ${row.keterangan || "-"}</span>
     </div>
 
     <!-- PROGRESS BAR + % -->
