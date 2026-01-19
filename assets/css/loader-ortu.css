@@ -173,3 +173,7 @@
 body.loading {
   overflow: hidden;
 }
+
+.topbar i {
+  color: #2563eb;
+}
