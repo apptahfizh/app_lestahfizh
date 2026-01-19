@@ -436,18 +436,18 @@ function renderRiwayatCards(rows) {
 
    <div class="surah">
   <svg
-    width="16"
-    height="16"
-    viewBox="0 0 640 512"
-    class="mr-1 quran-icon"
-    style="vertical-align:-2px"
-    aria-hidden="true"
-  >
-    <path
-      fill="currentColor"
-      d="M320 32C145.1 32 0 64.6 0 128v256c0 63.4 145.1 96 320 96s320-32.6 320-96V128C640 64.6 494.9 32 320 32zm0 64c141.4 0 256 22.9 256 32s-114.6 32-256 32S64 137.1 64 128s114.6-32 256-32zm0 96c141.4 0 256 22.9 256 32s-114.6 32-256 32S64 233.1 64 224s114.6-32 256-32zm0 96c141.4 0 256 22.9 256 32s-114.6 32-256 32S64 329.1 64 320s114.6-32 256-32z"
-    />
-  </svg>
+  width="16"
+  height="16"
+  viewBox="0 0 576 512"
+  class="mr-1 quran-icon"
+  style="vertical-align:-2px"
+  aria-hidden="true"
+>
+  <path
+    fill="currentColor"
+    d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h144V32H96zm384 0H336v480h144c53 0 96-43 96-96V96c0-53-43-96-96-96zM240 32v448H96c-17.7 0-32-14.3-32-32V96c0-17.7 14.3-32 32-32h144zm272 64v352c0 17.7-14.3 32-32 32H336V32h144c17.7 0 32 14.3 32 32z"
+  />
+</svg>
   QS ${row.surah_nama}
 </div>
 
