@@ -653,11 +653,8 @@ FOOTER
 .sidebar {
   background-image: url("../img/sidebar-bg.webp");
   background-repeat: no-repeat;
-  background-position: center top;
-  background-size: 100% auto;
-
-  background-color: #0f7a2a; /* warna dasar kalau gambar habis */
-  min-height: 100vh;
+  background-size: cover;
+  background-position: top center;
 }
 
 .sidebar::before {
@@ -687,7 +684,7 @@ FOOTER
 }
 @media (max-width: 768px) {
   .sidebar {
-    background-size: 100% auto;
     background-position: center top;
+    background-size: cover;
   }
 }
