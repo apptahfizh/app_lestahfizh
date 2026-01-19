@@ -70,31 +70,6 @@ FOOTER THEME
 }
 
 /* =====================================================
-SIDEBAR THEME
-===================================================== 
-.sidebar {
-  background: linear-gradient(180deg, #1f2937 0%, #1b2e25 45%, #2a2a15 100%);
-}
-
-.sidebar::before {
-  background-image:
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 215, 0, 0.04) 0,
-      rgba(255, 215, 0, 0.04) 1px,
-      transparent 1px,
-      transparent 14px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      rgba(255, 215, 0, 0.03) 0,
-      rgba(255, 215, 0, 0.03) 1px,
-      transparent 1px,
-      transparent 18px
-    );
-}
-
-/* =====================================================
 SIDEBAR BRAND
 ===================================================== */
 .sidebar-brand {
@@ -153,9 +128,6 @@ SIDEBAR ICON
   color: #fde68a;
   filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.4));
 }
-/* =====================================================
-SIDEBAR ORNAMENT
-===================================================== */
 
 /* =====================================================
 MENU TOGGLE BUTTON
@@ -682,7 +654,6 @@ FOOTER
   border-radius: 10px;
 }
 .sidebar .sidebar-brand {
-  /*background: rgba(0, 0, 0, 0.35);*/
   border-radius: 0 0 18px 18px;
   margin-bottom: 10px;
 }
