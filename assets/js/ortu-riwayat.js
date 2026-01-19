@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   // END SURAH INPUT LISTENER
 
-  // FILTER BULAN STYLE
+  // fungsi pemanggilan FILTER BULAN ketika berisi berubah warna
   const filterBulan = document.getElementById("filterBulan");
 
   if (filterBulan) {

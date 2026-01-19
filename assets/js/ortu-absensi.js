@@ -73,6 +73,15 @@ document.addEventListener("DOMContentLoaded", () => {
       loadAbsensi();
     });
   }
+  // fungsi pemanggilan FILTER BULAN ketika berisi berubah warna
+  if (filterBulan) {
+    filterBulan.addEventListener("input", () =>
+      toggleFilterActive(filterBulan),
+    );
+
+    // set status awal (reload / back)
+    toggleFilterActive(filterBulan);
+  }
 
   // ===================================================
   // ELEMENT REFERENCES (FILTER & TABLE)
@@ -300,7 +309,7 @@ document.querySelectorAll("#accordionSidebar .nav-link").forEach((link) => {
 });
 
 // ===============================
-// FILTER INPUT BACKGROUND HANDLER
+// FILTER bulan terisi berubah warna
 // ===============================
 function toggleFilterActive(input) {
   if (!input) return;
