@@ -77,7 +77,7 @@ function renderTable() {
   };
 
   filtered.forEach((p) => {
-    let statusHtml = `<span class="text-muted">belum input absensi</span>`;
+    let statusHtml = `<span class="text-muted">-</span>`;
 
     if (p.status) {
       const statusText = p.status.replace("_", " ").toUpperCase();
@@ -86,17 +86,15 @@ function renderTable() {
       statusHtml = `<span class="badge ${badgeClass}">${statusText}</span>`;
     }
 
-    const badgeClass = badgeMap[statusKey] || "badge-secondary";
-
     tabel.insertAdjacentHTML(
       "beforeend",
       `
-    <tr>
-      <td>${p.nama || "-"}</td>
-      <td><span class="badge ${badgeClass}">${statusText}</span></td>
-      <td>${p.keterangan || "-"}</td>
-    </tr>
-  `,
+      <tr>
+        <td>${p.nama || "-"}</td>
+        <td>${statusHtml}</td>
+        <td>${p.keterangan || "-"}</td>
+      </tr>
+      `,
     );
   });
 }
@@ -107,13 +105,9 @@ function renderTable() {
 function renderDaftarAbsensiCards() {
   if (!mobileList) return;
 
-  const statusFilter = filterStatus.value;
   mobileList.innerHTML = "";
 
-  const filtered = allData.filter((p) => {
-    if (!statusFilter) return true;
-    return p.status === statusFilter;
-  });
+  const filtered = getFilteredData();
 
   if (!filtered.length) {
     mobileList.innerHTML = `
@@ -132,7 +126,7 @@ function renderDaftarAbsensiCards() {
   };
 
   filtered.forEach((p) => {
-    let statusHtml = `<span class="text-muted">belum input absensi</span>`;
+    let statusHtml = `<span class="text-muted small">Belum diisi</span>`;
 
     if (p.status) {
       const statusText = p.status.replace("_", " ").toUpperCase();
@@ -141,23 +135,19 @@ function renderDaftarAbsensiCards() {
       statusHtml = `<span class="badge ${badgeClass}">${statusText}</span>`;
     }
 
-    const badgeClass = badgeMap[statusKey] || "badge-secondary";
-
     const card = document.createElement("div");
     card.className = "daftarabsensi-card";
 
     card.innerHTML = `
-    <div class="d-flex justify-content-between align-items-center mb-1">
-      <div class="nama">👤 ${p.nama || "-"}</div>
-      <span class="badge ${badgeClass}">
-        ${statusText}
-      </span>
-    </div>
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <div class="nama">👤 ${p.nama || "-"}</div>
+        ${statusHtml}
+      </div>
 
-    <div class="keterangan text-muted small">
-      ${p.keterangan || "-"}
-    </div>
-  `;
+      <div class="keterangan text-muted small">
+        ${p.keterangan || "-"}
+      </div>
+    `;
 
     mobileList.appendChild(card);
   });
