@@ -688,7 +688,7 @@ FOOTER
 }
 @media (max-width: 768px) {
   .sidebar {
-    background-position: top center;
+    background-position: center bottom;
     background-size: cover;
   }
 }
