@@ -298,3 +298,16 @@ document.querySelectorAll("#accordionSidebar .nav-link").forEach((link) => {
     });
   });
 });
+
+// ===============================
+// FILTER INPUT BACKGROUND HANDLER
+// ===============================
+function toggleFilterActive(input) {
+  if (!input) return;
+
+  if (input.value && input.value !== "") {
+    input.classList.add("filter-active");
+  } else {
+    input.classList.remove("filter-active");
+  }
+}
