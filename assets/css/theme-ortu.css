@@ -184,6 +184,8 @@ MENU TOGGLE BUTTON
 }
 
 #sidebarToggleTop i {
+  font-size: 14px;
+  line-height: 1;
   color: #16a34a !important;
 }
 
