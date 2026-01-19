@@ -690,5 +690,6 @@ FOOTER
   .sidebar {
     background-position: center bottom;
     background-size: cover;
+    padding-bottom: 120px;
   }
 }
