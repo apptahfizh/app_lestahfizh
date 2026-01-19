@@ -194,3 +194,21 @@ MODAL FILTER — GRADIENT + GLASS EFFECT
   align-items: center;
   justify-content: center;
 }
+
+/* ===============================
+CARD LIST (MOBILE)
+================================ */
+.absensi-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.absensi-card .tanggal {
+  font-size: 12px;
+  color: #111827;
+  margin-bottom: 4px;
+}
