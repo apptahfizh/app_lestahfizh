@@ -690,9 +690,9 @@ function renderRiwayatCardEmptyState() {
   container.innerHTML = `
     <div class="text-center text-muted py-5">
       <i class="fas fa-inbox fa-2x mb-2"></i><br>
-      Belum Ada Riwayat Hafalan Pada Bulan/Surah Yang Dipilih<br>
+      Silakan Gunakan Bulan/Surah Yang Lain<br>
       <small class="text-muted">
-        Silakan Gunakan Bulan/Surah Yang Lain
+        Belum Ada Riwayat Hafalan
       </small>
     </div>
   `;
