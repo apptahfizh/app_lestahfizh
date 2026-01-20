@@ -105,7 +105,9 @@ SIDEBAR LINK
     rgba(255, 215, 0, 0.22),
     rgba(255, 215, 0, 0.06)
   );
-  border-left: 4px solid #b19a40;
+  border-radius: 10px;
+  border-left: 4px solid #f7cb06;
+  border-right: 4px solid #f7cb06;
   color: #fde68a;
 }
 
@@ -649,10 +651,6 @@ FOOTER
   color: #ffffff !important;
 }
 
-.sidebar .nav-link.active {
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-}
 .sidebar .sidebar-brand {
   border-radius: 0 0 18px 18px;
   margin-bottom: 10px;
