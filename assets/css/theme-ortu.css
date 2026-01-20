@@ -646,10 +646,7 @@ FOOTER
   background: rgba(255, 255, 255, 0.08);
   border-radius: 8px;
 }
-.sidebar .nav-item.active {
-  background: rgba(255, 255, 255, 0.14);
-  border-left: 3px solid #fde68a;
-}
+
 @media (max-width: 768px) {
   .sidebar::before {
     background: linear-gradient(
