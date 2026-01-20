@@ -666,7 +666,7 @@ function renderRiwayatEmptyState() {
       <tr>
         <td colspan="8" class="text-center text-muted py-5 primary">
           <i class="fas fa-filter fa-2x mb-2"></i><br>
-          Silakan pilih bulan lalu klik <b>Cari</b>
+          Silakan Pilih Salah Satu Bulan/Surah Lalu Klik <b>Cari</b>
         </td>
       </tr>
     `;
@@ -676,7 +676,7 @@ function renderRiwayatEmptyState() {
     cardList.innerHTML = `
       <div class="text-center text-muted py-5 primary">
         <i class="fas fa-filter fa-2x mb-2"></i><br>
-        Silakan pilih bulan lalu klik <b>Cari</b>
+        Silakan Pilih Salah Satu Bulan/Surah Lalu Klik <b>Cari</b>
       </div>
     `;
   }
@@ -690,9 +690,9 @@ function renderRiwayatCardEmptyState() {
   container.innerHTML = `
     <div class="text-center text-muted py-5">
       <i class="fas fa-inbox fa-2x mb-2"></i><br>
-      Belum ada riwayat hafalan<br>
+      Belum Ada Riwayat Hafalan Pada Bulan/Surah Yang Dipilih<br>
       <small class="text-muted">
-        Tidak ada data pada bulan/surah yang dipilih
+        Silakan Gunakan Bulan/Surah Yang Lain
       </small>
     </div>
   `;
