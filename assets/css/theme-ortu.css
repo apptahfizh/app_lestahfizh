@@ -676,11 +676,10 @@ FOOTER
   }
 }
 /* FORCE logout merah (menang dari sidebar) */
-.sidebar .nav-link.logout-danger,
 .sidebar .nav-link.logout-danger i {
   color: #dc2626 !important;
 }
-.sidebar .nav-link.logout-danger:hover,
+
 .sidebar .nav-link.logout-danger:hover i {
   color: #b91c1c !important;
   background: rgba(220, 38, 38, 0.12);
