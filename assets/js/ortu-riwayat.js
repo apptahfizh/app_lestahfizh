@@ -666,7 +666,7 @@ function renderRiwayatEmptyState() {
       <tr>
         <td colspan="8" class="text-center text-muted py-5 primary">
           <i class="fas fa-filter fa-2x mb-2"></i><br>
-          Silakan gunakan filter untuk menampilkan riwayat hafalan
+          Silakan pilih bulan lalu klik <b>Cari</b>
         </td>
       </tr>
     `;
@@ -676,7 +676,7 @@ function renderRiwayatEmptyState() {
     cardList.innerHTML = `
       <div class="text-center text-muted py-5 primary">
         <i class="fas fa-filter fa-2x mb-2"></i><br>
-        Silakan gunakan filter untuk menampilkan riwayat hafalan
+        Silakan pilih bulan lalu klik <b>Cari</b>
       </div>
     `;
   }
