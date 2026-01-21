@@ -710,12 +710,6 @@ FOOTER
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
 }
 
-.sidebar-brand {
-  background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(2px);
-  border-radius: 0 0 18px 18px;
-}
-
 @media (max-width: 768px) {
   .sidebar-logo {
     width: 64px;
