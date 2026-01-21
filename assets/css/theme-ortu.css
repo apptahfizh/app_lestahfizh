@@ -697,6 +697,9 @@ FOOTER
   max-width: 100%;
   height: auto;
 
+  /* ⬇️ TURUNKAN TERANG & KONTRAS */
+  filter: brightness(0.85) contrast(0.95) saturate(0.85);
+
   /* efek halus agar menyatu */
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
   transition:
@@ -706,8 +709,9 @@ FOOTER
 
 /* hover halus */
 .sidebar-logo:hover {
+  filter: brightness(0.95) contrast(1) saturate(0.95);
+  transform: scale(1.03);
   transform: scale(1.04);
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
 }
 
 @media (max-width: 768px) {
