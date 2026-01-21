@@ -717,5 +717,6 @@ FOOTER
 @media (max-width: 768px) {
   .sidebar-logo {
     width: 80px;
+    filter: brightness(0.8) contrast(0.9) saturate(0.8);
   }
 }
