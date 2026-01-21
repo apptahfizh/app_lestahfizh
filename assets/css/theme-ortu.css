@@ -729,7 +729,7 @@ FOOTER
 }
 @media (max-width: 768px) {
   .sidebar-footer {
-    padding-bottom: 14px;
+    padding-bottom: 10px;
   }
 
   .footer-app {
