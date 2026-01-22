@@ -765,7 +765,34 @@ FOOTER
   }
 
   .sidebar-menu-wrapper .nav-icon img {
-    width: 46px;
-    height: 46px;
+    width: 26px;
+    height: 26px;
+  }
+}
+/* ===============================
+   SIDEBAR MENU ICON (RESPONSIVE)
+================================ */
+
+/* DEFAULT → DESKTOP */
+.sidebar-menu-icon {
+  width: 22px;
+  height: auto;
+  margin-right: 10px;
+  object-fit: contain;
+  filter: brightness(0.9) saturate(0.9);
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+/* HOVER */
+.sidebar .nav-link:hover .sidebar-menu-icon {
+  transform: scale(1.08);
+  filter: brightness(1.05) saturate(1);
+}
+@media (max-width: 767.98px) {
+  .sidebar-menu-icon {
+    width: 32px; /* ⬅️ LEBIH BESAR DI MOBILE */
+    margin: 0 0 6px 0;
   }
 }
