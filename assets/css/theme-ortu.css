@@ -713,7 +713,7 @@ FOOTER
 
 @media (max-width: 768px) {
   .sidebar-logo {
-    width: 100px;
+    width: 80px;
     filter: brightness(1.05) contrast(1) saturate(0.95);
   }
 }
@@ -754,10 +754,10 @@ FOOTER
 }
 @media (max-width: 767.98px) {
   .sidebar-menu-wrapper .nav-icon {
-    width: 62px; /* ⬅️ MOBILE JELAS & PROPORSIONAL */
-    height: 62px;
+    width: 50px; /* ⬅️ MOBILE JELAS & PROPORSIONAL */
+    height: 50px;
     margin-right: 0;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
   .nav-icon img {
     width: 100%;
