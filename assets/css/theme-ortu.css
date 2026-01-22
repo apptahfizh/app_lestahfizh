@@ -762,4 +762,8 @@ FOOTER
     margin-right: 0;
     margin-bottom: 6px;
   }
+  .nav-icon img {
+    width: 100%;
+    height: 100%;
+  }
 }
