@@ -775,7 +775,7 @@ FOOTER
 
 /* DEFAULT → DESKTOP */
 .sidebar-menu-icon {
-  width: 22px;
+  width: 8px;
   height: auto;
   margin-right: 10px;
   object-fit: contain;
@@ -792,7 +792,7 @@ FOOTER
 }
 @media (max-width: 767.98px) {
   .sidebar-menu-icon {
-    width: 32px; /* ⬅️ LEBIH BESAR DI MOBILE */
+    width: 42px; /* ⬅️ LEBIH BESAR DI MOBILE */
     margin: 0 0 6px 0;
   }
 }
