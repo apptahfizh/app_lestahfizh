@@ -723,9 +723,9 @@ FOOTER
 
 /* ================= SIDEBAR IMAGE ICON ================= */
 .nav-icon {
-  width: 22px;
+  width: 22px; /* ⬅️ UKURAN DESKTOP IDEAL */
   height: 22px;
-  margin-right: 10px;
+  margin-right: 12px;
 
   display: inline-flex;
   align-items: center;
@@ -738,9 +738,7 @@ FOOTER
   height: 100%;
   object-fit: contain;
 
-  /* tone down agar tidak norak */
   filter: brightness(0.9) saturate(0.9);
-
   transition:
     filter 0.25s ease,
     transform 0.25s ease;
@@ -757,42 +755,11 @@ FOOTER
   filter: brightness(1.05) saturate(1.05)
     drop-shadow(0 0 6px rgba(255, 215, 0, 0.35));
 }
-/* MOBILE */
 @media (max-width: 767.98px) {
   .sidebar-menu-wrapper .nav-icon {
+    width: 32px; /* ⬅️ MOBILE JELAS & PROPORSIONAL */
+    height: 32px;
     margin-right: 0;
     margin-bottom: 6px;
-  }
-
-  .sidebar-menu-wrapper .nav-icon img {
-    width: 26px;
-    height: 26px;
-  }
-}
-/* ===============================
-   SIDEBAR MENU ICON (RESPONSIVE)
-================================ */
-
-/* DEFAULT → DESKTOP */
-.sidebar-menu-icon {
-  width: 10px;
-  height: auto;
-  margin-right: 10px;
-  object-fit: contain;
-  filter: brightness(0.9) saturate(0.9);
-  transition:
-    transform 0.2s ease,
-    filter 0.2s ease;
-}
-
-/* HOVER */
-.sidebar .nav-link:hover .sidebar-menu-icon {
-  transform: scale(1.08);
-  filter: brightness(1.05) saturate(1);
-}
-@media (max-width: 767.98px) {
-  .sidebar-menu-icon {
-    width: 42px; /* ⬅️ LEBIH BESAR DI MOBILE */
-    margin: 0 0 6px 0;
   }
 }
