@@ -775,7 +775,7 @@ FOOTER
 
 /* DEFAULT → DESKTOP */
 .sidebar-menu-icon {
-  width: 8px;
+  width: 10px;
   height: auto;
   margin-right: 10px;
   object-fit: contain;
