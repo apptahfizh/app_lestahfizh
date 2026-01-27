@@ -292,9 +292,9 @@ function formatTanggalWaktuID(date = new Date()) {
 // GENERATE PDF (ANTI LOADER NYANGKUT)
 // ===============================
 async function generatePdfRiwayat(peserta, bulan) {
-  try {
-    if (window.AdminLoader) AdminLoader.show();
+  if (window.AdminLoader) AdminLoader.show();
 
+  try {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF("p", "mm", "a4");
 
@@ -313,7 +313,9 @@ async function generatePdfRiwayat(peserta, bulan) {
         d.keterangan || "-",
       ]);
 
+    // ⛔ JIKA DATA KOSONG → MATIKAN LOADER DULU
     if (rows.length === 0) {
+      if (window.AdminLoader) AdminLoader.hide();
       Swal.fire("Info", "Tidak ada data pada bulan tersebut", "info");
       return;
     }
@@ -341,8 +343,10 @@ async function generatePdfRiwayat(peserta, bulan) {
     doc.save(`Riwayat-Hafalan-${peserta}-${bulan}.pdf`);
   } catch (err) {
     console.error(err);
-    Swal.fire("Error", "Gagal membuat PDF", "error");
-  } finally {
     if (window.AdminLoader) AdminLoader.hide();
+    Swal.fire("Error", "Gagal membuat PDF", "error");
   }
+
+  // ✅ PASTI MATI DI AKHIR
+  if (window.AdminLoader) AdminLoader.hide();
 }
