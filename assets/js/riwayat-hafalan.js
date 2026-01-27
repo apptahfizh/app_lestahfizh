@@ -16,10 +16,8 @@ function validateFilterTanggal() {
   const mulai = $("#filterTanggalMulai").val();
   const selesai = $("#filterTanggalSelesai").val();
 
-  // Keduanya kosong → OK
   if (!mulai && !selesai) return true;
 
-  // Salah satu saja → TOLAK
   if (!mulai || !selesai) {
     Swal.fire({
       icon: "warning",
@@ -29,7 +27,6 @@ function validateFilterTanggal() {
     return false;
   }
 
-  // Range terbalik
   if (mulai > selesai) {
     Swal.fire({
       icon: "warning",
@@ -43,9 +40,10 @@ function validateFilterTanggal() {
 }
 
 // =========================
-// FLAG LOADER
+// FLAG
 // =========================
 let suppressLoader = false;
+let hasSearched = false; // 🔥 PENENTU load awal kosong
 
 // ===================================
 // RENDER RIWAYAT HAFALAN KE CARD LIST
@@ -56,7 +54,9 @@ function renderMobileCards(data) {
 
   if (!data || data.length === 0) {
     container.html(
-      `<div class="text-center text-muted py-4">Tidak ada data</div>`
+      `<div class="text-center text-muted py-4">
+        Silakan lakukan pencarian terlebih dahulu
+      </div>`,
     );
     return;
   }
@@ -64,7 +64,7 @@ function renderMobileCards(data) {
   data.forEach((row) => {
     const d = new Date(row.tanggal);
     const tanggal = `${String(d.getDate()).padStart(2, "0")}-${String(
-      d.getMonth() + 1
+      d.getMonth() + 1,
     ).padStart(2, "0")}-${d.getFullYear()}`;
 
     const card = `
@@ -116,7 +116,6 @@ function relocatePaginationToBottom() {
 
   if (!cardList.length) return;
 
-  // Buat container footer jika belum ada
   if (!$("#riwayatTableFooter").length) {
     cardList.after(`
       <div id="riwayatTableFooter" class="mt-2 text-center"></div>
@@ -124,25 +123,20 @@ function relocatePaginationToBottom() {
   }
 
   const footer = $("#riwayatTableFooter");
-
   footer.empty().append(info).append(paginate);
 }
 
-// helper GLOBAL untuk tombol cari
+// helper tombol cari
 function updateSearchButtonState() {
   const tglMulai = $("#filterTanggalMulai").val();
   const tglSelesai = $("#filterTanggalSelesai").val();
   const peserta = $("#filterPeserta").val().trim();
 
   const isEmpty = !tglMulai && !tglSelesai && !peserta;
-
   $("#btnSearch").prop("disabled", isEmpty);
 }
 
 $(document).ready(function () {
-  // =========================
-  // AUTH
-  // =========================
   checkAuth(["admin", "ustadz"]);
 
   updateSearchButtonState();
@@ -151,32 +145,23 @@ $(document).ready(function () {
     "change input",
     function () {
       updateSearchButtonState();
-    }
+    },
   );
 
-  // Fungsi load peserta untuk modal save pdf
   loadAllPesertaForPdf();
+
   async function loadAllPesertaForPdf() {
     try {
-      const res = await apiRequest("/peserta/simple", {
-        method: "GET",
-      });
-
+      const res = await apiRequest("/peserta/simple", { method: "GET" });
       const data = Array.isArray(res) ? res : res.data || [];
       const select = $("#pdfPeserta");
 
       select.empty().append(`<option value="">-- Pilih Peserta --</option>`);
-
       data.forEach((p) => {
         select.append(`<option value="${p.nama}">${p.nama}</option>`);
       });
     } catch (err) {
-      console.error("Gagal load peserta:", err);
-      Swal.fire({
-        icon: "error",
-        title: "Gagal memuat daftar peserta",
-        text: "Periksa koneksi atau endpoint peserta",
-      });
+      Swal.fire("Error", "Gagal load peserta", "error");
     }
   }
 
@@ -187,11 +172,21 @@ $(document).ready(function () {
     processing: true,
     serverSide: true,
     searching: false,
-
-    // DOM hanya untuk desktop
     dom: "rt<'row mt-2 d-none d-md-flex'<'col-md-6'i><'col-md-6'p>>",
 
     ajax: function (dt, callback) {
+      // 🔥 JIKA BELUM SEARCH → KOSONG
+      if (!hasSearched) {
+        callback({
+          draw: dt.draw,
+          recordsTotal: 0,
+          recordsFiltered: 0,
+          data: [],
+        });
+        renderMobileCards([]);
+        return;
+      }
+
       const tanggalMulai = $("#filterTanggalMulai").val();
       const tanggalSelesai = $("#filterTanggalSelesai").val();
       const peserta = $("#filterPeserta").val();
@@ -200,12 +195,7 @@ $(document).ready(function () {
         (tanggalMulai && !tanggalSelesai) ||
         (!tanggalMulai && tanggalSelesai)
       ) {
-        Swal.fire({
-          icon: "warning",
-          title: "Filter Tanggal Tidak Lengkap",
-          text: "Pilih tanggal mulai dan tanggal selesai",
-        });
-
+        Swal.fire("Warning", "Tanggal mulai & selesai harus diisi", "warning");
         callback({
           draw: dt.draw,
           recordsTotal: 0,
@@ -219,7 +209,6 @@ $(document).ready(function () {
         draw: dt.draw,
         start: dt.start,
         length: dt.length,
-        search: dt.search?.value || "",
         tanggal_mulai: tanggalMulai,
         tanggal_selesai: tanggalSelesai,
         peserta,
@@ -229,19 +218,10 @@ $(document).ready(function () {
       const request = apiRequest(`/hafalan/all?${query}`, { method: "GET" });
       const wrapped = suppressLoader ? request : withLoader(request);
 
-      wrapped
-        .then((res) => {
-          callback(res);
-          renderMobileCards(res.data);
-        })
-        .catch(() =>
-          callback({
-            draw: dt.draw,
-            recordsTotal: 0,
-            recordsFiltered: 0,
-            data: [],
-          })
-        );
+      wrapped.then((res) => {
+        callback(res);
+        renderMobileCards(res.data);
+      });
     },
 
     columns: [
@@ -255,7 +235,7 @@ $(document).ready(function () {
           if (!data) return "-";
           const d = new Date(data);
           return `${String(d.getDate()).padStart(2, "0")}-${String(
-            d.getMonth() + 1
+            d.getMonth() + 1,
           ).padStart(2, "0")}-${d.getFullYear()}`;
         },
       },
@@ -266,56 +246,32 @@ $(document).ready(function () {
       { data: "keterangan" },
     ],
 
-    pageLength: 10,
-    lengthMenu: [10, 25, 50, 100],
-
-    // 🔥 INI POSISI drawCallback YANG BENAR
     drawCallback: function () {
       relocatePaginationToBottom();
-
       $(".page-item.previous .page-link").html("‹");
       $(".page-item.next .page-link").html("›");
     },
   });
 
   // ===============================
-  // EVENT FILTER
+  // EVENT
   // ===============================
-
-  // ❌ Tidak auto-search saat ketik
-  $("#filterPeserta").on("input", function () {
-    suppressLoader = true; // jangan tampilkan loader
-  });
-
-  // Filter tanggal → reload jika valid
-  $("#filterTanggalMulai, #filterTanggalSelesai").on("change", function () {
+  $("#btnSearch").on("click", function () {
     if (!validateFilterTanggal()) return;
-
+    hasSearched = true; // 🔥 baru boleh load
     suppressLoader = false;
     table.ajax.reload();
   });
 
-  // ===============================
-  // TOMBOL SEARCH
-  // ===============================
-  $("#btnSearch").on("click", function () {
-    if (!validateFilterTanggal()) return;
-
-    suppressLoader = false; // loader aktif
-    table.ajax.reload();
-  });
-
-  // ===============================
-  // RESET FILTER
-  // ===============================
   $("#resetFilter").on("click", function () {
     $("#filterTanggalMulai").val("");
     $("#filterTanggalSelesai").val("");
     $("#filterPeserta").val("");
 
-    updateSearchButtonState(); // 🔥 ini penting untuk nonaktifkan cari saat reset
-    suppressLoader = false;
+    updateSearchButtonState();
+    hasSearched = false; // 🔥 kembali kosong
     table.ajax.reload();
+    renderMobileCards([]);
   });
 });
 
@@ -323,151 +279,5 @@ $(document).ready(function () {
 // GLOBAL VAR
 // =========================
 let table = null;
-suppressLoader = false;
 let selectedPdfPeserta = "";
 let selectedPdfBulan = "";
-
-// ===============================
-// OPEN MODAL SAVE PDF
-// ===============================
-$("#btnSavePdf").on("click", function () {
-  $("#pdfPeserta").val("");
-  $("#pdfBulan").val("").prop("disabled", true);
-  selectedPdfPeserta = "";
-  selectedPdfBulan = "";
-
-  $("#savePdfModal").modal("show");
-});
-
-// PESERTA AUTOCOMPLETE (Modal save pdf)
-$("#pdfPeserta").on("input", function () {
-  const val = $(this).val().trim();
-
-  if (val.length < 2) {
-    $("#pdfBulan").prop("disabled", true);
-    return;
-  }
-
-  selectedPdfPeserta = val;
-  $("#pdfBulan").prop("disabled", false);
-});
-
-// BULAN CLICK VALIDATION modal save pdf
-$("#pdfBulan").on("focus", function () {
-  if (!selectedPdfPeserta) {
-    Swal.fire({
-      icon: "warning",
-      title: "Peserta belum dipilih",
-      text: "Silakan pilih peserta terlebih dahulu",
-    });
-    $(this).blur();
-  }
-});
-
-// BULAN CHANGE → AUTO GENERATE PDF
-$("#pdfBulan").on("change", function () {
-  if (!selectedPdfPeserta) return;
-
-  selectedPdfBulan = $(this).val();
-
-  generatePdfRiwayat(selectedPdfPeserta, selectedPdfBulan);
-  $("#savePdfModal").modal("hide");
-});
-
-// helper format tanggal & waktu (GLOBAL)
-function formatTanggalWaktuID(date = new Date()) {
-  const d = new Date(date);
-
-  const tanggal = String(d.getDate()).padStart(2, "0");
-  const bulan = String(d.getMonth() + 1).padStart(2, "0");
-  const tahun = d.getFullYear();
-
-  const jam = String(d.getHours()).padStart(2, "0");
-  const menit = String(d.getMinutes()).padStart(2, "0");
-
-  return `${tanggal}-${bulan}-${tahun} ${jam}:${menit} WIB`;
-}
-
-// ===============================
-// GENERATE PDF (jsPDF + autoTable)
-// ===============================
-async function generatePdfRiwayat(peserta, bulan) {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF("p", "mm", "a4");
-
-  // ===============================
-  // AMBIL DATA RIWAYAT DARI API
-  // ===============================
-  const res = await apiRequest(
-    `/hafalan/all?peserta=${encodeURIComponent(peserta)}`,
-    { method: "GET" }
-  );
-
-  // ===============================
-  // FILTER BULAN (YYYY-MM)
-  // ===============================
-  const rows = res.data
-    .filter((d) => d.tanggal.startsWith(bulan))
-    .map((d) => [
-      formatTanggalID(d.tanggal),
-      d.ayat_setor,
-      d.surah_nama,
-      d.ayat_hafal,
-      d.keterangan || "-",
-    ]);
-
-  if (rows.length === 0) {
-    Swal.fire({
-      icon: "warning",
-      title: "Data tidak ditemukan",
-      text: "Tidak ada riwayat hafalan pada bulan yang dipilih",
-    });
-    return;
-  }
-
-  // ===============================
-  // HEADER PDF
-  // ===============================
-  const bulanLabel = new Date(bulan + "-01").toLocaleDateString("id-ID", {
-    month: "long",
-    year: "numeric",
-  });
-
-  doc.setFontSize(14);
-  doc.text("Hafalan Peserta", 14, 15);
-
-  doc.setFontSize(11);
-  doc.text(`Nama: ${peserta}`, 14, 24);
-  doc.text(`Bulan: ${bulanLabel}`, 14, 30);
-
-  // 🔥 TANGGAL & WAKTU CETAK PDF
-  doc.setFontSize(9);
-  doc.setTextColor(120);
-  doc.text(`Diunduh pada: ${formatTanggalWaktuID()}`, 14, 36);
-
-  doc.setTextColor(0); // reset warna teks
-
-  // ===============================
-  // TABLE PDF
-  // ===============================
-  doc.autoTable({
-    startY: 42,
-    head: [["Tanggal", "Setor Ayat", "Surah", "Ayat Hafal", "Catatan"]],
-    body: rows,
-    styles: { fontSize: 9 },
-    headStyles: { fillColor: [22, 163, 74] },
-  });
-
-  doc.save(`Riwayat-Hafalan-${peserta}-${bulan}.pdf`);
-}
-
-// Helper format tanggal untuk hasil generate pdf
-function formatTanggalID(dateString) {
-  if (!dateString) return "-";
-
-  const d = new Date(dateString);
-
-  return `${String(d.getDate()).padStart(2, "0")}-${String(
-    d.getMonth() + 1
-  ).padStart(2, "0")}-${d.getFullYear()}`;
-}
