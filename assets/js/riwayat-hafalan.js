@@ -212,6 +212,21 @@ $(document).ready(function () {
   });
 
   // ===============================
+  // DATATABLES LOADER SYNC (ANTI NYANGKUT)
+  // ===============================
+  table.on("preXhr.dt", function () {
+    if (window.AdminLoader) AdminLoader.show();
+  });
+
+  table.on("xhr.dt", function () {
+    if (window.AdminLoader) AdminLoader.hide();
+  });
+
+  table.on("error.dt", function () {
+    if (window.AdminLoader) AdminLoader.hide();
+  });
+
+  // ===============================
   // BUTTON SEARCH
   // ===============================
   $("#btnSearch").on("click", function () {
