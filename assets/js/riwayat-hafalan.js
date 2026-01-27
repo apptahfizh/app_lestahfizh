@@ -1,13 +1,3 @@
-// =========================
-// LOADER WRAPPER
-// =========================
-function withLoader(promise) {
-  if (window.AdminLoader) AdminLoader.show();
-  return promise.finally(() => {
-    if (window.AdminLoader) AdminLoader.hide();
-  });
-}
-
 // ===============================
 // VALIDASI FILTER TANGGAL
 // ===============================
@@ -15,10 +5,8 @@ function validateFilterTanggal() {
   const mulai = $("#filterTanggalMulai").val();
   const selesai = $("#filterTanggalSelesai").val();
 
-  // kalau tidak pakai tanggal sama sekali → OK
   if (!mulai && !selesai) return true;
 
-  // kalau pakai tanggal → harus lengkap
   if (!mulai || !selesai) {
     Swal.fire("Oops", "Tanggal mulai & selesai harus diisi", "warning");
     return false;
@@ -36,11 +24,8 @@ function validateFilterTanggal() {
 // GLOBAL FLAG
 // =========================
 let table = null;
-let suppressLoader = false;
-let isFirstLoad = true; // 🔥 penting
-
-let selectedPdfPeserta = "";
-let selectedPdfBulan = "";
+let isFirstLoad = true;
+let isSearching = false;
 
 // =========================
 // RENDER MOBILE CARD
@@ -102,13 +87,13 @@ $(document).ready(function () {
   // DATATABLE
   // =========================
   table = $("#riwayatHafalanTable").DataTable({
-    processing: true,
+    processing: false, // ❌ jangan pakai processing loader
     serverSide: true,
     searching: false,
     dom: "rt<'row mt-2 d-none d-md-flex'<'col-md-6'i><'col-md-6'p>>",
 
     ajax: function (dt, callback) {
-      // 🔥 LOAD PERTAMA → KOSONG
+      // LOAD PERTAMA → KOSONG
       if (isFirstLoad) {
         callback({
           draw: dt.draw,
@@ -120,50 +105,44 @@ $(document).ready(function () {
         return;
       }
 
-      const tanggalMulai = $("#filterTanggalMulai").val();
-      const tanggalSelesai = $("#filterTanggalSelesai").val();
-      const peserta = $("#filterPeserta").val();
-
       const params = {
         draw: dt.draw,
         start: dt.start,
         length: dt.length,
-        tanggal_mulai: tanggalMulai,
-        tanggal_selesai: tanggalSelesai,
-        peserta,
+        tanggal_mulai: $("#filterTanggalMulai").val(),
+        tanggal_selesai: $("#filterTanggalSelesai").val(),
+        peserta: $("#filterPeserta").val(),
       };
 
-      const query = new URLSearchParams(params).toString();
-      const request = apiRequest(`/hafalan/all?${query}`, { method: "GET" });
-      const wrapped = suppressLoader ? request : withLoader(request);
-
-      wrapped
+      apiRequest(`/hafalan/all?${new URLSearchParams(params)}`, {
+        method: "GET",
+      })
         .then((res) => {
           callback(res);
           renderMobileCards(res.data);
         })
-        .catch(() =>
+        .catch(() => {
           callback({
             draw: dt.draw,
             recordsTotal: 0,
             recordsFiltered: 0,
             data: [],
-          }),
-        );
+          });
+        })
+        .finally(() => {
+          if (window.AdminLoader) AdminLoader.hide();
+        });
     },
 
     columns: [
-      {
-        data: null,
-        render: (d, t, r, m) => m.row + m.settings._iDisplayStart + 1,
-      },
+      { data: null, render: (d, t, r, m) => m.row + 1 },
       {
         data: "tanggal",
-        render: (data) => {
-          const d = new Date(data);
-          return `${String(d.getDate()).padStart(2, "0")}-${String(
-            d.getMonth() + 1,
-          ).padStart(2, "0")}-${d.getFullYear()}`;
+        render: (d) => {
+          const x = new Date(d);
+          return `${String(x.getDate()).padStart(2, "0")}-${String(
+            x.getMonth() + 1,
+          ).padStart(2, "0")}-${x.getFullYear()}`;
         },
       },
       { data: "peserta" },
@@ -180,8 +159,8 @@ $(document).ready(function () {
   $("#btnSearch").on("click", function () {
     if (!validateFilterTanggal()) return;
 
-    isFirstLoad = false; // 🔥 baru boleh load API
-    suppressLoader = false;
+    isFirstLoad = false;
+    if (window.AdminLoader) AdminLoader.show();
     table.ajax.reload();
   });
 
@@ -194,7 +173,7 @@ $(document).ready(function () {
     $("#filterPeserta").val("");
 
     updateSearchButtonState();
-    isFirstLoad = true; // 🔥 kembali kosong
+    isFirstLoad = true;
     renderMobileCards([]);
     table.clear().draw();
   });
