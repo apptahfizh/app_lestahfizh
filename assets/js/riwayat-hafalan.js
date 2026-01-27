@@ -32,6 +32,9 @@ function validateFilterTanggal() {
 // FLAG
 // =========================
 let hasSearched = false;
+let table = null;
+let selectedPdfPeserta = "";
+let selectedPdfBulan = "";
 
 // ===================================
 // RENDER RIWAYAT HAFALAN KE CARD LIST
@@ -56,33 +59,13 @@ function renderMobileCards(data) {
     const card = `
       <div class="riwayat-card">
         <div class="peserta">${row.peserta}</div>
-
-        <div class="row-item">
-          <span class="label">Tanggal</span>
-          <span class="value">${tanggal}</span>
-        </div>
-
-        <div class="row-item">
-          <span class="label">Setor Ayat</span>
-          <span class="value">${row.ayat_setor}</span>
-        </div>
-
-        <div class="row-item">
-          <span class="label">Surah</span>
-          <span class="value">${row.surah_nama}</span>
-        </div>
-
-        <div class="row-item">
-          <span class="label">Ayat Hafal</span>
-          <span class="value">${row.ayat_hafal}</span>
-        </div>
-
+        <div class="row-item"><span class="label">Tanggal</span><span class="value">${tanggal}</span></div>
+        <div class="row-item"><span class="label">Setor Ayat</span><span class="value">${row.ayat_setor}</span></div>
+        <div class="row-item"><span class="label">Surah</span><span class="value">${row.surah_nama}</span></div>
+        <div class="row-item"><span class="label">Ayat Hafal</span><span class="value">${row.ayat_hafal}</span></div>
         ${
           row.keterangan
-            ? `<div class="row-item">
-                <span class="label">Catatan</span>
-                <span class="value">${row.keterangan}</span>
-              </div>`
+            ? `<div class="row-item"><span class="label">Catatan</span><span class="value">${row.keterangan}</span></div>`
             : ""
         }
       </div>
@@ -107,22 +90,16 @@ function relocatePaginationToBottom() {
     );
   }
 
-  const footer = $("#riwayatTableFooter");
-  footer.empty().append(info).append(paginate);
+  $("#riwayatTableFooter").empty().append(info).append(paginate);
 }
 
 function updateSearchButtonState() {
   const tglMulai = $("#filterTanggalMulai").val();
   const tglSelesai = $("#filterTanggalSelesai").val();
   const peserta = $("#filterPeserta").val().trim();
-
   const isEmpty = !tglMulai && !tglSelesai && !peserta;
   $("#btnSearch").prop("disabled", isEmpty);
 }
-
-let table = null;
-let selectedPdfPeserta = "";
-let selectedPdfBulan = "";
 
 $(document).ready(function () {
   checkAuth(["admin", "ustadz"]);
@@ -137,7 +114,7 @@ $(document).ready(function () {
   // DATATABLE INIT (TIDAK AUTO LOAD)
   // ===============================
   table = $("#riwayatHafalanTable").DataTable({
-    processing: true,
+    processing: false,
     serverSide: true,
     searching: false,
     dom: "rt<'row mt-2 d-none d-md-flex'<'col-md-6'i><'col-md-6'p>>",
@@ -178,6 +155,9 @@ $(document).ready(function () {
             data: [],
           });
           renderMobileCards([]);
+        })
+        .finally(() => {
+          if (window.AdminLoader) AdminLoader.hide();
         });
     },
 
@@ -211,26 +191,12 @@ $(document).ready(function () {
   });
 
   // ===============================
-  // DATATABLE LOADER SYNC (ANTI STUCK)
-  // ===============================
-  table.on("preXhr.dt", function () {
-    if (window.AdminLoader) AdminLoader.show();
-  });
-
-  table.on("xhr.dt", function () {
-    if (window.AdminLoader) AdminLoader.hide();
-  });
-
-  table.on("error.dt", function () {
-    if (window.AdminLoader) AdminLoader.hide();
-  });
-
-  // ===============================
   // BUTTON SEARCH
   // ===============================
   $("#btnSearch").on("click", function () {
     if (!validateFilterTanggal()) return;
     hasSearched = true;
+    if (window.AdminLoader) AdminLoader.show();
     table.ajax.reload();
   });
 
@@ -241,9 +207,7 @@ $(document).ready(function () {
     $("#filterTanggalMulai").val("");
     $("#filterTanggalSelesai").val("");
     $("#filterPeserta").val("");
-
     updateSearchButtonState();
-
     hasSearched = false;
     table.clear().draw();
     renderMobileCards([]);
@@ -299,7 +263,7 @@ function formatTanggalWaktuID(date = new Date()) {
 }
 
 // ===============================
-// GENERATE PDF (ANTI LOADER NYANGKUT)
+// GENERATE PDF (AMAN)
 // ===============================
 async function generatePdfRiwayat(peserta, bulan) {
   if (window.AdminLoader) AdminLoader.show();
@@ -323,9 +287,7 @@ async function generatePdfRiwayat(peserta, bulan) {
         d.keterangan || "-",
       ]);
 
-    // ⛔ JIKA DATA KOSONG → MATIKAN LOADER DULU
     if (rows.length === 0) {
-      if (window.AdminLoader) AdminLoader.hide();
       Swal.fire("Info", "Tidak ada data pada bulan tersebut", "info");
       return;
     }
@@ -353,10 +315,8 @@ async function generatePdfRiwayat(peserta, bulan) {
     doc.save(`Riwayat-Hafalan-${peserta}-${bulan}.pdf`);
   } catch (err) {
     console.error(err);
-    if (window.AdminLoader) AdminLoader.hide();
     Swal.fire("Error", "Gagal membuat PDF", "error");
+  } finally {
+    if (window.AdminLoader) AdminLoader.hide();
   }
-
-  // ✅ PASTI MATI DI AKHIR
-  if (window.AdminLoader) AdminLoader.hide();
 }
