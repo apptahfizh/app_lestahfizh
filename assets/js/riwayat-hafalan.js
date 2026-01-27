@@ -139,7 +139,6 @@ function updateSearchButtonState() {
   $("#btnSearch").prop("disabled", isEmpty);
 }
 
-let hasSearched = false;
 $(document).ready(function () {
   // =========================
   // AUTH
@@ -196,17 +195,6 @@ $(document).ready(function () {
       const tanggalMulai = $("#filterTanggalMulai").val();
       const tanggalSelesai = $("#filterTanggalSelesai").val();
       const peserta = $("#filterPeserta").val();
-
-      if (!hasSearched) {
-        callback({
-          draw: dt.draw,
-          recordsTotal: 0,
-          recordsFiltered: 0,
-          data: [],
-        });
-        renderMobileCards([]);
-        return;
-      }
 
       if (
         (tanggalMulai && !tanggalSelesai) ||
@@ -299,14 +287,21 @@ $(document).ready(function () {
     suppressLoader = true; // jangan tampilkan loader
   });
 
+  // Filter tanggal → reload jika valid
+  $("#filterTanggalMulai, #filterTanggalSelesai").on("change", function () {
+    if (!validateFilterTanggal()) return;
+
+    suppressLoader = false;
+    table.ajax.reload();
+  });
+
   // ===============================
   // TOMBOL SEARCH
   // ===============================
   $("#btnSearch").on("click", function () {
     if (!validateFilterTanggal()) return;
 
-    hasSearched = true; // 🔥 PENTING
-    suppressLoader = false;
+    suppressLoader = false; // loader aktif
     table.ajax.reload();
   });
 
@@ -318,12 +313,9 @@ $(document).ready(function () {
     $("#filterTanggalSelesai").val("");
     $("#filterPeserta").val("");
 
-    updateSearchButtonState();
-
-    hasSearched = false; // 🔥 balik ke mode kosong
-
-    table.clear().draw();
-    renderMobileCards([]);
+    updateSearchButtonState(); // 🔥 ini penting untuk nonaktifkan cari saat reset
+    suppressLoader = false;
+    table.ajax.reload();
   });
 });
 
