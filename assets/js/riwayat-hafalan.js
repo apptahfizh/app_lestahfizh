@@ -1,16 +1,5 @@
-// =========================
-// LOADER WRAPPER (PAGE LEVEL)
-// =========================
-function withLoader(promise) {
-  if (window.AdminLoader) AdminLoader.show();
-
-  return promise.finally(() => {
-    if (window.AdminLoader) AdminLoader.hide();
-  });
-}
-
 // ===============================
-// VALIDASI FILTER TANGGAL (GLOBAL)
+// VALIDASI FILTER TANGGAL
 // ===============================
 function validateFilterTanggal() {
   const mulai = $("#filterTanggalMulai").val();
@@ -42,8 +31,7 @@ function validateFilterTanggal() {
 // =========================
 // FLAG
 // =========================
-let suppressLoader = false;
-let hasSearched = false; // 🔥 penting: cegah auto load
+let hasSearched = false;
 
 // ===================================
 // RENDER RIWAYAT HAFALAN KE CARD LIST
@@ -140,32 +128,11 @@ $(document).ready(function () {
 
   $("#filterTanggalMulai, #filterTanggalSelesai, #filterPeserta").on(
     "change input",
-    function () {
-      updateSearchButtonState();
-    },
+    updateSearchButtonState,
   );
 
   // ===============================
-  // LOAD PESERTA UNTUK PDF
-  // ===============================
-  loadAllPesertaForPdf();
-  async function loadAllPesertaForPdf() {
-    try {
-      const res = await apiRequest("/peserta/simple", { method: "GET" });
-      const data = Array.isArray(res) ? res : res.data || [];
-      const select = $("#pdfPeserta");
-
-      select.empty().append(`<option value="">-- Pilih Peserta --</option>`);
-      data.forEach((p) => {
-        select.append(`<option value="${p.nama}">${p.nama}</option>`);
-      });
-    } catch (err) {
-      console.error("Gagal load peserta:", err);
-    }
-  }
-
-  // ===============================
-  // DATATABLE INIT
+  // DATATABLE INIT (TIDAK HIT API)
   // ===============================
   table = $("#riwayatHafalanTable").DataTable({
     processing: true,
@@ -174,7 +141,6 @@ $(document).ready(function () {
     dom: "rt<'row mt-2 d-none d-md-flex'<'col-md-6'i><'col-md-6'p>>",
 
     ajax: function (dt, callback) {
-      // ⛔ BELUM KLIK CARI → JANGAN LOAD
       if (!hasSearched) {
         callback({
           draw: dt.draw,
@@ -186,27 +152,34 @@ $(document).ready(function () {
         return;
       }
 
-      const tanggalMulai = $("#filterTanggalMulai").val();
-      const tanggalSelesai = $("#filterTanggalSelesai").val();
-      const peserta = $("#filterPeserta").val();
-
       const params = {
         draw: dt.draw,
         start: dt.start,
         length: dt.length,
-        tanggal_mulai: tanggalMulai,
-        tanggal_selesai: tanggalSelesai,
-        peserta,
+        tanggal_mulai: $("#filterTanggalMulai").val(),
+        tanggal_selesai: $("#filterTanggalSelesai").val(),
+        peserta: $("#filterPeserta").val(),
       };
 
       const query = new URLSearchParams(params).toString();
-      const request = apiRequest(`/hafalan/all?${query}`, { method: "GET" });
-      const wrapped = suppressLoader ? request : withLoader(request);
 
-      wrapped.then((res) => {
-        callback(res);
-        renderMobileCards(res.data);
-      });
+      apiRequest(`/hafalan/all?${query}`, { method: "GET" })
+        .then((res) => {
+          callback(res);
+          renderMobileCards(res.data);
+        })
+        .catch(() => {
+          callback({
+            draw: dt.draw,
+            recordsTotal: 0,
+            recordsFiltered: 0,
+            data: [],
+          });
+          renderMobileCards([]);
+        })
+        .finally(() => {
+          if (window.AdminLoader) AdminLoader.hide();
+        });
     },
 
     columns: [
@@ -239,22 +212,13 @@ $(document).ready(function () {
   });
 
   // ===============================
-  // FILTER INPUT (TIDAK AUTO LOAD)
-  // ===============================
-  $("#filterPeserta").on("input", function () {
-    suppressLoader = true;
-  });
-
-  // ❌ TIDAK ADA AUTO RELOAD DI TANGGAL
-
-  // ===============================
   // BUTTON SEARCH
   // ===============================
   $("#btnSearch").on("click", function () {
     if (!validateFilterTanggal()) return;
 
     hasSearched = true;
-    suppressLoader = false;
+    if (window.AdminLoader) AdminLoader.show();
     table.ajax.reload();
   });
 
@@ -275,36 +239,6 @@ $(document).ready(function () {
 });
 
 // =========================
-// GLOBAL VAR
+// GLOBAL
 // =========================
 let table = null;
-let selectedPdfPeserta = "";
-let selectedPdfBulan = "";
-
-// ===============================
-// PDF SECTION (TETAP)
-// ===============================
-$("#btnSavePdf").on("click", function () {
-  $("#pdfPeserta").val("");
-  $("#pdfBulan").val("").prop("disabled", true);
-  selectedPdfPeserta = "";
-  selectedPdfBulan = "";
-  $("#savePdfModal").modal("show");
-});
-
-$("#pdfPeserta").on("input", function () {
-  const val = $(this).val().trim();
-  if (val.length < 2) {
-    $("#pdfBulan").prop("disabled", true);
-    return;
-  }
-  selectedPdfPeserta = val;
-  $("#pdfBulan").prop("disabled", false);
-});
-
-$("#pdfBulan").on("change", function () {
-  if (!selectedPdfPeserta) return;
-  selectedPdfBulan = $(this).val();
-  generatePdfRiwayat(selectedPdfPeserta, selectedPdfBulan);
-  $("#savePdfModal").modal("hide");
-});
