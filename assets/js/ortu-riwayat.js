@@ -40,9 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (surahInput && surahIdInput) {
     surahInput.addEventListener("input", () => {
-      // Jika user mengubah teks manual → invalidasi ID
       surahIdInput.value = "";
       toggleSurahFilterActive();
+      syncFilterLock();
     });
 
     // Saat reload halaman
@@ -54,12 +54,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterBulan = document.getElementById("filterBulan");
 
   if (filterBulan) {
-    filterBulan.addEventListener("input", () =>
-      toggleFilterActive(filterBulan),
-    );
+    filterBulan.addEventListener("input", () => {
+      toggleFilterActive(filterBulan);
+      syncFilterLock();
+    });
 
     // set status awal (reload / back)
     toggleFilterActive(filterBulan);
+    syncFilterLock();
   }
 
   // LOADER
@@ -104,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // RESET UI STATE
     toggleFilterActive(document.getElementById("filterBulan"));
     toggleSurahFilterActive();
+    syncFilterLock();
 
     // KEMBALIKAN KE EMPTY STATE
     renderRiwayatEmptyState(); // ❌ JANGAN loadRiwayatHafalan()
@@ -325,7 +328,9 @@ function setupAutocompleteSurah() {
           setVal("filterSurahId", s.id);
           list.innerHTML = "";
           toggleSurahFilterActive();
+          syncFilterLock();
         };
+
         list.appendChild(btn);
       });
   });
@@ -398,6 +403,35 @@ function getVal(id) {
 function setVal(id, val) {
   const el = document.getElementById(id);
   if (el) el.value = val;
+}
+
+// ===============================
+// MUTUAL EXCLUSIVE FILTER (BULAN ↔ SURAH)
+// ===============================
+function syncFilterLock() {
+  const bulanInput = document.getElementById("filterBulan");
+  const surahInput = document.getElementById("filterSurah");
+  const surahIdInput = document.getElementById("filterSurahId");
+
+  if (!bulanInput || !surahInput || !surahIdInput) return;
+
+  // Jika BULAN diisi → disable SURAH
+  if (bulanInput.value) {
+    surahInput.disabled = true;
+    surahInput.classList.add("disabled-filter");
+  }
+  // Jika SURAH dipilih (punya ID) → disable BULAN
+  else if (surahIdInput.value) {
+    bulanInput.disabled = true;
+    bulanInput.classList.add("disabled-filter");
+  }
+  // Jika dua-duanya kosong → aktifkan semua
+  else {
+    bulanInput.disabled = false;
+    surahInput.disabled = false;
+    bulanInput.classList.remove("disabled-filter");
+    surahInput.classList.remove("disabled-filter");
+  }
 }
 
 // ===============================
