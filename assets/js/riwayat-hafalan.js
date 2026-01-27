@@ -220,7 +220,6 @@ $(document).ready(function () {
   // ===============================
   $("#btnSearch").on("click", function () {
     if (!validateFilterTanggal()) return;
-
     hasSearched = true;
     table.ajax.reload();
   });
@@ -251,7 +250,6 @@ $(document).ready(function () {
     $("#savePdfModal").modal("show");
   });
 
-  // PESERTA INPUT
   $("#pdfPeserta").on("input", function () {
     const val = $(this).val().trim();
     if (val.length < 2) {
@@ -262,7 +260,6 @@ $(document).ready(function () {
     $("#pdfBulan").prop("disabled", false);
   });
 
-  // BULAN CHANGE → GENERATE PDF
   $("#pdfBulan").on("change", function () {
     if (!selectedPdfPeserta) return;
     selectedPdfBulan = $(this).val();
@@ -292,51 +289,60 @@ function formatTanggalWaktuID(date = new Date()) {
 }
 
 // ===============================
-// GENERATE PDF
+// GENERATE PDF (ANTI LOADER NYANGKUT)
 // ===============================
 async function generatePdfRiwayat(peserta, bulan) {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF("p", "mm", "a4");
+  try {
+    if (window.AdminLoader) AdminLoader.show();
 
-  const res = await apiRequest(
-    `/hafalan/all?peserta=${encodeURIComponent(peserta)}`,
-    { method: "GET" },
-  );
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF("p", "mm", "a4");
 
-  const rows = res.data
-    .filter((d) => d.tanggal.startsWith(bulan))
-    .map((d) => [
-      formatTanggalID(d.tanggal),
-      d.ayat_setor,
-      d.surah_nama,
-      d.ayat_hafal,
-      d.keterangan || "-",
-    ]);
+    const res = await apiRequest(
+      `/hafalan/all?peserta=${encodeURIComponent(peserta)}`,
+      { method: "GET" },
+    );
 
-  if (rows.length === 0) {
-    Swal.fire("Info", "Tidak ada data pada bulan tersebut", "info");
-    return;
+    const rows = res.data
+      .filter((d) => d.tanggal.startsWith(bulan))
+      .map((d) => [
+        formatTanggalID(d.tanggal),
+        d.ayat_setor,
+        d.surah_nama,
+        d.ayat_hafal,
+        d.keterangan || "-",
+      ]);
+
+    if (rows.length === 0) {
+      Swal.fire("Info", "Tidak ada data pada bulan tersebut", "info");
+      return;
+    }
+
+    const bulanLabel = new Date(bulan + "-01").toLocaleDateString("id-ID", {
+      month: "long",
+      year: "numeric",
+    });
+
+    doc.setFontSize(14);
+    doc.text("Hafalan Peserta", 14, 15);
+    doc.setFontSize(11);
+    doc.text(`Nama: ${peserta}`, 14, 24);
+    doc.text(`Bulan: ${bulanLabel}`, 14, 30);
+    doc.setFontSize(9);
+    doc.text(`Diunduh: ${formatTanggalWaktuID()}`, 14, 36);
+
+    doc.autoTable({
+      startY: 42,
+      head: [["Tanggal", "Setor Ayat", "Surah", "Ayat Hafal", "Catatan"]],
+      body: rows,
+      styles: { fontSize: 9 },
+    });
+
+    doc.save(`Riwayat-Hafalan-${peserta}-${bulan}.pdf`);
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "Gagal membuat PDF", "error");
+  } finally {
+    if (window.AdminLoader) AdminLoader.hide();
   }
-
-  const bulanLabel = new Date(bulan + "-01").toLocaleDateString("id-ID", {
-    month: "long",
-    year: "numeric",
-  });
-
-  doc.setFontSize(14);
-  doc.text("Hafalan Peserta", 14, 15);
-  doc.setFontSize(11);
-  doc.text(`Nama: ${peserta}`, 14, 24);
-  doc.text(`Bulan: ${bulanLabel}`, 14, 30);
-  doc.setFontSize(9);
-  doc.text(`Diunduh: ${formatTanggalWaktuID()}`, 14, 36);
-
-  doc.autoTable({
-    startY: 42,
-    head: [["Tanggal", "Setor Ayat", "Surah", "Ayat Hafal", "Catatan"]],
-    body: rows,
-    styles: { fontSize: 9 },
-  });
-
-  doc.save(`Riwayat-Hafalan-${peserta}-${bulan}.pdf`);
 }
