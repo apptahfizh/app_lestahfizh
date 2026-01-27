@@ -10,7 +10,7 @@ function withLoader(promise) {
 }
 
 // ===============================
-// VALIDASI FILTER TANGGAL (GLOBAL)
+// VALIDASI FILTER TANGGAL
 // ===============================
 function validateFilterTanggal() {
   const mulai = $("#filterTanggalMulai").val();
@@ -19,20 +19,12 @@ function validateFilterTanggal() {
   if (!mulai && !selesai) return true;
 
   if (!mulai || !selesai) {
-    Swal.fire({
-      icon: "warning",
-      title: "Filter tanggal tidak valid",
-      text: "Tanggal mulai dan tanggal selesai harus diisi bersamaan",
-    });
+    Swal.fire("Oops", "Tanggal mulai & selesai harus diisi", "warning");
     return false;
   }
 
   if (mulai > selesai) {
-    Swal.fire({
-      icon: "warning",
-      title: "Range tanggal salah",
-      text: "Tanggal mulai tidak boleh lebih besar dari tanggal selesai",
-    });
+    Swal.fire("Oops", "Range tanggal tidak valid", "warning");
     return false;
   }
 
@@ -40,23 +32,24 @@ function validateFilterTanggal() {
 }
 
 // =========================
-// FLAG
+// FLAG GLOBAL
 // =========================
+let table = null;
 let suppressLoader = false;
-let hasSearched = false; // 🔥 PENENTU load awal kosong
+let isFirstLoad = true; // 🔥 penting
+let selectedPdfPeserta = "";
+let selectedPdfBulan = "";
 
-// ===================================
-// RENDER RIWAYAT HAFALAN KE CARD LIST
-// ===================================
+// =========================
+// RENDER MOBILE CARD
+// =========================
 function renderMobileCards(data) {
   const container = $("#riwayatCardList");
   container.empty();
 
   if (!data || data.length === 0) {
     container.html(
-      `<div class="text-center text-muted py-4">
-        Silakan lakukan pencarian terlebih dahulu
-      </div>`,
+      `<div class="text-center text-muted py-4">Tidak ada data</div>`,
     );
     return;
   }
@@ -67,107 +60,46 @@ function renderMobileCards(data) {
       d.getMonth() + 1,
     ).padStart(2, "0")}-${d.getFullYear()}`;
 
-    const card = `
+    container.append(`
       <div class="riwayat-card">
         <div class="peserta">${row.peserta}</div>
-
-        <div class="row-item">
-          <span class="label">Tanggal</span>
-          <span class="value">${tanggal}</span>
-        </div>
-
-        <div class="row-item">
-          <span class="label">Setor Ayat</span>
-          <span class="value">${row.ayat_setor}</span>
-        </div>
-
-        <div class="row-item">
-          <span class="label">Surah</span>
-          <span class="value">${row.surah_nama}</span>
-        </div>
-
-        <div class="row-item">
-          <span class="label">Ayat Hafal</span>
-          <span class="value">${row.ayat_hafal}</span>
-        </div>
-
-        ${
-          row.keterangan
-            ? `<div class="row-item">
-                <span class="label">Catatan</span>
-                <span class="value">${row.keterangan}</span>
-              </div>`
-            : ""
-        }
+        <div><b>Tanggal:</b> ${tanggal}</div>
+        <div><b>Surah:</b> ${row.surah_nama}</div>
+        <div><b>Ayat Hafal:</b> ${row.ayat_hafal}</div>
+        <div><b>Ayat Setor:</b> ${row.ayat_setor}</div>
+        ${row.keterangan ? `<div><b>Catatan:</b> ${row.keterangan}</div>` : ""}
       </div>
-    `;
-
-    container.append(card);
+    `);
   });
 }
 
-function relocatePaginationToBottom() {
-  if (window.innerWidth > 768) return;
-
-  const wrapper = $("#riwayatHafalanTable").closest(".dataTables_wrapper");
-  const info = wrapper.find(".dataTables_info");
-  const paginate = wrapper.find(".dataTables_paginate");
-  const cardList = $("#riwayatCardList");
-
-  if (!cardList.length) return;
-
-  if (!$("#riwayatTableFooter").length) {
-    cardList.after(`
-      <div id="riwayatTableFooter" class="mt-2 text-center"></div>
-    `);
-  }
-
-  const footer = $("#riwayatTableFooter");
-  footer.empty().append(info).append(paginate);
-}
-
-// helper tombol cari
+// =========================
+// BUTTON STATE
+// =========================
 function updateSearchButtonState() {
-  const tglMulai = $("#filterTanggalMulai").val();
-  const tglSelesai = $("#filterTanggalSelesai").val();
-  const peserta = $("#filterPeserta").val().trim();
+  const t1 = $("#filterTanggalMulai").val();
+  const t2 = $("#filterTanggalSelesai").val();
+  const p = $("#filterPeserta").val().trim();
 
-  const isEmpty = !tglMulai && !tglSelesai && !peserta;
-  $("#btnSearch").prop("disabled", isEmpty);
+  $("#btnSearch").prop("disabled", !t1 && !t2 && !p);
 }
 
+// =========================
+// INIT
+// =========================
 $(document).ready(function () {
   checkAuth(["admin", "ustadz"]);
 
   updateSearchButtonState();
 
   $("#filterTanggalMulai, #filterTanggalSelesai, #filterPeserta").on(
-    "change input",
-    function () {
-      updateSearchButtonState();
-    },
+    "input change",
+    updateSearchButtonState,
   );
 
-  loadAllPesertaForPdf();
-
-  async function loadAllPesertaForPdf() {
-    try {
-      const res = await apiRequest("/peserta/simple", { method: "GET" });
-      const data = Array.isArray(res) ? res : res.data || [];
-      const select = $("#pdfPeserta");
-
-      select.empty().append(`<option value="">-- Pilih Peserta --</option>`);
-      data.forEach((p) => {
-        select.append(`<option value="${p.nama}">${p.nama}</option>`);
-      });
-    } catch (err) {
-      Swal.fire("Error", "Gagal load peserta", "error");
-    }
-  }
-
-  // ===============================
-  // DATATABLES INIT
-  // ===============================
+  // =========================
+  // DATATABLE
+  // =========================
   table = $("#riwayatHafalanTable").DataTable({
     processing: true,
     serverSide: true,
@@ -175,8 +107,8 @@ $(document).ready(function () {
     dom: "rt<'row mt-2 d-none d-md-flex'<'col-md-6'i><'col-md-6'p>>",
 
     ajax: function (dt, callback) {
-      // 🔥 JIKA BELUM SEARCH → KOSONG
-      if (!hasSearched) {
+      // 🔥 LOAD PERTAMA → KOSONG
+      if (isFirstLoad) {
         callback({
           draw: dt.draw,
           recordsTotal: 0,
@@ -191,20 +123,6 @@ $(document).ready(function () {
       const tanggalSelesai = $("#filterTanggalSelesai").val();
       const peserta = $("#filterPeserta").val();
 
-      if (
-        (tanggalMulai && !tanggalSelesai) ||
-        (!tanggalMulai && tanggalSelesai)
-      ) {
-        Swal.fire("Warning", "Tanggal mulai & selesai harus diisi", "warning");
-        callback({
-          draw: dt.draw,
-          recordsTotal: 0,
-          recordsFiltered: 0,
-          data: [],
-        });
-        return;
-      }
-
       const params = {
         draw: dt.draw,
         start: dt.start,
@@ -218,10 +136,19 @@ $(document).ready(function () {
       const request = apiRequest(`/hafalan/all?${query}`, { method: "GET" });
       const wrapped = suppressLoader ? request : withLoader(request);
 
-      wrapped.then((res) => {
-        callback(res);
-        renderMobileCards(res.data);
-      });
+      wrapped
+        .then((res) => {
+          callback(res);
+          renderMobileCards(res.data);
+        })
+        .catch(() =>
+          callback({
+            draw: dt.draw,
+            recordsTotal: 0,
+            recordsFiltered: 0,
+            data: [],
+          }),
+        );
     },
 
     columns: [
@@ -232,7 +159,6 @@ $(document).ready(function () {
       {
         data: "tanggal",
         render: (data) => {
-          if (!data) return "-";
           const d = new Date(data);
           return `${String(d.getDate()).padStart(2, "0")}-${String(
             d.getMonth() + 1,
@@ -245,39 +171,30 @@ $(document).ready(function () {
       { data: "ayat_setor" },
       { data: "keterangan" },
     ],
-
-    drawCallback: function () {
-      relocatePaginationToBottom();
-      $(".page-item.previous .page-link").html("‹");
-      $(".page-item.next .page-link").html("›");
-    },
   });
 
-  // ===============================
-  // EVENT
-  // ===============================
+  // =========================
+  // SEARCH
+  // =========================
   $("#btnSearch").on("click", function () {
     if (!validateFilterTanggal()) return;
-    hasSearched = true; // 🔥 baru boleh load
+
+    isFirstLoad = false; // 🔥 baru boleh load API
     suppressLoader = false;
     table.ajax.reload();
   });
 
+  // =========================
+  // RESET
+  // =========================
   $("#resetFilter").on("click", function () {
     $("#filterTanggalMulai").val("");
     $("#filterTanggalSelesai").val("");
     $("#filterPeserta").val("");
 
     updateSearchButtonState();
-    hasSearched = false; // 🔥 kembali kosong
-    table.ajax.reload();
+    isFirstLoad = true; // 🔥 kembali kosong
     renderMobileCards([]);
+    table.clear().draw();
   });
 });
-
-// =========================
-// GLOBAL VAR
-// =========================
-let table = null;
-let selectedPdfPeserta = "";
-let selectedPdfBulan = "";
