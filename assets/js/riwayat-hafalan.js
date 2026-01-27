@@ -215,7 +215,7 @@ $(document).ready(function () {
   // DATATABLES LOADER SYNC (ANTI NYANGKUT)
   // ===============================
   table.on("preXhr.dt", function () {
-    if (window.AdminLoader) AdminLoader.show();
+    if (window.AdminLoader);
   });
 
   table.on("xhr.dt", function () {
@@ -233,7 +233,7 @@ $(document).ready(function () {
     if (!validateFilterTanggal()) return;
 
     hasSearched = true;
-    if (window.AdminLoader) AdminLoader.show();
+    if (window.AdminLoader);
     table.ajax.reload();
   });
 
