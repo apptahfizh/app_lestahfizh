@@ -236,6 +236,9 @@ $(document).ready(function () {
     generatePdfRiwayat(selectedPdfPeserta, selectedPdfBulan);
     $("#savePdfModal").modal("hide");
   });
+
+  // ✅ PAKSA MATI SAAT LOAD PERTAMA
+  if (window.AdminLoader) AdminLoader.hide();
 });
 
 // ===============================
