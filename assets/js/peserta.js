@@ -46,6 +46,9 @@ async function loadPeserta() {
   try {
     const data = await apiRequest("/peserta");
 
+    // 🔤 URUTKAN A-Z
+    data.sort((a, b) => a.nama.localeCompare(b.nama));
+
     // MOBILE → CARD LIST
     if (window.innerWidth < 768) {
       renderPesertaCards(data);
