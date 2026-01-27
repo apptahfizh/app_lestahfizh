@@ -165,8 +165,6 @@ $(document).ready(function () {
 
       const query = new URLSearchParams(params).toString();
 
-      if (window.AdminLoader) AdminLoader.show();
-
       apiRequest(`/hafalan/all?${query}`, { method: "GET" })
         .then((res) => {
           callback(res);
@@ -180,9 +178,6 @@ $(document).ready(function () {
             data: [],
           });
           renderMobileCards([]);
-        })
-        .finally(() => {
-          if (window.AdminLoader) AdminLoader.hide();
         });
     },
 
@@ -213,6 +208,21 @@ $(document).ready(function () {
       $(".page-item.previous .page-link").html("‹");
       $(".page-item.next .page-link").html("›");
     },
+  });
+
+  // ===============================
+  // DATATABLE LOADER SYNC (ANTI STUCK)
+  // ===============================
+  table.on("preXhr.dt", function () {
+    if (window.AdminLoader) AdminLoader.show();
+  });
+
+  table.on("xhr.dt", function () {
+    if (window.AdminLoader) AdminLoader.hide();
+  });
+
+  table.on("error.dt", function () {
+    if (window.AdminLoader) AdminLoader.hide();
   });
 
   // ===============================
