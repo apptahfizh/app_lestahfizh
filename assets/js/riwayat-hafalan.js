@@ -132,7 +132,7 @@ $(document).ready(function () {
   );
 
   // ===============================
-  // DATATABLE INIT (TIDAK HIT API)
+  // DATATABLE INIT
   // ===============================
   table = $("#riwayatHafalanTable").DataTable({
     processing: true,
@@ -149,6 +149,7 @@ $(document).ready(function () {
           data: [],
         });
         renderMobileCards([]);
+        if (window.AdminLoader) AdminLoader.hide();
         return;
       }
 
@@ -212,10 +213,10 @@ $(document).ready(function () {
   });
 
   // ===============================
-  // DATATABLES LOADER SYNC (ANTI NYANGKUT)
+  // DATATABLES LOADER SYNC
   // ===============================
   table.on("preXhr.dt", function () {
-    if (window.AdminLoader);
+    if (window.AdminLoader) AdminLoader.show();
   });
 
   table.on("xhr.dt", function () {
@@ -233,7 +234,7 @@ $(document).ready(function () {
     if (!validateFilterTanggal()) return;
 
     hasSearched = true;
-    if (window.AdminLoader);
+    if (window.AdminLoader) AdminLoader.show();
     table.ajax.reload();
   });
 
@@ -250,6 +251,7 @@ $(document).ready(function () {
     hasSearched = false;
     table.clear().draw();
     renderMobileCards([]);
+    if (window.AdminLoader) AdminLoader.hide();
   });
 });
 

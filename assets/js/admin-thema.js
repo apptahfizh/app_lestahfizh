@@ -143,44 +143,6 @@
   });
 
   /* ===============================
-     OUTSIDE CLICK — mousedown!
-     (ANTI RACE)
-  =============================== 
-  document.addEventListener("mousedown", (e) => {
-    if (!isMobile()) return;
-    if (isToggling) return; // 🔥 KUNCI UTAMA
-    if (isScrollingSidebar) return;
-
-    const sb = sidebar();
-
-    if (document.body.classList.contains("sidebar-toggled")) return;
-    if (sb && sb.contains(e.target)) return;
-
-    collapseSidebar();
-  });
-
-  /* ===============================
-   OUTSIDE CLICK — POINTER SAFE
-=============================== 
-  document.addEventListener("pointerdown", (e) => {
-    if (!isMobile()) return;
-    if (isToggling) return;
-
-    // 🔥 ABAIKAN SEMUA INTERAKSI DARI SIDEBAR
-    const sb = sidebar();
-    if (sb && sb.contains(e.target)) return;
-
-    // abaikan klik tombol toggle
-    const toggleBtn = document.getElementById("sidebarToggleTop");
-    if (toggleBtn && toggleBtn.contains(e.target)) return;
-
-    // hanya tutup jika sidebar sedang terbuka
-    if (!document.body.classList.contains("sidebar-toggled")) {
-      collapseSidebar();
-    }
-  });
-
-/* ===============================
    TUTUP SIDEBAR HANYA DARI BACKDROP
 =============================== */
   document.addEventListener("DOMContentLoaded", () => {
@@ -197,7 +159,7 @@
         startY = t.clientY;
         moved = false;
       },
-      { passive: true }
+      { passive: true },
     );
 
     backdrop.addEventListener(
@@ -212,7 +174,7 @@
           moved = true;
         }
       },
-      { passive: true }
+      { passive: true },
     );
 
     backdrop.addEventListener("touchend", () => {
@@ -241,7 +203,7 @@
         (e) => {
           e.stopPropagation();
         },
-        { passive: true }
+        { passive: true },
       );
     });
   });
@@ -323,6 +285,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
     },
-    true
+    true,
   );
 })();
