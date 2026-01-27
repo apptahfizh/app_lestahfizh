@@ -155,9 +155,6 @@ $(document).ready(function () {
             data: [],
           });
           renderMobileCards([]);
-        })
-        .finally(() => {
-          if (window.AdminLoader) AdminLoader.hide();
         });
     },
 
@@ -196,7 +193,6 @@ $(document).ready(function () {
   $("#btnSearch").on("click", function () {
     if (!validateFilterTanggal()) return;
     hasSearched = true;
-    if (window.AdminLoader) AdminLoader.show();
     table.ajax.reload();
   });
 
