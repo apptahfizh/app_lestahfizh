@@ -32,60 +32,61 @@ document.addEventListener("DOMContentLoaded", () => {
   if (nameEl && user.username) {
     nameEl.textContent = user.username;
   }
-  // END SET JUDUL HALAMAN (NAMA PESERTA)
 
+  // ===============================
   // SURAH INPUT LISTENER
+  // ===============================
   const surahInput = document.getElementById("filterSurah");
   const surahIdInput = document.getElementById("filterSurahId");
 
   if (surahInput && surahIdInput) {
     surahInput.addEventListener("input", () => {
-      // Jika user mengubah teks manual → invalidasi ID
       surahIdInput.value = "";
       toggleSurahFilterActive();
+      syncFilterLock();
     });
 
-    // Saat reload halaman
     toggleSurahFilterActive();
   }
-  // END SURAH INPUT LISTENER
 
-  // fungsi pemanggilan FILTER BULAN ketika berisi berubah warna
+  // ===============================
+  // FILTER BULAN
+  // ===============================
   const filterBulan = document.getElementById("filterBulan");
 
   if (filterBulan) {
-    filterBulan.addEventListener("input", () =>
-      toggleFilterActive(filterBulan),
-    );
+    filterBulan.addEventListener("input", () => {
+      toggleFilterActive(filterBulan);
+      syncFilterLock();
+    });
 
-    // set status awal (reload / back)
     toggleFilterActive(filterBulan);
   }
 
+  // ===============================
   // LOADER
+  // ===============================
   (async () => {
     showGlobalLoading("Menyiapkan halaman…");
 
     await loadSurah();
-    renderRiwayatEmptyState(); // ⬅️ tampilkan tabel kosong
+    renderRiwayatEmptyState();
 
     hideGlobalLoading();
+    syncFilterLock();
   })();
-  // END LOADER
 
   // ===============================
   // FILTER BUTTON
   // ===============================
   document.getElementById("btnFilter")?.addEventListener("click", () => {
     const filter = {
-      bulan: getVal("filterBulan"), // YYYY-MM
+      bulan: getVal("filterBulan"),
       surah_id: getVal("filterSurahId"),
     };
 
-    // VALIDASI WAJIB (SEBELUM FETCH)
     if (!validateRiwayatFilter(filter)) return;
 
-    // LOADER + FETCH
     safeShowLoader("Memuat riwayat hafalan…");
     loadRiwayatHafalan(filter);
   });
@@ -94,19 +95,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // RESET BUTTON
   // ===============================
   document.getElementById("btnReset")?.addEventListener("click", () => {
-    // RESET INPUT
     ["filterBulan", "filterSurah", "filterSurahId"].forEach((id) =>
       setVal(id, ""),
     );
 
     document.getElementById("surahList")?.replaceChildren();
 
-    // RESET UI STATE
     toggleFilterActive(document.getElementById("filterBulan"));
     toggleSurahFilterActive();
+    syncFilterLock();
 
-    // KEMBALIKAN KE EMPTY STATE
-    renderRiwayatEmptyState(); // ❌ JANGAN loadRiwayatHafalan()
+    renderRiwayatEmptyState();
   });
 
   // ===============================
@@ -115,14 +114,13 @@ document.addEventListener("DOMContentLoaded", () => {
   setupAutocompleteSurah();
 
   // ===============================
-  // SAVE PDF → BUKA MODAL PILIH BULAN
+  // SAVE PDF
   // ===============================
   document.getElementById("pdfBulan")?.addEventListener("change", async (e) => {
-    const bulan = e.target.value; // YYYY-MM
+    const bulan = e.target.value;
     if (!bulan) return;
 
     $("#filterModal").modal("hide");
-
     safeShowLoader(`Menyiapkan laporan ${bulan}…`);
 
     try {
@@ -132,24 +130,43 @@ document.addEventListener("DOMContentLoaded", () => {
       Swal.fire("Error", "Gagal membuat PDF", "error");
     } finally {
       safeHideLoader();
-      e.target.value = ""; // reset agar bisa pilih ulang
+      e.target.value = "";
     }
   });
-  // ===============================
-  // BUKA MODAL → SAVE PDF
-  // ===============================
+
   document.getElementById("btnSavePdf")?.addEventListener("click", () => {
     const input = document.getElementById("pdfBulan");
-
-    // reset agar change selalu terpanggil
     if (input) input.value = "";
-
     $("#filterModal").modal("show");
   });
 });
 
 // ===============================
-// validasi riwayat hafalan/ filter
+// MUTUAL EXCLUSIVE FILTER
+// ===============================
+function syncFilterLock() {
+  const bulanInput = document.getElementById("filterBulan");
+  const surahInput = document.getElementById("filterSurah");
+  const surahIdInput = document.getElementById("filterSurahId");
+
+  if (!bulanInput || !surahInput || !surahIdInput) return;
+
+  if (bulanInput.value) {
+    surahInput.disabled = true;
+    surahInput.classList.add("disabled-filter");
+  } else if (surahIdInput.value) {
+    bulanInput.disabled = true;
+    bulanInput.classList.add("disabled-filter");
+  } else {
+    bulanInput.disabled = false;
+    surahInput.disabled = false;
+    bulanInput.classList.remove("disabled-filter");
+    surahInput.classList.remove("disabled-filter");
+  }
+}
+
+// ===============================
+// VALIDASI
 // ===============================
 function validateRiwayatFilter({ bulan, surah_id }) {
   if (!bulan && !surah_id) {
@@ -160,7 +177,6 @@ function validateRiwayatFilter({ bulan, surah_id }) {
     });
     return false;
   }
-
   return true;
 }
 
@@ -173,7 +189,6 @@ async function loadRiwayatHafalan(filter = {}) {
 
   showLoadingTable();
 
-  // RESET CARD LIST SEBELUM LOAD
   const cardList = document.getElementById("riwayatCardList");
   if (cardList) cardList.innerHTML = "";
 
@@ -194,20 +209,16 @@ async function loadRiwayatHafalan(filter = {}) {
       },
     });
 
-    if (!res.ok) throw new Error("Gagal mengambil data riwayat hafalan");
+    if (!res.ok) throw new Error("Gagal mengambil data");
 
     const { data = [] } = await res.json();
     tbody.innerHTML = "";
     Swal.close();
 
-    // ===============================
-    // FILTER CLIENT-SIDE (BULAN)
-    // ===============================
     let rows = data;
 
     if (filter.bulan) {
       const [year, month] = filter.bulan.split("-");
-
       rows = data.filter((r) => {
         if (!r.tanggal) return false;
         const d = new Date(r.tanggal);
@@ -217,32 +228,18 @@ async function loadRiwayatHafalan(filter = {}) {
       });
     }
 
-    // ===============================
-    // EMPTY STATE
-    // ===============================
     if (rows.length === 0) {
-      // EMPTY TABLE (DESKTOP)
       tbody.innerHTML = `
-    <tr>
-      <td colspan="8" class="text-center text-muted py-4">
-        <i class="fas fa-inbox fa-2x mb-2"></i><br>
-        Belum ada riwayat hafalan<br>
-        <small class="text-muted">
-          Tidak ada data pada bulan/surah yang dipilih
-        </small>
-      </td>
-    </tr>
-  `;
-
-      // EMPTY CARD LIST (MOBILE)
+        <tr>
+          <td colspan="8" class="text-center text-muted py-4">
+            Tidak ada data
+          </td>
+        </tr>
+      `;
       renderRiwayatCardEmptyState();
-
       return;
     }
 
-    // ===============================
-    // RENDER TABLE
-    // ===============================
     rows.forEach((row, i) => {
       const ayatHafal = ambilAkhirAyat(row.ayat_hafal);
       const totalAyat = Number(row.total_ayat) || 0;
@@ -251,54 +248,30 @@ async function loadRiwayatHafalan(filter = {}) {
       tbody.insertAdjacentHTML(
         "beforeend",
         `
-    <tr>
-      <td>${i + 1}</td>
-      <td>${formatTanggalIndo(row.tanggal)}</td>
-      <td>${row.ayat_setor || "-"}</td>
-      <td>QS ${row.surah_nama}</td>
-      <td>${ayatHafal}</td>
-      <td>
-        <div class="progress-wrapper">
-          <div class="progress">
-            <div
-              class="progress-bar bg-success"
-              style="width:${persen}%"
-            ></div>
-          </div>
-          <div class="progress-text">${persen}%</div>
-        </div>
-      </td>
-      <td>${row.keterangan || "-"}</td>
-    </tr>
-    `,
+        <tr>
+          <td>${i + 1}</td>
+          <td>${formatTanggalIndo(row.tanggal)}</td>
+          <td>${row.ayat_setor || "-"}</td>
+          <td>QS ${row.surah_nama}</td>
+          <td>${ayatHafal}</td>
+          <td>${persen}%</td>
+          <td>${row.keterangan || "-"}</td>
+        </tr>
+      `,
       );
     });
 
-    // RENDER CARD (MOBILE)
     renderRiwayatCards(rows);
   } catch (err) {
     console.error(err);
-
-    Swal.fire({
-      icon: "error",
-      title: "Gagal memuat data",
-      text: "Silakan coba kembali beberapa saat lagi.",
-    });
-
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="8" class="text-center text-muted py-4">
-          Terjadi kesalahan saat memuat data
-        </td>
-      </tr>
-    `;
+    Swal.fire("Error", "Gagal memuat data", "error");
   } finally {
     safeHideLoader();
   }
 }
 
 // ===============================
-// AUTOCOMPLETE SURAH (MOBILE FRIENDLY)
+// AUTOCOMPLETE SURAH
 // ===============================
 let daftarSurah = [];
 
@@ -325,6 +298,7 @@ function setupAutocompleteSurah() {
           setVal("filterSurahId", s.id);
           list.innerHTML = "";
           toggleSurahFilterActive();
+          syncFilterLock();
         };
         list.appendChild(btn);
       });
@@ -356,31 +330,27 @@ async function loadSurah() {
 }
 
 // ===============================
-// FILTER INPUT BACKGROUND HANDLER
+// HELPERS
 // ===============================
 function toggleFilterActive(input) {
   if (!input) return;
-
-  if (input.value && input.value !== "") {
-    input.classList.add("filter-active");
-  } else {
-    input.classList.remove("filter-active");
-  }
+  input.classList.toggle("filter-active", !!input.value);
 }
 
-// ===============================
-// UI HELPERS
-// ===============================
+function toggleSurahFilterActive() {
+  const surahInput = document.getElementById("filterSurah");
+  const surahIdInput = document.getElementById("filterSurahId");
+  if (!surahInput || !surahIdInput) return;
+
+  surahInput.classList.toggle("filter-active", !!surahIdInput.value);
+}
+
 function showLoadingTable() {
   const tbody = document.querySelector("#tabelRiwayat tbody");
   if (!tbody) return;
-
   tbody.innerHTML = `
     <tr>
-      <td colspan="8" class="text-center text-muted py-4">
-        <i class="fas fa-spinner fa-spin fa-lg mb-2"></i><br>
-        Memuat riwayat hafalan...
-      </td>
+      <td colspan="8" class="text-center py-4">Memuat data...</td>
     </tr>
   `;
 }
@@ -398,317 +368,4 @@ function getVal(id) {
 function setVal(id, val) {
   const el = document.getElementById(id);
   if (el) el.value = val;
-}
-
-// ===============================
-// RENDER CARD LIST
-// ===============================
-function renderRiwayatCards(rows) {
-  const container = document.getElementById("riwayatCardList");
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  rows.forEach((row) => {
-    const ayatHafal = ambilAkhirAyat(row.ayat_hafal);
-    const totalAyat = Number(row.total_ayat) || 0;
-    const persen = totalAyat ? Math.round((ayatHafal / totalAyat) * 100) : 0;
-
-    container.insertAdjacentHTML(
-      "beforeend",
-      `
-  <div class="riwayat-card">
-    <div class="tanggal">
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 448 512"
-    class="mr-1 calendar-icon"
-    style="vertical-align:-2px"
-  >
-    <path
-      fill="currentColor"
-      d="M152 64c0-13.3-10.7-24-24-24H24C10.7 40 0 50.7 0 64v384c0 35.3 28.7 64 64 64h320c35.3 0 64-28.7 64-64V64c0-13.3-10.7-24-24-24h-104c-13.3 0-24 10.7-24 24v40H152V64z"
-    />
-  </svg>
-  ${formatTanggalIndo(row.tanggal)}
-</div>
-
-   <div class="surah">
-  <svg
-  width="16"
-  height="16"
-  viewBox="0 0 576 512"
-  class="mr-1 quran-icon"
-  style="vertical-align:-2px"
-  aria-hidden="true"
->
-  <path
-    fill="currentColor"
-    d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h144V32H96zm384 0H336v480h144c53 0 96-43 96-96V96c0-53-43-96-96-96zM240 32v448H96c-17.7 0-32-14.3-32-32V96c0-17.7 14.3-32 32-32h144zm272 64v352c0 17.7-14.3 32-32 32H336V32h144c17.7 0 32 14.3 32 32z"
-  />
-</svg>
-  QS ${row.surah_nama}
-</div>
-
-    <div class="label-row">
-      <span class="label">Setor Ayat ke</span>
-      <span class="value">: ${row.ayat_setor || "-"}</span>
-    </div>
-
-    <div class="label-row">
-      <span class="label">Hafalan</span>
-      <span class="value">: ${ayatHafal} ayat</span>
-    </div>
-
-    <div class="label-row">
-      <span class="label">Keterangan</span>
-      <span class="value">: ${row.keterangan || "-"}</span>
-    </div>
-
-    <!-- PROGRESS BAR + % -->
-    <div class="progress-wrapper mt-4">
-      <div class="progress">
-        <div
-          class="progress-bar"
-          data-progress="${persen}"
-        ></div>
-      </div>
-      <div class="progress-text">0%</div>
-    </div>
-  </div>
-  `,
-    );
-  });
-  // Trigger animasi SETELAH DOM card masuk
-  animateCardProgress();
-}
-
-// helper Trigger animasi SETELAH card masuk DOM
-function animateCardProgress() {
-  const items = document.querySelectorAll("#riwayatCardList .progress-wrapper");
-
-  items.forEach((wrapper) => {
-    const bar = wrapper.querySelector(".progress-bar");
-    const text = wrapper.querySelector(".progress-text");
-
-    if (!bar || !text) return;
-
-    const target = Number(bar.dataset.progress) || 0;
-    const duration = 3000;
-    const startTime = performance.now();
-
-    bar.style.width = "0%";
-    text.textContent = "0%";
-
-    function animate(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-
-      const easeOut = 1 - Math.pow(1 - progress, 4);
-      const current = Math.round(easeOut * target);
-
-      bar.style.width = `${current}%`;
-      text.textContent = `${current}%`;
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    }
-
-    requestAnimationFrame(animate);
-  });
-}
-
-// ===============================
-// SURAH FILTER BACKGROUND HANDLER
-// ===============================
-function toggleSurahFilterActive() {
-  const surahInput = document.getElementById("filterSurah");
-  const surahIdInput = document.getElementById("filterSurahId");
-
-  if (!surahInput || !surahIdInput) return;
-
-  if (surahIdInput.value) {
-    surahInput.classList.add("filter-active");
-  } else {
-    surahInput.classList.remove("filter-active");
-  }
-}
-// ===============================
-// SAFE GLOBAL LOADER
-// ===============================
-function safeShowLoader(text = "Memuat data…") {
-  if (typeof showGlobalLoading === "function") {
-    showGlobalLoading(text);
-  }
-}
-
-function safeHideLoader() {
-  if (typeof hideGlobalLoading === "function") {
-    hideGlobalLoading();
-  }
-}
-
-// =================================================
-// GENERATE PDF RIWAYAT HAFALAN BULANAN (FINAL)
-// =================================================
-async function generatePdfRiwayatBulanan(monthYear) {
-  // monthYear = "YYYY-MM"
-  const [year, month] = monthYear.split("-");
-
-  try {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF("p", "mm", "a4");
-
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-    const bulanLabel = new Date(year, month - 1).toLocaleDateString("id-ID", {
-      month: "long",
-      year: "numeric",
-    });
-
-    // ===== HEADER =====
-    doc.setFontSize(14);
-    doc.text("Riwayat Hafalan", 14, 15);
-
-    doc.setFontSize(10);
-    doc.text(`Nama: ${user.username || "-"}`, 14, 22);
-    doc.text(`Bulan: ${bulanLabel}`, 14, 28);
-
-    // ===== FETCH DATA =====
-    const params = new URLSearchParams({
-      month,
-      year,
-      length: 1000,
-    });
-
-    const res = await fetch(`/api/hafalan/all?${params}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-
-    if (!res.ok) throw new Error("Gagal mengambil data");
-
-    const { data = [] } = await res.json();
-
-    const filteredData = data.filter((r) => {
-      if (!r.tanggal) return false;
-      const d = new Date(r.tanggal);
-      return (
-        d.getFullYear() === Number(year) && d.getMonth() + 1 === Number(month)
-      );
-    });
-
-    if (!filteredData.length) {
-      Swal.fire({
-        icon: "info",
-        title: "Data kosong",
-        text: `Tidak ada riwayat hafalan pada bulan ${bulanLabel}.`,
-      });
-      return;
-    }
-
-    // ===== TABLE =====
-    const body = filteredData.map((r, i) => {
-      const ayat = ambilAkhirAyat(r.ayat_hafal);
-      const total = Number(r.total_ayat) || 0;
-      const persen = total ? Math.round((ayat / total) * 100) : 0;
-
-      return [
-        i + 1,
-        formatTanggalIndo(r.tanggal),
-        r.ayat_setor || "-",
-        `QS ${r.surah_nama}`,
-        ayat,
-        `${persen}%`,
-        r.keterangan || "-",
-      ];
-    });
-
-    doc.autoTable({
-      startY: 35,
-      head: [
-        [
-          "No",
-          "Tanggal",
-          "Ayat Setor",
-          "Surah",
-          "Ayat Hafal",
-          "Progress",
-          "Keterangan",
-        ],
-      ],
-      body,
-      styles: { fontSize: 9 },
-      headStyles: { fillColor: [22, 163, 74] },
-    });
-
-    doc.save(`Riwayat-Hafalan-${bulanLabel}.pdf`);
-  } catch (err) {
-    console.error(err);
-    Swal.fire({
-      icon: "error",
-      title: "Gagal membuat PDF",
-      text: "Terjadi kesalahan saat membuat laporan.",
-    });
-  }
-}
-
-//EMPTY STATE
-function renderRiwayatEmptyState() {
-  const tbody = document.querySelector("#tabelRiwayat tbody");
-  const cardList = document.getElementById("riwayatCardList");
-
-  if (tbody) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="8" class="text-center text-muted py-5 primary">
-          <i class="fas fa-filter fa-2x mb-2"></i><br>
-          Pilih Salah Satu Bulan/Surah Lalu Klik <b>Cari</b>
-        </td>
-      </tr>
-    `;
-  }
-
-  if (cardList) {
-    cardList.innerHTML = `
-      <div class="text-center text-muted py-5 primary">
-        <i class="fas fa-filter fa-2x mb-2"></i><br>
-        Pilih Salah Satu Bulan/Surah Lalu Klik <b>Cari</b>
-      </div>
-    `;
-  }
-}
-
-//EMPTY STATE KHUSUS CARD
-function renderRiwayatCardEmptyState() {
-  const container = document.getElementById("riwayatCardList");
-  if (!container) return;
-
-  container.innerHTML = `
-    <div class="text-center text-muted py-5">
-      <i class="fas fa-inbox fa-2x mb-2"></i><br>
-      Silakan Gunakan Bulan/Surah Yang Lain<br>
-      <small class="text-muted">
-        Belum ada riwayat hafalan pada Bulan/Surah yang dipilih
-      </small>
-    </div>
-  `;
-}
-
-//FORMAT TANGGAL
-function formatTanggalIndo(dateString) {
-  if (!dateString) return "-";
-
-  const d = new Date(dateString);
-
-  if (isNaN(d)) return "-";
-
-  return d.toLocaleDateString("id-ID", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
 }
