@@ -42,7 +42,7 @@ function renderMobileCards(data) {
 
   if (!data || data.length === 0) {
     container.html(
-      `<div class="text-center text-muted py-4">Tidak ada data</div>`,
+      `<div class="text-center text-muted py-4">Cari berdasarkan Tanggal atau Nama</div>`,
     );
     return;
   }
