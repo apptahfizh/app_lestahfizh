@@ -155,6 +155,9 @@ $(document).ready(function () {
             data: [],
           });
           renderMobileCards([]);
+        })
+        .finally(() => {
+          if (window.AdminLoader) AdminLoader.hide(); // ✅ DI SINI TEMPATNYA
         });
     },
 
@@ -192,7 +195,11 @@ $(document).ready(function () {
   // ===============================
   $("#btnSearch").on("click", function () {
     if (!validateFilterTanggal()) return;
+
     hasSearched = true;
+
+    if (window.AdminLoader) AdminLoader.show(); // ✅ MUNCUL DI SINI SAJA
+
     table.ajax.reload();
   });
 
