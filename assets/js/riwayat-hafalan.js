@@ -224,6 +224,9 @@ $(document).ready(function () {
     $("#pdfBulan").val("").prop("disabled", true);
     selectedPdfPeserta = "";
     selectedPdfBulan = "";
+
+    loadPdfPesertaList(); // ✅ ISI DROPDOWN
+
     $("#savePdfModal").modal("show");
   });
 
@@ -269,7 +272,7 @@ function formatTanggalWaktuID(date = new Date()) {
 }
 
 // ===============================
-// GENERATE PDF (AMAN)
+// GENERATE PDF
 // ===============================
 async function generatePdfRiwayat(peserta, bulan) {
   if (window.AdminLoader) AdminLoader.show();
@@ -324,5 +327,22 @@ async function generatePdfRiwayat(peserta, bulan) {
     Swal.fire("Error", "Gagal membuat PDF", "error");
   } finally {
     if (window.AdminLoader) AdminLoader.hide();
+  }
+}
+// isi dropdown saat modal dibuka
+async function loadPdfPesertaList() {
+  try {
+    const res = await apiRequest("/peserta/all", { method: "GET" });
+
+    const select = $("#pdfPeserta");
+    select.empty();
+    select.append(`<option value="">-- Pilih Peserta --</option>`);
+
+    res.data.forEach((p) => {
+      select.append(`<option value="${p.nama}">${p.nama}</option>`);
+    });
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "Gagal memuat daftar peserta", "error");
   }
 }
