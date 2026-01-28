@@ -332,17 +332,17 @@ async function generatePdfRiwayat(peserta, bulan) {
 // isi dropdown saat modal dibuka
 async function loadPdfPesertaList() {
   try {
-    const res = await apiRequest("/peserta/all", { method: "GET" });
+    const res = await apiRequest("/peserta", { method: "GET" });
 
     const select = $("#pdfPeserta");
     select.empty();
     select.append(`<option value="">-- Pilih Peserta --</option>`);
 
-    res.data.forEach((p) => {
+    res.forEach((p) => {
       select.append(`<option value="${p.nama}">${p.nama}</option>`);
     });
   } catch (err) {
     console.error(err);
-    Swal.fire("Error", "Gagal memuat daftar peserta", "error");
+    Swal.fire("Error", "Gagal load peserta", "error");
   }
 }
