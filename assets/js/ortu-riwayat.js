@@ -452,38 +452,16 @@ function renderRiwayatCards(rows) {
       "beforeend",
       `
   <div class="riwayat-card">
+    
     <div class="tanggal">
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 448 512"
-    class="mr-1 calendar-icon"
-    style="vertical-align:-2px"
-  >
-    <path
-      fill="currentColor"
-      d="M152 64c0-13.3-10.7-24-24-24H24C10.7 40 0 50.7 0 64v384c0 35.3 28.7 64 64 64h320c35.3 0 64-28.7 64-64V64c0-13.3-10.7-24-24-24h-104c-13.3 0-24 10.7-24 24v40H152V64z"
-    />
-  </svg>
-  ${formatTanggalIndo(row.tanggal)}
-</div>
+      <i class="fas fa-calendar-alt mr-1"></i>
+      ${formatTanggalIndo(row.tanggal)}
+    </div>
 
-   <div class="surah">
-  <svg
-  width="16"
-  height="16"
-  viewBox="0 0 576 512"
-  class="mr-1 quran-icon"
-  style="vertical-align:-2px"
-  aria-hidden="true"
->
-  <path
-    fill="currentColor"
-    d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h144V32H96zm384 0H336v480h144c53 0 96-43 96-96V96c0-53-43-96-96-96zM240 32v448H96c-17.7 0-32-14.3-32-32V96c0-17.7 14.3-32 32-32h144zm272 64v352c0 17.7-14.3 32-32 32H336V32h144c17.7 0 32 14.3 32 32z"
-  />
-</svg>
-  QS ${row.surah_nama}
-</div>
+    <div class="surah">
+      <i class="fas fa-book-open mr-1"></i>
+      QS ${row.surah_nama}
+    </div>
 
     <div class="label-row">
       <span class="label">Setor Ayat ke</span>
