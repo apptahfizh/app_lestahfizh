@@ -258,8 +258,19 @@ document.addEventListener("DOMContentLoaded", () => {
 // EXPORT PDF (PAKAI filterState)
 // ===================================================
 document.getElementById("btnExportPDF")?.addEventListener("click", () => {
-  if (!absensiRows.length) {
-    Swal.fire("Info", "Tidak ada data untuk diexport", "info");
+  // CEK: bulan belum dipilih
+  if (!filterState.bulan) {
+    Swal.fire(
+      "Info",
+      "Silakan pilih bulan dan klik Cari terlebih dahulu",
+      "info",
+    );
+    return;
+  }
+
+  // CEK: data belum dimuat / kosong
+  if (!window.absensiRows || !absensiRows.length) {
+    Swal.fire("Info", "Data absensi belum tersedia untuk diunduh", "info");
     return;
   }
 
@@ -291,7 +302,6 @@ document.getElementById("btnExportPDF")?.addEventListener("click", () => {
     head: [["Hari", "Tanggal", "Status", "Keterangan"]],
     body: absensiRows.map((r) => {
       const { hari, tanggal } = splitHariTanggal(r.tanggal_hari);
-
       return [hari, tanggal, r.status || "-", r.keterangan || "-"];
     }),
     startY: 30,
