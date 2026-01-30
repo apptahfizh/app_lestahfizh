@@ -454,7 +454,7 @@ function renderRiwayatCards(rows) {
   <div class="riwayat-card">
     
     <div class="tanggal">
-      <i class="fas fa-calendar-alt mr-1"></i>
+      <i class="fas fa-calendar-check mr-1"></i>
       ${formatTanggalIndo(row.tanggal)}
     </div>
 
