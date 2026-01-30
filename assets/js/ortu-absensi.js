@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     wrapper.innerHTML = `
     <div class="text-center text-muted py-4">
-      Silakan Pilih Bulan Lalu Llik <b>Cari</b>
+      Silakan Pilih Bulan Lalu Klik <b>Cari</b>
     </div>
   `;
   }
